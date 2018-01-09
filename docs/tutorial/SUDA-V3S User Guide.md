@@ -1,3 +1,7 @@
+---
+typora-root-url: imgs
+---
+
 # SUDA-V3S User Guide
 
 ### 简介
@@ -52,6 +56,54 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modul
 ```
 
 最终会在arch/arm/boot下生成zImage，在out文件夹下生成驱动.ko文件
+
+### 系统烧写
+
+ #### SD卡分区
+
+> SD卡中的系统镜像一般分为三个区，第一个区称为boot区或者引导区，该部分没有文件系统而是直接将二进制的bootloader(uboot)文件直接写入。第二个区可以被称为linux内核区，fat文件系统，存放linux内核、内核参数文件还有设备数dtb文件。第三个区是root分区，用来存放根文件系统和用户数据等，一般是ext4文件分区格式。
+>
+> SD卡区域划分：
+>
+> | 0~2MB  | +20M   | Rest   |
+> | ------ | ------ | ------ |
+> | u-boot | kernel | rootfs |
+
+1. 准备一张空白的SD卡，打开GParted系统工具
+
+![一张干净的SD卡](BurnSD-0.png)
+
+2. 新建一个20MB大小的分区，并选择文件系统的格式fat16
+
+![新建存放kernel的分区](BurnSD-1.png)
+
+3. 讲SD卡剩余空间新建为一个新的分区，并选择文件系统的格式为ext4
+
+![新建存放rootfs的分区](BurnSD-2.png)
+
+4. 最终SD的分区结果如下图所示，单击:heavy_check_mark:开始执行分区操作
+
+![待分区的SD卡](BurnSD-3.png)
+
+![分区操作顺利完成](BurnSD-4.png)
+
+![分区后的SD卡](BurnSD-5.png)
+
+#### u-boot烧写
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
