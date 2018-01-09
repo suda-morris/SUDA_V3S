@@ -1,7 +1,3 @@
----
-typora-root-url: imgs
----
-
 # SUDA-V3S User Guide
 
 ### 简介
@@ -13,6 +9,33 @@ typora-root-url: imgs
 2. 功耗
    * 1GHz，Linux空闲状态，90~100mA
    * 1GHz，Linux全速运行，180mA
+
+### 系统引导流程
+
+```flow
+st=>start: 上电
+check_bsp=>condition: BSP引脚是否为低电平
+sdc0_boot_op=>operation: SDC0引导过程
+check_sdc0_boot=>condition: SDC0引导成功
+spi0nor_boot_op=>operation: SPI0 Nor引导过程
+check_spi0nor_boot=>condition: SPI0 Nor引导成功
+spi0nand_boot_op=>operation: SPI0 Nand引导过程
+check_spi0nand_boot=>condition: SPI0 Nand引导成功
+e_boot_ok=>end: 引导成功，执行其余固件
+e_go_usb_boot=>end: USB引导过程
+
+st->check_bsp
+check_bsp(yes,right)->e_go_usb_boot
+check_bsp(no)->sdc0_boot_op->check_sdc0_boot
+check_sdc0_boot(yes,right)->e_boot_ok
+check_sdc0_boot(no)->spi0nor_boot_op->check_spi0nor_boot
+check_spi0nor_boot(yes,right)->e_boot_ok
+check_spi0nor_boot(no)->spi0nand_boot_op->check_spi0nand_boot
+check_spi0nand_boot(yes,right)->e_boot_ok
+check_spi0nand_boot(no)->e_go_usb_boot
+```
+
+
 
 ### 安装交叉编译器arm-linux-gnueabihf
 
@@ -71,25 +94,39 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modul
 
 1. 准备一张空白的SD卡，打开GParted系统工具
 
-![一张干净的SD卡](BurnSD-0.png)
+![一张干净的SD卡](imgs/PartSD-0.png)
 
 2. 新建一个20MB大小的分区，并选择文件系统的格式fat16
 
-![新建存放kernel的分区](BurnSD-1.png)
+![新建存放kernel的分区](imgs/PartSD-1.png)
 
 3. 讲SD卡剩余空间新建为一个新的分区，并选择文件系统的格式为ext4
 
-![新建存放rootfs的分区](BurnSD-2.png)
+![新建存放rootfs的分区](imgs/PartSD-2.png)
 
 4. 最终SD的分区结果如下图所示，单击:heavy_check_mark:开始执行分区操作
 
-![待分区的SD卡](BurnSD-3.png)
+![待分区的SD卡](imgs/PartSD-3.png)
 
-![分区操作顺利完成](BurnSD-4.png)
+![分区操作顺利完成](imgs/PartSD-4.png)
 
-![分区后的SD卡](BurnSD-5.png)
+![分区后的SD卡](imgs/PartSD-5.png)
+
+5. 打开终端，输入命令`sudo fdisk -l /dev/sdc`查看分区信息，其中sdc1代表sdc设备的第一个分区，sdc2代表第二个分区
+
+![查看分区后的SD卡信息](imgs/PartSD-6.png)
 
 #### u-boot烧写
+
+> u-boot需要烧写到SD卡的8K偏移处
+>
+> `sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/sdc bs=1024 seek=8`
+
+![烧写uboot至SD卡](imgs/Burn-uboot.png)
+
+Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
+
+串口终端tty属于**dialout**组别，需要将当前用户添加到该组中，这样才有权限访问tty*设备，具体使用如下命令:`sudo usermod -a -G dialout your-user-name`
 
 
 
