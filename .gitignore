@@ -53,6 +53,7 @@ dkms.conf
 /Debug/
 
 # User Custom
-.official-images/
-.tarballs/
-.toolchains/
+official-images/
+tarballs/
+toolchains/
+kernel/linux-zero-4.10.y/out

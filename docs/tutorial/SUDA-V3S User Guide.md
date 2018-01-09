@@ -116,7 +116,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modul
 
 ![查看分区后的SD卡信息](imgs/PartSD-6.png)
 
-#### u-boot烧写
+#### 烧写u-boot
 
 > u-boot需要烧写到SD卡的8K偏移处
 >
@@ -128,7 +128,9 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 串口终端tty属于**dialout**组别，需要将当前用户添加到该组中，这样才有权限访问tty*设备，具体使用如下命令:`sudo usermod -a -G dialout your-user-name`
 
+#### 烧写内核
 
+> 
 
 
 
