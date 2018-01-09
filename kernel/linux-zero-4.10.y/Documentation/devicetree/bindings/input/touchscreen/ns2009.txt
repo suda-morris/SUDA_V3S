@@ -1,0 +1,23 @@
+* Nsiway NS2009 Resistive Touchscreen Controller
+
+Required properties:
+- compatible		  : "nsiway,ns2009"
+- reg			  : I2C slave address of the chip (0x48 or 0x49, depends on
+			    the hardware)
+
+Optional properties:
+- interrupt-parent	  : a phandle pointing to the interrupt controller
+			    serving the interrupt for this chip
+- interrupts		  : interrupt specification for the ns2009 pen interrupt
+- properties defined in touchscreen.txt
+
+Example:
+
+i2c@00000000 {
+	ns2009: touchscreen@48 {
+		compatible = "nsiway,ns2009";
+		reg = <0x48>;
+		touchscreen-fuzz-x = <8>;
+		touchscreen-fuzz-y = <8>;
+	};
+};

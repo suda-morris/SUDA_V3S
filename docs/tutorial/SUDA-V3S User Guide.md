@@ -31,13 +31,29 @@ git clone https://github.com/Lichee-Pi/u-boot.git -b v3s-current
 #or git clone https://github.com/Lichee-Pi/u-boot.git -b v3s-spi-experimental
 cd u-boot
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero_800x480LCD_defconfig
-#or make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero480x272LCD_defconfig
+#or make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero_480x272LCD_defconfig
 #or make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero_defconfig
 make ARCH=arm menuconfig
 time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
 ```
 
-将编译生成的u-boot-sunxi-with-spl.bin烧写至SD卡中
+最终在当前目录中会增加两个文件：u-boot-sunxi-with-spl.bin和build.log
+
+### 下载&编译Linux内核
+
+```shell
+git clone https://github.com/Lichee-Pi/linux.git
+cd linux
+make ARCH=arm licheepi_zero_defconfig
+make ARCH=arm menuconfig   #add bluethooth, etc.
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modules
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modules_install
+```
+
+最终会在arch/arm/boot下生成zImage，在out文件夹下生成驱动.ko文件
+
+
 
 
 
