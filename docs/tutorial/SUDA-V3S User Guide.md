@@ -14,3 +14,30 @@
 
 [下载地址](https://releases.linaro.org/components/toolchain/binaries/latest/arm-linux-gnueabihf/)
 
+```shell
+wget https://releases.linaro.org/components/toolchain/binaries/latest/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
+tar xvf gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz
+mv gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf /opt/
+vim /etc/bash.bashrc
+# add: PATH="$PATH:/opt/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf/bin"
+arm-linux-gnueabihf-gcc -v
+sudo apt-get install device-tree-compiler
+```
+
+### 下载&编译u-boot
+
+```shell
+git clone https://github.com/Lichee-Pi/u-boot.git -b v3s-current
+#or git clone https://github.com/Lichee-Pi/u-boot.git -b v3s-spi-experimental
+cd u-boot
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero_800x480LCD_defconfig
+#or make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero480x272LCD_defconfig
+#or make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LicheePi_Zero_defconfig
+make ARCH=arm menuconfig
+time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
+```
+
+将编译生成的u-boot-sunxi-with-spl.bin烧写至SD卡中
+
+
+
