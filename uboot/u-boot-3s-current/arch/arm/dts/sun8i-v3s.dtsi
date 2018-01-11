@@ -96,6 +96,11 @@
 		#size-cells = <1>;
 		ranges;
 
+		syscon: syscon@01c00000 {
+            compatible = "allwinner,sun8i-h3-syscon","syscon";
+            reg = <0x01c00000 0x34>;
+        };
+
 		mmc0: mmc@01c0f000 {
 			compatible = "allwinner,sun7i-a20-mmc";
 			reg = <0x01c0f000 0x1000>;
@@ -208,6 +213,17 @@
 			interrupt-controller;
 			#interrupt-cells = <3>;
 
+			emac_rgmii_pins: emac0@0 {
+                allwinner,pins = "PD0", "PD1", "PD2", "PD3",
+                                "PD4", "PD5", "PD7",
+                                "PD8", "PD9", "PD10",
+                                "PD12", "PD13", "PD15",
+                                "PD16", "PD17";
+                allwinner,function = "emac";
+                allwinner,drive = <SUN4I_PINCTRL_40_MA>;
+                allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
+            };
+
 			uart0_pins_a: uart0@0 {
 				pins = "PB8", "PB9";
 				function = "uart0";
@@ -269,6 +285,20 @@
 			resets = <&ccu RST_BUS_UART2>;
 			status = "disabled";
 		};
+
+		emac: ethernet@1c30000 {
+            compatible = "allwinner,sun8i-h3-emac";
+            reg = <0x01c30000 0x104>, <0x01c00030 0x4>;
+            reg-names = "emac", "syscon";
+            interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
+            resets = <&ccu RST_BUS_EMAC>, <&ccu RST_BUS_EPHY>;
+            reset-names = "ahb", "ephy";
+            clocks = <&ccu CLK_BUS_EMAC>, <&ccu CLK_BUS_EPHY>;
+            clock-names = "ahb", "ephy";
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status = "disabled";
+        };
 
 		gic: interrupt-controller@01c81000 {
 			compatible = "arm,cortex-a7-gic", "arm,cortex-a15-gic";

@@ -49,6 +49,7 @@
 	compatible = "licheepi,licheepi-zero", "allwinner,sun8i-v3s";
 
 	aliases {
+		ethernet0 = &emac;
 		serial0 = &uart0;
 	};
 
@@ -80,4 +81,15 @@
 &usbphy {
 	usb0_id_det-gpio = <&pio 5 6 GPIO_ACTIVE_HIGH>;
 	status = "okay";
+};
+
+&emac {
+	phy = <&phy0>;
+    phy-mode = "mii";
+    allwinner,use-internal-phy;
+    allwinner,leds-active-low;
+    status = "okay";
+    phy0: ethernet-phy@0 {
+        reg = <1>;
+    };
 };
