@@ -144,6 +144,8 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 串口终端tty属于**dialout**组别，需要将当前用户添加到该组中，这样才有权限访问tty*设备，具体使用如下命令:`sudo usermod -a -G dialout your-user-name`
 
+![uboot启动过程](imgs/uboot-starting.png)
+
 #### 烧写内核
 
 
