@@ -6,36 +6,19 @@
    * 全志V3S处理器，单核Cortex-A7，工作主频24M~1.2GHz，内置64MB DDR2
    * 支持从SD卡启动，支持从SPI Flash启动(8~32MB Nor Flash或者128MB Nand Flash)
    * 支持RGB LCD，分辨率可以为272x480，480x800，1024x600
+   * 40nm工艺
 2. 功耗
    * 1GHz，Linux空闲状态，90~100mA
    * 1GHz，Linux全速运行，180mA
 
+### sunxi
+
+> * 全志(Allwinner)公司的很多SoC产品代号都是sunxi，比如A10(sun4i)，A13(sun5i)，A20(sun7i)，[详细信息可以查看全志SoC家族产品](https://sunxi.org/Allwinner_SoC_Family)，我们将要使用的V3s属于sun8i.
+> * sunxi也是一个专门负责推广和支持全志SoC平台开源硬件的社区，但是全志本身并没有加入这个社区.
+
 ### 系统引导流程
 
-```flow
-st=>start: 上电
-check_bsp=>condition: BSP引脚是否为低电平
-sdc0_boot_op=>operation: SDC0引导过程
-check_sdc0_boot=>condition: SDC0引导成功
-spi0nor_boot_op=>operation: SPI0 Nor引导过程
-check_spi0nor_boot=>condition: SPI0 Nor引导成功
-spi0nand_boot_op=>operation: SPI0 Nand引导过程
-check_spi0nand_boot=>condition: SPI0 Nand引导成功
-e_boot_ok=>end: 引导成功，执行其余固件
-e_go_usb_boot=>end: USB引导过程
-
-st->check_bsp
-check_bsp(yes,right)->e_go_usb_boot
-check_bsp(no)->sdc0_boot_op->check_sdc0_boot
-check_sdc0_boot(yes,right)->e_boot_ok
-check_sdc0_boot(no)->spi0nor_boot_op->check_spi0nor_boot
-check_spi0nor_boot(yes,right)->e_boot_ok
-check_spi0nor_boot(no)->spi0nand_boot_op->check_spi0nand_boot
-check_spi0nand_boot(yes,right)->e_boot_ok
-check_spi0nand_boot(no)->e_go_usb_boot
-```
-
-
+![引导流程](imgs/boot-sequence.png)
 
 ### 安装交叉编译器arm-linux-gnueabihf
 
@@ -64,7 +47,40 @@ make ARCH=arm menuconfig
 time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
 ```
 
-最终在当前目录中会增加两个文件：u-boot-sunxi-with-spl.bin和build.log
+* 最终在当前目录中会增加两个文件：u-boot-sunxi-with-spl.bin和build.log
+
+#### u-boot中的目录结果
+
+```bash
+├── api                存放uboot提供的API接口函数
+├── arch               平台相关的部分我们只需要关心这个目录下的ARM文件夹
+│   ├──arm
+│   │   └──cpu
+│   │   │   └──armv7
+│   │   └──dts	
+│   │   │   └──*.dts   存放设备的dts,也就是设备配置相关的引脚信息
+├── board              对于不同的平台的开发板对应的代码
+├── cmd                顾名思义，大部分的命令的实现都在这个文件夹下面。
+├── common             公共的代码
+├── configs            各个板子的对应的配置文件都在里面，我们的Lichee配置也在里面
+├── disk               对磁盘的一些操作都在这个文件夹里面，例如分区等。
+├── doc                参考文档，这里面有很多跟平台等相关的使用文档。
+├── drivers            各式各样的驱动文件都在这里面
+├── dts                一种树形结构（device tree）这个应该是uboot新的语法
+├── examples           官方给出的一些样例程序
+├── fs                 文件系统，uboot会用到的一些文件系统
+├── include            头文件，所有的头文件都在这个文件夹下面
+├── lib                一些常用的库文件在这个文件夹下面  
+├── Licenses           这个其实跟编译无关了，就是一些license的声明
+├── net                网络相关的，需要用的小型网络协议栈
+├── post               上电自检程序
+├── scripts            编译脚本和Makefile文件
+├── spl                second program loader，即相当于二级uboot启动。
+├── test               小型的单元测试程序。
+└── tools              里面有很多uboot常用的工具
+```
+
+
 
 ### 下载&编译Linux内核
 
@@ -130,7 +146,19 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 #### 烧写内核
 
-> 
+
+
+
+
+
+
+
+
+
+
+#### 参考文档
+
+[荔枝派Zero指南 · 看云](https://www.kancloud.cn/lichee/lpi0)
 
 
 
