@@ -84,7 +84,7 @@
 };
 
 &emac {
-	phy = <&phy0>;
+    phy = <&phy0>;
     phy-mode = "mii";
     allwinner,use-internal-phy;
     allwinner,leds-active-low;

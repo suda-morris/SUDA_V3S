@@ -80,7 +80,22 @@ time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
 └── tools              里面有很多uboot常用的工具
 ```
 
+###编译boot.scr
 
+#### 编写boot.cmd文件(启动参数文件)
+
+```shell
+setenv bootargs console=ttyS0,115200 panic=5 console=tty0 rootwait root=/dev/mmcblk0p2 earlyprintk rw
+load mmc 0:1 0x41000000 zImage
+load mmc 0:1 0x41800000 sun8i-v3s-licheepi-zero-ctc.dtb
+bootz 0x41000000 - 0x41800000
+```
+
+####编译成二进制文件
+
+```ba
+mkimage -C none -A arm -T script -d boot.cmd boot.scr
+```
 
 ### 下载&编译Linux内核
 
@@ -147,6 +162,115 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 ![uboot启动过程](imgs/uboot-starting.png)
 
 #### 烧写内核
+
+
+
+### 可能需要使用的shell脚本
+
+#### 清除SD卡中的所有分区
+
+```bash
+#!/bin/bash
+sudo fdisk $1 <<EOF
+d
+1
+d
+2
+d
+3
+d
+4
+w
+p
+q
+EOF
+sync
+```
+
+#### 创建分区
+
+```bash
+#!/bin/bash
+sudo fdisk $1 <<EOF
+n
+p
+1
+
++8M
+
+n
+p
+2
+
+
+p
+w
+q
+EOF
+```
+
+#### 格式化分区
+
+```bash
+#!/bin/bash
+sudo mkfs.vfat "$1"1 &&\
+sudo mkfs.ext4 "$1"2 
+```
+
+#### 烧写uboot
+
+```bash
+#!/bin/bash
+sudo dd if=/dev/zero of=$1 bs=1024 seek=8 count=512 &&\
+sudo dd if=u-boot-sunxi-with-spl.bin of=$1 bs=1024 seek=8 &&\
+sync
+```
+
+#### 烧写zImage
+
+```bash
+#!/bin/bash
+sudo mount "$1"1 mnt &&\
+sudo cp zImage mnt/ &&\
+sudo cp sun8i-v3s-licheepi-zero*.dtb mnt/ &&\
+sudo cp boot.scr mnt/ &&\
+sync &&\
+sudo umount "$1"1 &&\
+echo "###write partion 1 ok!"
+sudo umount mnt >/dev/null 2>&1
+echo ""
+```
+
+#### 烧写rootfs
+
+```bash
+#!/bin/bash
+sudo mount "$1"2 mnt &&\
+#sudo cp -R game/* mnt/usr/games/
+#sudo chmod 777 -R mnt/usr/games
+sudo rm -rf mnt/* &&\
+sudo tar xzvf rootfs-$2\.tar.gz -C mnt/ &&\
+sudo umount "$1"2 &&\
+./write_overlay.sh $1 $2 &&\
+./write_swap.sh $1 &&\
+sync &&\
+echo "###write partion 2 ok!"
+sudo umount mnt >/dev/null 2>&1
+```
+
+#### 创建交换分区
+
+```bash
+#!/bin/sh
+sudo mount "$1"2 mnt &&\
+sudo dd if=/dev/zero of=mnt/swap bs=1M count=128 &&\
+sudo mkswap mnt/swap &&\
+echo "/swap swap swap defaults 0 0" >> mnt/etc/fstab &&\
+sudo umount "$1"2 &&\
+sync &&\
+echo "###write swap ok!"
+sudo umount mnt >/dev/null 2>&1
+```
 
 
 
