@@ -89,7 +89,7 @@ time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- 2>&1 | tee build.log
 ```shell
 setenv bootargs console=ttyS0,115200 panic=5 console=tty0 rootwait root=/dev/mmcblk0p2 earlyprintk rw
 load mmc 0:1 0x41000000 zImage
-load mmc 0:1 0x41800000 sun8i-v3s-licheepi-zero-ctc.dtb
+load mmc 0:1 0x41800000 sun8i-v3s-licheepi-zero-dock.dtb
 bootz 0x41000000 - 0x41800000
 ```
 
@@ -111,7 +111,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modul
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modules_install
 ```
 
-最终会在arch/arm/boot下生成zImage，在out文件夹下生成驱动.ko文件
+最终会在arch/arm/boot下生成zImage，在arch/arm/boot/dts/下生成设备树二进制文件，在out文件夹下生成驱动.ko文件
 
 ### 系统烧写
 
@@ -161,11 +161,12 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 串口终端tty属于**dialout**组别，需要将当前用户添加到该组中，这样才有权限访问tty*设备，具体使用如下命令:`sudo usermod -a -G dialout your-user-name`
 
+#### 烧写内核启动参数&zImage&设备树
+
+1. 编写boot.cmd文件，并且编译成boot.scr二进制
+2. 将boot.scr，zImage，dtb设备文件拷贝到SD卡的第一个分区
+
 ![uboot启动过程](imgs/uboot-starting.png)
-
-#### 烧写内核
-
-
 
 ### 可能需要使用的shell脚本
 
@@ -276,7 +277,34 @@ sudo umount mnt >/dev/null 2>&1
 
 
 
+### 设备树简介
 
+> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
+
+```bash
+/ {  
+    node1 {  
+        a-string-property = "A string";  
+        a-string-list-property = "first string", "second string";  
+        a-byte-data-property = [0x01 0x23 0x34 0x56];  
+        child-node1 {  
+            first-child-property;  
+            second-child-property = <1>;  
+            a-string-property = "Hello, world";  
+        };  
+        child-node2 {  
+        };  
+    };  
+    node2 {  
+        an-empty-property;  
+        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
+        child-node1 {  
+        };  
+    };  
+};
+```
+
+* deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
 
 
 
