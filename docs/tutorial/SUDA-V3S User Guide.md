@@ -20,16 +20,18 @@
 
 ![引导流程](imgs/boot-sequence.png)
 
+* 其中的BSP(boot select pin)引脚为PC0，短接PC0和GND后上电即可进入USB引导模式(可以通过sunxi-tool工具来烧写程序到SPI Flash中)
+
 ### 安装交叉编译器arm-linux-gnueabihf
 
 [下载地址](https://releases.linaro.org/components/toolchain/binaries/latest/arm-linux-gnueabihf/)
 
 ```shell
-wget https://releases.linaro.org/components/toolchain/binaries/latest/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
-tar xvf gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz
-mv gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf /opt/
+wget https://releases.linaro.org/components/toolchain/binaries/6.4-2017.11/arm-linux-gnueabihf/gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
+tar xvf gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
+mv gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf /opt/
 vim /etc/bash.bashrc
-# add: PATH="$PATH:/opt/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf/bin"
+# add: PATH="$PATH:/opt/gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf/bin"
 arm-linux-gnueabihf-gcc -v
 sudo apt-get install device-tree-compiler
 ```
