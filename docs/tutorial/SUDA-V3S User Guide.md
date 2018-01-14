@@ -161,7 +161,7 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 串口终端tty属于**dialout**组别，需要将当前用户添加到该组中，这样才有权限访问tty*设备，具体使用如下命令:`sudo usermod -a -G dialout your-user-name`
 
-#### 烧写内核启动参数&zImage&设备树
+#### 烧写内核启动参数,zImage和设备树
 
 1. 编写boot.cmd文件，并且编译成boot.scr二进制
 2. 将boot.scr，zImage，dtb设备文件拷贝到SD卡的第一个分区
@@ -280,6 +280,8 @@ sudo umount mnt >/dev/null 2>&1
 ### 设备树简介
 
 > Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
+>
+> 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
 
 ```bash
 / {  
@@ -306,9 +308,44 @@ sudo umount mnt >/dev/null 2>&1
 
 * deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
 
+####设备树与驱动的配合
+
+1. 驱动代码
+
+```c
+static struct of_device_id beep_table[] = {  
+    {.compatible = "fs4412,beep"},  
+};  
+static struct platform_driver beep_driver=  
+{  
+    .probe = beep_probe,  
+    .remove = beep_remove,  
+    .driver={  
+        .name = "bigbang",  
+        .of_match_table = beep_table,  
+    },  
+};
+```
+
+2. 设备树描述
+
+```c
+fs4412-beep{  
+         compatible = "fs4412,beep";  
+         reg = <0x114000a0 0x4 0x139D0000 0x14>;  
+};  
+```
+
+* **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
+* **reg**，描述寄存器基址和长度，可以有多个
 
 
 
+### u-boot开机logo替换
+
+### Multistrap
+
+### 制作刷机包
 
 
 

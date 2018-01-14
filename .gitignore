@@ -45,6 +45,7 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+*.scr
 .tmp_versions/
 modules.order
 Module.symvers
@@ -56,4 +57,4 @@ dkms.conf
 official-images/
 tarballs/
 toolchains/
-kernel/linux-zero-4.10.y/out
+kernel/*/out
