@@ -216,6 +216,12 @@ make
 
 ![buildroot系统配置](imgs/br-system.png)
 
+#### 添加openssh服务
+
+![buildroot系统配置](imgs/br-openssh.png)
+
+* 默认情况下，openssh服务器是不允许客户以root身份登录的，需要修改output/target/etc/ssh/sshd_config文件，打开`PermitRootLogin yes`选项
+
 ### 根文件系统之Multistrap
 
 ### 可能需要使用的shell脚本
