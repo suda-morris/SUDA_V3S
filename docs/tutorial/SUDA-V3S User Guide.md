@@ -168,6 +168,56 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 ![uboot启动过程](imgs/uboot-starting.png)
 
+### 根文件系统之buildroot
+
+> buildroot可用于构建小型的linux根文件系统，大小最小可低至2M
+>
+> buildroot中可以方便地加入第三方软件包，省去了手工交叉编译的烦恼
+>
+> 美中不足的是不支持包管理系统
+
+```bash
+git clone https://git.busybox.net/buildroot
+cd buildroot
+make menuconfig
+make
+```
+
+编译结束后，会在output/images下生成归档文件``rootfs.tar``，使用超级权限将其解压至SD卡的第二分区中
+
+`sudo tar -vxf rootfs.tar -C /media/morris/rootfs/`
+
+* 如果需要在buildroot的基础上做进一步的修改，直接进入``output/target/``目录下，在这里修改一些文件，然后重新在根目录下执行``make``，会将跟新的文件内容重新打包到新的rootfs.tar中
+
+  * 注意output/target目录不是最终的根文件系统，是临时的，不能直接拿来烧录
+
+* 举个例子：修改环境变量**PS1**(默认提示符)
+
+  ```bash
+  cd output/target
+  vim etc/profile
+  #增加export PS1='\[\e[32m\][\[\e[35m\]\u\[\e[m\]@\[\e[36m\]\h \[\e[31m\]\w\[\e[32m\]]\[\e[36m\]$\[\e[m\]'
+  cd ../../
+  make
+  ```
+
+* buildroot的一些重要配置
+
+  1. 配置工具链，使用本地已经安装好的交叉编译工具链，在本机上外部工具链配置为：/home/morris/SUDA_V3S/toolchains/gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf
+  2. 工具链前缀是：arm-linux-gnueabihf
+  3. 外部工具链gcc版本：这里使用的是6.4版本
+  4. 外部工具链内核头文件：是在arm-linux-gnueabi/libc/usr/include/linux/version.h里读取内核版本信息。这里的版本是4.6
+  5. C库还是选择传统的glibc。需要小体积可以选uclibc（需要自行编译安装）
+  6. 在system 设置下主机名，root密码等
+
+![buildroot工具链配置](imgs/br-toolchain.png)
+
+![buildroot目标架构配置](imgs/br-target.png)
+
+![buildroot系统配置](imgs/br-system.png)
+
+### 根文件系统之Multistrap
+
 ### 可能需要使用的shell脚本
 
 #### 清除SD卡中的所有分区
@@ -342,8 +392,6 @@ fs4412-beep{
 
 
 ### u-boot开机logo替换
-
-### Multistrap
 
 ### 制作刷机包
 
