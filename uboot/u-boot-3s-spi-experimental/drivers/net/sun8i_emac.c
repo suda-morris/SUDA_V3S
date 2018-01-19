@@ -302,7 +302,6 @@ static int sun8i_emac_set_syscon(struct emac_eth_dev *priv)
 static int sun8i_phy_init(struct emac_eth_dev *priv, void *dev)
 {
 	struct phy_device *phydev;
-
 	phydev = phy_connect(priv->bus, priv->phyaddr, dev, priv->interface);
 	if (!phydev)
 		return -ENODEV;
