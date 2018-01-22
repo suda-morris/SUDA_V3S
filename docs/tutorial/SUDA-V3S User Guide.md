@@ -222,6 +222,16 @@ make
 
 * 默认情况下，openssh服务器是不允许客户以root身份登录的，需要修改output/target/etc/ssh/sshd_config文件，打开`PermitRootLogin yes`选项
 
+### 安装内核模块
+
+```bash
+mount ${cardroot} /mnt
+mkdir -p /mnt/lib/modules
+rm -rf /mnt/lib/modules/
+cp -r <PATH_TO_KERNEL_TREE>/output/lib /mnt/
+umount /mnt
+```
+
 ### 根文件系统之Multistrap
 
 ### 可能需要使用的shell脚本
@@ -396,8 +406,56 @@ fs4412-beep{
 * **reg**，描述寄存器基址和长度，可以有多个
 
 
+### TFT液晶
 
-### u-boot开机logo替换
+> 液晶模组：KD043FM3
+>
+> * 制造商：深圳市柯达科电子科技有限公司
+>
+>
+> * 驱动芯片：ILI6408，工作电压：3.3V
+> * 分辨率：480x272像素
+> * RGB接口：8/16/18/24Bit RGB
+> * 背光驱动：5*2LED，40mA，16.0V
+> * 时序参数定义：
+>   * Pixel Clock (KHz) [pclk_khz]：5~12MHz
+>   * Horizontal resolution (pixels) [x]：480
+>   * Vertical Resolution (pixels) [y]：272
+>   * Color depth / format [depth]：24
+>   * Horizontal Sync Length [hs]：1
+>   * Vertical Sync Length [vs]：1
+>   * Left Margin (Horizontal back porch)[le]：40
+>   * Right Margin (Horizontal front porch)[ri]：5
+>   * Top Margin (Vertical back porch) [up]：8
+>   * Bottom Margin (Vertical front porch)[lo]：8
+
+#### u-boot中CONFIG_VIDEO_LCD_MODE的设置
+
+`CONFIG_VIDEO_LCD_MODE="x:480,y:272,depth:24,pclk_khz:100000,le:40,ri:5,up:8,lo:8,hs:1,vs:1,sync:3,vmode:0"`
+
+* Linux内核会将这段字符串解析为drm_display_mode类型的结构体
+
+```c
+static const struct drm_display_mode unknown_display = {
+    .clock = 100000,				// pclk_khz
+    .hdisplay = 480,             	// x
+    .hsync_start = 480 + 5,      	// x + ri
+    .hsync_end = 480 + 5 + 1,     	// x + ri + hs
+    .htotal = 480 + 5 + 1 + 40,     // x + ri + hs + le
+    .vdisplay = 272,                // y (FEX: lcd_y)
+    .vsync_start = 272 + 8,         // y + lo
+    .vsync_end = 272 + 8 + 1,       // y + lo + vs
+    .vtotal = 272 + 8 + 1 + 8,    	// y + lo + vs + up
+    .vrefresh = 60,
+};
+```
+
+* pclk_khz除了要满足液晶屏数据手册的要求，同时，一般还要满足以下公式：
+
+$pclk\_khz \ge (x+le+ri)*(y+up+lo)*60$，其中60表示帧率
+
+
+###  u-boot开机logo替换
 
 ### 制作刷机包
 
