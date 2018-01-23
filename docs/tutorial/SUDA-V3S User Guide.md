@@ -113,6 +113,8 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j16 INSTALL_MOD_PATH=out modul
 
 最终会在arch/arm/boot下生成zImage，在arch/arm/boot/dts/下生成设备树二进制文件，在out文件夹下生成驱动.ko文件
 
+
+
 ### 系统烧写
 
  #### SD卡分区
@@ -168,6 +170,8 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 ![uboot启动过程](imgs/uboot-starting.png)
 
+
+
 ### 根文件系统之buildroot
 
 > buildroot可用于构建小型的linux根文件系统，大小最小可低至2M
@@ -222,6 +226,13 @@ make
 
 * 默认情况下，openssh服务器是不允许客户以root身份登录的，需要修改output/target/etc/ssh/sshd_config文件，打开`PermitRootLogin yes`选项
 
+#### 【解决】buildroot修改配置后编译得到的文件大小没变化
+
+* 删除生成的二进制文件，再删除 .stamp_built文件
+* 重新make
+
+
+
 ### 安装内核模块
 
 ```bash
@@ -232,9 +243,13 @@ cp -r <PATH_TO_KERNEL_TREE>/output/lib /mnt/
 umount /mnt
 ```
 
+
+
 ### 根文件系统之Multistrap
 
-### 可能需要使用的shell脚本
+
+
+### 常用的shell脚本
 
 #### 清除SD卡中的所有分区
 
@@ -343,69 +358,6 @@ sudo umount mnt >/dev/null 2>&1
 
 
 
-### 设备树简介
-
-> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
->
-> 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
-
-```bash
-/ {  
-    node1 {  
-        a-string-property = "A string";  
-        a-string-list-property = "first string", "second string";  
-        a-byte-data-property = [0x01 0x23 0x34 0x56];  
-        child-node1 {  
-            first-child-property;  
-            second-child-property = <1>;  
-            a-string-property = "Hello, world";  
-        };  
-        child-node2 {  
-        };  
-    };  
-    node2 {  
-        an-empty-property;  
-        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
-        child-node1 {  
-        };  
-    };  
-};
-```
-
-* deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
-
-####设备树与驱动的配合
-
-1. 驱动代码
-
-```c
-static struct of_device_id beep_table[] = {  
-    {.compatible = "fs4412,beep"},  
-};  
-static struct platform_driver beep_driver=  
-{  
-    .probe = beep_probe,  
-    .remove = beep_remove,  
-    .driver={  
-        .name = "bigbang",  
-        .of_match_table = beep_table,  
-    },  
-};
-```
-
-2. 设备树描述
-
-```c
-fs4412-beep{  
-         compatible = "fs4412,beep";  
-         reg = <0x114000a0 0x4 0x139D0000 0x14>;  
-};  
-```
-
-* **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
-* **reg**，描述寄存器基址和长度，可以有多个
-
-
 ### TFT液晶
 
 > 液晶模组：KD043FM3
@@ -454,10 +406,202 @@ static const struct drm_display_mode unknown_display = {
 
 $pclk\_khz \ge (x+le+ri)*(y+up+lo)*60$，其中60表示帧率
 
+#### 颜色深度是18 VS. 24
 
-###  u-boot开机logo替换
+使用以下的测试代码来确定是否是18位还是24位的颜色深度。如果能够看到流畅的渐变色图片，则说明是24位的颜色深度，否则就是18位。
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <linux/fb.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+
+int main()
+{
+    int fd, x, y;
+    uint32_t *fb;
+    struct fb_fix_screeninfo finfo;
+    struct fb_var_screeninfo vinfo;
+
+    if ((fd = open("/dev/fb0", O_RDWR)) == -1) {
+        printf("Can't open /dev/fb0\n");
+        return 1;
+    }
+
+    if (ioctl(fd, FBIOGET_FSCREENINFO, &finfo)) {
+        printf("FBIOGET_FSCREENINFO failed\n");
+        return 1;
+    }
+
+    if (ioctl(fd, FBIOGET_VSCREENINFO, &vinfo)) {
+        printf("FBIOGET_VSCREENINFO failed\n");
+        return 1;
+    }
+
+    if (vinfo.bits_per_pixel != 32) {
+        printf("Only 32bpp framebuffer is supported\n");
+        return 1;
+    }
+
+    fb = mmap(0, finfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (fb == (void *)-1) {
+        printf("mmap failed\n");
+        return 1;
+    }
+
+    for (y = 0; y < vinfo.yres; y++)
+        for (x = 0; x < vinfo.xres; x++)
+            fb[y * vinfo.xres + x] = (255 * x / vinfo.xres) * 0x000100 +
+                                     (255 * y / vinfo.yres) * 0x010001;
+
+    return 0;
+}
+```
+
+###  修改u-boot开机画面
+
+> Uboot的开机logo默认情况（因为在include/configs/sunxi-common.h中只定义了CONFIG_VIDEO_LOGO）是企鹅logo，这个是存在于uboot代码中的一个头文件（include/video_logo.h或 bmp_logo.h），这是一个巨大的结构体，其中保存着图片每个像素点的色彩数据。
+
+1. 安装netpbm工具包`sudo apt-get install netpbm`
+2. 准备一张jpeg图片，通过命令行处理为8bit的BMP图片。注意图片的分辨率不要超过LCD的支持的最大分辨率
+
+```bash
+#!/bin/sh
+jpegtopnm $1 | ppmquant 31 | ppmtobmp -bpp 8 > $2
+```
+
+3. 将生成的bmp文件放入tools/logos文件夹下
+4. 修改tools文件夹下的Makefile，加入刚生成的bmp文件，编译的时候，bmp文件会被tools/bmp_logo.c编译出的工具bmp_logo制作成include/bmp_logo.h，并编译进uboot中
+
+```makefile
+# Generic logo
+ifeq ($(LOGO_BMP),)
+LOGO_BMP= $(srctree)/$(src)/logos/你的logo.bmp
+
+# Use board logo and fallback to vendor
+ifneq ($(wildcard $(srctree)/$(src)/logos/$(BOARD).bmp),)
+LOGO_BMP= $(srctree)/$(src)/logos/$(BOARD).bmp
+else
+ifneq ($(wildcard $(srctree)/$(src)/logos/$(VENDOR).bmp),)
+LOGO_BMP= $(srctree)/$(src)/logos/$(VENDOR).bmp
+endif
+endif
+
+endif # !LOGO_BMP
+```
+
+5. 修改配置文件`vim include/configs/sunxi-common.h`
+
+```c
+#define CONFIG_VIDEO_LOGO
+#define CONFIG_VIDEO_BMP_LOGO
+#define CONFIG_HIDE_LOGO_VERSION
+```
+
+6. 重新编译uboot即可
+
+### 修改Linux开机画面
+
+> drivers/video/logo/logo_linux_clut224.ppm是默认的启动Logo图片，把自己的Logo图片（jpeg格式）转换成ppm格式，替换这个文件，同时删除logo_linux_clut224.c和logo_linux_clut224.o文件，重新编译
+
+```bash
+#!/bin/sh
+#先把jpeg图片转换成pnm格式，但内核的Logo最高只支持224色，需要把颜色转换成224色，最后把pnm转成ppm，文件名必须是logo_linux_clut224.ppm
+jpegtopnm $1 | pnmquant 224 | pnmtoplainpnm > logo_linux_clut224.ppm
+```
+
+将生成的logo_linux_clut224.ppm文件**覆盖到drivers/video/logo文件夹下**（必要时候做好备份）
+
+在menuconfig中开启**CONFIG_LOGO=y**和**CONFIG_LOGO_LINUX_CLUT224=y**
+
+![内核开机画面配置](imgs/kernel-bootup-logo.png)
+
+#### [解决]如何将u-boot和内核的启动信息输出到液晶屏幕上
+
+* 将uboot的stdout和stderr环境变量设置为vga即可`setenv stdout vga` `setenv stderr vga` `saveenv`
+* 将传递给内核的参数bootargs中**增加**`console=tty0`
+
+
 
 ### 制作刷机包
+
+> 介绍如何将u-boot，boot.scr，zImage，dtbs，modules，rootfs整合在一起，制作成img刷机包，方便量产烧录
+
+
+
+
+
+### 设备树简介
+
+> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
+>
+> 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
+
+```bash
+/ {  
+    node1 {  
+        a-string-property = "A string";  
+        a-string-list-property = "first string", "second string";  
+        a-byte-data-property = [0x01 0x23 0x34 0x56];  
+        child-node1 {  
+            first-child-property;  
+            second-child-property = <1>;  
+            a-string-property = "Hello, world";  
+        };  
+        child-node2 {  
+        };  
+    };  
+    node2 {  
+        an-empty-property;  
+        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
+        child-node1 {  
+        };  
+    };  
+};
+```
+
+- deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
+
+#### 设备树与驱动的配合
+
+1. 驱动代码
+
+```c
+static struct of_device_id beep_table[] = {  
+    {.compatible = "fs4412,beep"},  
+};  
+static struct platform_driver beep_driver=  
+{  
+    .probe = beep_probe,  
+    .remove = beep_remove,  
+    .driver={  
+        .name = "bigbang",  
+        .of_match_table = beep_table,  
+    },  
+};
+```
+
+1. 设备树描述
+
+```c
+fs4412-beep{  
+         compatible = "fs4412,beep";  
+         reg = <0x114000a0 0x4 0x139D0000 0x14>;  
+};  
+```
+
+- **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
+- **reg**，描述寄存器基址和长度，可以有多个
+
+
+
+### I2C OLED的移植与使用
+
+
+
+### SDIO WiFi的移植与使用
 
 
 

@@ -215,7 +215,7 @@ LOGO-$(CONFIG_VIDEO_LOGO) += $(LOGO_DATA_H)
 
 # Generic logo
 ifeq ($(LOGO_BMP),)
-LOGO_BMP= $(srctree)/$(src)/logos/suda.bmp
+LOGO_BMP= $(srctree)/$(src)/logos/poweron.bmp
 
 # Use board logo and fallback to vendor
 ifneq ($(wildcard $(srctree)/$(src)/logos/$(BOARD).bmp),)
