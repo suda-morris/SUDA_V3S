@@ -315,6 +315,8 @@ extern int soft_i2c_gpio_scl;
 #define CONFIG_VIDEO_SUNXI
 
 #define CONFIG_VIDEO_LOGO
+#define CONFIG_VIDEO_BMP_LOGO
+#define CONFIG_HIDE_LOGO_VERSION
 #define CONFIG_VIDEO_STD_TIMINGS
 #define CONFIG_I2C_EDID
 #define VIDEO_LINE_LEN (pGD->plnSizeX)
