@@ -5,3 +5,7 @@ auto eth0
 allow-hotplug eth0
 iface eth0 inet dhcp
 hwaddress ether 00:04:25:12:34:56
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+hwaddress ether 00:04:25:12:34:56

@@ -1509,6 +1509,32 @@ Description: Cyrus SASL - pluggable authentication modules (DB)
  This package provides the DB plugin, which supports Berkeley DB lookups.
 Homepage: https://www.cyrusimap.org/
 
+Package: dphys-swapfile
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 60
+Maintainer: Axel Beckert <abe@debian.org>
+Architecture: all
+Version: 20100506-3
+Depends: dc, lsb-base (>= 3.0-6)
+Conffiles:
+ /etc/dphys-swapfile 39b5ed8b972118de256190b444ed4c60
+ /etc/init.d/dphys-swapfile 79c6edb6e39ba331f3d23a4475a704ae
+Description: Autogenerate and use a swap file
+ This init.d script exists so one does not need to have a fixed size
+ swap partition. Instead install without swap partition and then run this,
+ with file size (re-)computed automatically to fit the current RAM size.
+ .
+ By default (and hence on installation) it creates swapfile twice as
+ big as the present RAM amount with an upper limit of 2 GB.
+ .
+ It's also very helpful when included in SD card, USB stick or disk
+ images which are distributed and run on many machines with different
+ amount of RAM, e.g. different models of the Raspberry Pi or cloud
+ images.
+Homepage: http://neil.franklin.ch/Projects/dphys-swapfile/
+
 Package: mount
 Essential: yes
 Status: install ok installed
@@ -2851,6 +2877,26 @@ Conffiles:
 Description: GnuPG archive keys of the Debian archive
  The Debian project digitally signs its Release files. This package
  contains the archive keys used for that.
+
+Package: dc
+Status: install ok installed
+Priority: standard
+Section: math
+Installed-Size: 126
+Maintainer: Ryan Kavanagh <rak@debian.org>
+Architecture: armhf
+Multi-Arch: foreign
+Source: bc (1.06.95-9)
+Version: 1.06.95-9+b3
+Depends: libc6 (>= 2.4)
+Description: GNU dc arbitrary precision reverse-polish calculator
+ GNU dc is a reverse-polish desk calculator which supports unlimited
+ precision arithmetic.  It also allows you to define and call macros.
+ .
+ A reverse-polish calculator stores numbers on a stack. Entering a number
+ pushes it on the stack.  Arithmetic operations pop arguments off the
+ stack and push the results.
+Homepage: http://ftp.gnu.org/gnu/bc/
 
 Package: libc-l10n
 Status: install ok installed

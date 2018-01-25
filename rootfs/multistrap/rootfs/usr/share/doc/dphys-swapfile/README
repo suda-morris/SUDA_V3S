@@ -1,0 +1,52 @@
+http://neil.franklin.ch/Projects/dphys-swapfile/README
+author Neil Franklin, last modification 2006.12.22
+This text (and all dphys-swapfile) copyright ETH Zuerich Physics Departement
+  use under either modified/non-advertising BSD or GPL license
+
+Introduction to dphys-swapfile setup/mount script
+
+
+Aim
+
+This program is aimed at using an automatically installed and RAM size
+dependantly (re-)sized swap file instead of an fixed size (from partitioning)
+swap partition. Install the system without an swap partition and then install
+and run this.
+
+
+Preconditions
+
+This program should work on any Linux system. It is unlikely to be portable to
+any non-Linux without lots of work (near rewrite).
+
+
+Tools
+
+This project has produced an script for (re-)creating an swap file on every
+boot, and then mounting it, also unmounting it on shutdown, and offering
+removal of the swap file when not needed any longer.
+
+
+Code
+
+This project is fully open source. Documentation gets written together with the
+code. Everything I write is immediately available for download. Current version
+is what I am working on, if I write a bug you crash the next day. Older stable
+versions are archived as Milestones.
+
+
+State
+
+Working package, in productive use on over 100 machines.
+
+
+Installation
+
+There is a installation guide at:
+http://neil.franklin.ch/Projects/dphys-swapfile/INSTALL
+
+
+Questions
+
+There is a FAQ file at:
+http://neil.franklin.ch/Projects/dphys-swapfile/FAQ

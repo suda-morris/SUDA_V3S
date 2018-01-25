@@ -380,12 +380,12 @@ components=main contrib non-free
 
 [Net]
 #Basic packages to enable the networking
-packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh apt-transport-https
+packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh ca-certificates apt-transport-https
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Utils]
 #General purpose utilities
-packages=locales adduser vim less wget dialog usbutils rsync git
+packages=locales adduser vim less wget dialog usbutils rsync git dphys-swapfile 
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Python]
@@ -478,6 +478,7 @@ filename=$TARGET_ROOTFS_DIR/etc/fstab
 echo /dev/mmcblk0p1 /boot vfat noatime 0 1 > $filename
 echo /dev/mmcblk0p2 / ext4 noatime 0 1 >> $filename
 echo proc /proc proc defaults 0 0 >> $filename
+echo /var/swap swap swap defaults 0 0 >> $filename
 
 #添加软件源
 #使用 HTTPS 可以有效避免国内运营商的缓存劫持
@@ -501,7 +502,8 @@ sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install packagename
 ```
 
 9. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
-10. 将文件系统同步至SD卡的第二个分区
+10. 修改交换分区的大小，在`/etc/dphys-swapfile `文件中修改`CONF_SWAPSIZE=128`
+11. 将文件系统同步至SD卡的第二个分区
 
 ```bash
 sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/

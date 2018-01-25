@@ -1,0 +1,228 @@
+#! /bin/sh
+# /sbin/dphys-swapfile - automatically set up an swapfile
+# author Neil Franklin, last modification 2010.05.05
+# This script is copyright ETH Zuerich Physics Departement,
+#   use under either BSD or GPL license
+
+# this script is intended to be run as root user, usually while booting
+
+
+### ------ configuration for this site
+
+
+# --- CONF_* various site dependant user config variables
+
+# where we want the swapfile to be, this is the default
+CONF_SWAPFILE=/var/swap
+
+# set size to absolute value, leaving empty (default) then uses computed value
+#   you most likely don't want this, unless you have an special disk situation
+CONF_SWAPSIZE=
+
+# set size to computed value, this times RAM size, dynamically adapts,
+#   guarantees that there is enough swap without wasting disk space on excess
+CONF_SWAPFACTOR=2
+
+# restrict size (computed and absolute!) to maximally this limit
+#   can be set to empty for no limit, but beware of filled partitions!
+#   this is/was a (outdated?) 32bit kernel limit (in MBytes), do not overrun it
+#   but is also sensible on 64bit to prevent filling /var or even / partition
+CONF_MAXSWAP=2048
+
+
+### ------ actual implementation from here on
+# no user settings any more below this point
+
+set -e
+
+# sanitise this place, else some commands may fail
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+
+
+# what we are
+NAME=dphys-swapfile
+PNAME=dphys-swapfile
+
+# check user config file, let user override settings
+#   swap file place/filename and size
+if [ -f /etc/"${PNAME}" ] ; then
+  . /etc/"${PNAME}"
+fi
+
+
+case "$1" in
+
+  setup)
+    # (re-)size/-generate, fast if no memory size change
+
+    if [ "${CONF_SWAPSIZE}" = "" ] ; then
+      # no absolute size given, so automatically compute optimal size
+      echo -n "computing size, "
+      # this seems to be the nearest to physical RAM size, lacks about 60k
+      #   but it actually then fails from AMD64 kernel 2.6.32 onwards
+      #KCORESIZE="`ls -l /proc/kcore | awk '{ print $5 }'`"
+      ## make MBytes which rounded down will be exactly 1 too few, so add 1
+      #MEMSIZE="`echo "${KCORESIZE} 1048576 / 1 + p q" | dc`"
+      # so second attempt at finding out physical RAM size, lacks about 10M
+      #   see how long this variant stays usable :-)
+      MEMTOTAL="`grep '^MemTotal:' /proc/meminfo | awk '{ print $2 }'`"
+      # make MBytes which rounded down will be about 10 too few, so add 10
+      MEMSIZE="`echo "${MEMTOTAL} 1024 / 10 + p q" | dc`"
+      # compute desired swap size, as factor * RAM
+      CONF_SWAPSIZE="`echo "${MEMSIZE} ${CONF_SWAPFACTOR} * p q" | dc`"
+      # remove any fractional MBytes
+      CONF_SWAPSIZE="`echo "${CONF_SWAPSIZE}" | cut -f 1 -d '.'`"
+    fi
+
+    # announce end resulting config
+    echo -n "want ${CONF_SWAPFILE}=${CONF_SWAPSIZE}MByte"
+
+    if [ "${CONF_MAXSWAP}" != "" ] ; then
+      # check for swap size limit and restrict to it
+      if [ "${CONF_SWAPSIZE}" -gt "${CONF_MAXSWAP}" ] ; then
+        echo -n ", restricting to config limit: ${CONF_MAXSWAP}MBytes"
+        CONF_SWAPSIZE="${CONF_MAXSWAP}"
+      fi
+    fi
+
+
+    # we will be later starting, and in between possible deleting/rebuilding
+    #   so deactivate any already running swapfile, to avoid errors
+    "$0" swapoff
+
+
+
+    # compare existing swapfile (if one exists) to see if it needs replacing
+    if [ -f "${CONF_SWAPFILE}" ] ; then
+
+      echo -n ", checking existing"
+
+      # we need bytes for comparing with existing swap file
+      SWAPBYTES="`echo "${CONF_SWAPSIZE} 1048576 * p q" | dc`"
+
+      FILEBYTES="`ls -l "${CONF_SWAPFILE}" | awk '{ print $5 }'`"
+
+      # wrong size, get rid of existing swapfile, after remake
+      if [ "${FILEBYTES}" != "${SWAPBYTES}" ] ; then
+
+        echo -n ": deleting wrong size file (${FILEBYTES})"
+
+        # deactivate and delete existing file, before remaking for new size
+        "$0" uninstall
+
+      else
+
+        echo -n ": keeping it"
+
+      fi
+    fi
+
+    # if no swapfile (or possibly old one got deleted) make one
+    if [ ! -f "${CONF_SWAPFILE}" ] ; then
+
+      echo -n ", generating swapfile ..."
+
+      # first deleting existing mount lines, if any there (same code as above)
+      grep -v "^${CONF_SWAPFILE}" /etc/fstab > /etc/.fstab
+      mv /etc/.fstab /etc/fstab
+
+      # use fallocate if found to create swapfile, else use dd
+      type fallocate > /dev/null
+      if [ $? -eq 0 ]; then
+        fallocate -l "${CONF_SWAPSIZE}"M "${CONF_SWAPFILE}" 2> /dev/null
+      else
+        dd if=/dev/zero of="${CONF_SWAPFILE}" bs=1048576 \
+          count="${CONF_SWAPSIZE}" 2> /dev/null
+      fi
+
+      # ensure that only root can read possibly critical stuff going in here
+      chmod 600 "${CONF_SWAPFILE}"
+
+      mkswap "${CONF_SWAPFILE}" > /dev/null
+
+      # do not mount swapfile via fstab, because swapfile may only
+      #   be created after partitions are all mounted, not here yet
+      # so just add warning comment line that swapfile is not in fstab
+      #   and because of this will get mounted by this script
+      # get rid of possibly already existing comment about
+      #   swapfile mounted by this script, to avoid duplicate comments
+      grep -v "a swapfile is not" /etc/fstab > /etc/.fstab
+      grep -v "${NAME}" /etc/.fstab > /etc/fstab
+      # add new comment about this
+      echo "# a swapfile is not a swap partition, no line here" >> /etc/fstab
+      echo "#   use  ${NAME} swap[on|off]  for that" >> /etc/fstab
+
+      # and inform the user what we did
+      echo -n " of ${CONF_SWAPSIZE}MBytes"
+
+    fi
+
+    echo
+
+    ;;
+
+
+  install)
+    # synonym for setup, in case someone types this
+    "$0" setup
+
+    ;;
+
+
+  swapon)
+    # as there can be no swapon in /etc/fstab, do it from here
+    #   this is due to no possible insertion of code (at least in Debian)
+    #     between mounting of /var (where swap file most likely resides)
+    #     and executing swapon, where the file already needs to be existing
+
+    if [ -f "${CONF_SWAPFILE}" ] ; then
+      swapon "${CONF_SWAPFILE}" 2>&1 > /dev/null
+    else
+      echo "$0: ERROR: swap file ${CONF_SWAPFILE} missing!" \
+          "you need to first run  $0 setup  to generate one"
+    fi
+
+    ;;
+
+
+  swapoff)
+    # as there can also be no swapoff in /etc/fstab, do it from here
+
+    # first test if swap is even active, else error from swapoff
+    if [ "`swapon -s | grep "${CONF_SWAPFILE}" | \
+        cut -f 1 -d ' '`" != "" ] ; then
+      swapoff "${CONF_SWAPFILE}" 2>&1 > /dev/null
+    fi
+
+    ;;
+
+
+  uninstall)
+    # note: there is no install), as setup) can run from any blank system
+    #   it auto-installs as side effect of recomputing and checking size
+
+    # deactivate before deleting
+    "$0" swapoff
+
+    if [ -f "${CONF_SWAPFILE}" ] ; then
+      # reclaim the file space
+      rm "${CONF_SWAPFILE}"
+    fi
+
+    # and get rid of now superfluous comment about swapfile mounting
+    grep -v "a swapfile is not" /etc/fstab > /etc/.fstab
+    grep -v "${NAME}" /etc/.fstab > /etc/fstab
+
+    ;;
+
+
+ *)
+    echo "Usage: $0 {setup|swapon|swapoff|uninstall}"
+
+    exit 1
+    ;;
+
+esac
+
+exit 0

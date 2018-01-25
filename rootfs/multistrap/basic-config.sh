@@ -28,13 +28,3 @@ filename=$TARGET_ROOTFS_DIR/etc/fstab
 echo /dev/mmcblk0p1 /boot vfat noatime 0 1 > $filename
 echo /dev/mmcblk0p2 / ext4 noatime 0 1 >> $filename
 echo proc /proc proc defaults 0 0 >> $filename
-
-filename=$TARGET_ROOTFS_DIR/etc/apt/sources.list
-echo deb https://mirrors.ustc.edu.cn/debian/ stretch main contrib non-free > $filename
-echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch main contrib non-free >> $filename
-echo deb https://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free >> $filename
-echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free >> $filename
-echo deb https://mirrors.ustc.edu.cn/debian/ stretch-backports main contrib non-free >> $filename
-echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch-backports main contrib non-free >> $filename
-echo deb https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free >> $filename
-echo deb-src https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free >> $filename

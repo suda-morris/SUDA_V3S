@@ -246,6 +246,25 @@ Description: POSIX-compliant shell
  dependencies (making it more robust against software or hardware
  failures), it is used as the default system shell on Debian systems.
 
+Package: dc
+Source: bc (1.06.95-9)
+Version: 1.06.95-9+b3
+Architecture: armhf
+Maintainer: Ryan Kavanagh <rak@debian.org>
+Installed-Size: 126
+Depends: libc6 (>= 2.4)
+Section: math
+Priority: standard
+Multi-Arch: foreign
+Homepage: http://ftp.gnu.org/gnu/bc/
+Description: GNU dc arbitrary precision reverse-polish calculator
+ GNU dc is a reverse-polish desk calculator which supports unlimited
+ precision arithmetic.  It also allows you to define and call macros.
+ .
+ A reverse-polish calculator stores numbers on a stack. Entering a number
+ pushes it on the stack.  Arithmetic operations pop arguments off the
+ stack and push the results.
+
 Package: debconf
 Version: 1.5.61
 Architecture: all
@@ -375,6 +394,28 @@ Description: Linux Kernel Device Mapper userspace library
  and other drivers that create "virtual" block devices.
  .
  This package contains a utility for modifying device mappings.
+
+Package: dphys-swapfile
+Version: 20100506-3
+Architecture: all
+Maintainer: Axel Beckert <abe@debian.org>
+Installed-Size: 60
+Depends: dc, lsb-base (>= 3.0-6)
+Section: admin
+Priority: optional
+Homepage: http://neil.franklin.ch/Projects/dphys-swapfile/
+Description: Autogenerate and use a swap file
+ This init.d script exists so one does not need to have a fixed size
+ swap partition. Instead install without swap partition and then run this,
+ with file size (re-)computed automatically to fit the current RAM size.
+ .
+ By default (and hence on installation) it creates swapfile twice as
+ big as the present RAM amount with an upper limit of 2 GB.
+ .
+ It's also very helpful when included in SD card, USB stick or disk
+ images which are distributed and run on many machines with different
+ amount of RAM, e.g. different models of the Raspberry Pi or cloud
+ images.
 
 Package: dpkg
 Version: 1.18.24

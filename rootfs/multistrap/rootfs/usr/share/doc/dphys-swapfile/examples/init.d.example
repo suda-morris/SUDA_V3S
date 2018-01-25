@@ -1,0 +1,64 @@
+#!/bin/sh
+# /etc/init.d/dphys-swapfile - automatically set up an swapfile
+# author Neil Franklin, last modification 2006.12.22
+# This script is copyright ETH Zuerich Physics Departement,
+#   use under either modified/non-advertising BSD or GPL license
+
+# this init.d script is intended to be run from rcS.d
+#   must run after  mount  of  /var  which may only happen in  S35mountall.sh
+#     for this reason we can not build swapfile until after  S35mountall.sh
+#       so we also need to use  init.d start|stop  to swapon|off our file
+#   and sensibly before the lots of stuff which may happen in  S40networking
+#     and may want to use a lot of memory, and so requires swap to be running
+#   so we run it as rcS.d/S37dphys-config
+
+# get ready to work
+# /usr/local added for Slackware, because self installed stuff ends up in there
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+export PATH
+
+# what we are
+NAME=dphys-swapfile
+PNAME=dphys-swapfile
+
+case "$1" in
+
+  start)
+    echo "Starting ${NAME} swapfile setup ..."
+
+    # (re-)size/-generate (and also first time install)
+    # this will produce output, so no -n in above echo
+    dphys-swapfile setup
+
+    # as S35mountall.sh has already run, do this from here
+    #   as there can be no swapon in /etc/fstab
+    dphys-swapfile swapon
+
+    echo "done."
+    ;;
+
+
+  stop)
+    echo -n "Stopping ${NAME} swapfile setup ..."
+
+    # as no swapon or swapoff in /etc/fstab, do this from here
+    dphys-swapfile swapoff
+
+    echo ", done."
+    ;;
+
+
+  restart|reset|reload|force-reload)
+    echo "No daemon to (force-)re[start|set|load] in ${NAME}"
+    ;;
+
+
+ *)
+    echo "Usage: $0 {start|stop}"
+
+    exit 1
+    ;;
+
+esac
+
+exit 0
