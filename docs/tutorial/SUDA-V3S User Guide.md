@@ -361,64 +361,91 @@ umount /mnt
 sudo apt-get install multistrap qemu qemu-user-static binfmt-support dpkg-cross
 ```
 
-2. 编辑multistrap_suda.conf配置文件，这里使用了清华大学的镜像站
+2. 编辑arm32.conf配置文件来指明需要安装的软件包和软件源，这里使用了中科大的镜像站
 
 ```makefile
 [General]
-directory=rootfs
 cleanup=true
 noauth=true
 unpack=true
-debootstrap=Debian Net Utils Init Python
+debootstrap=Debian Net Utils Python Init
 aptsources=Debian
 
 [Debian]
 packages=apt kmod lsof apt-utils
-source=http://ftp2.cn.debian.org/debian/
+source=https://mirrors.ustc.edu.cn/debian/
 keyring=debian-archive-keyring
 suite=stretch
 components=main contrib non-free
 
 [Net]
 #Basic packages to enable the networking
-packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh wget ca-certificates
-source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh ca-certificates openssl
+source=https://mirrors.ustc.edu.cn/debian/
 
 [Utils]
 #General purpose utilities
-packages=locales adduser vim less wget dialog usbutils rsync git
-source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+packages=locales adduser vim less wget dialog usbutils rsync git tree minicom
+source=https://mirrors.ustc.edu.cn/debian/
+
+[Python]
+#Python Language
+packages=python python-serial python-pip
+source=https://mirrors.ustc.edu.cn/debian/
 
 [Init]
 #Init system
 packages=init systemd
-source=https://mirrors.tuna.tsinghua.edu.cn/debian/
-
-[Python]
-#Python Language
-packages=python python-serial
-source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+source=https://mirrors.ustc.edu.cn/debian/
 ```
 
-3. 创建根文件系统
+3. 要创建根文件系统中/dev/中的设备，我们将使用multistrap提供的device-table.pl脚本。在此之前，需要创建dev_table文件，在其中指定设备列表
 
 ```bash
-sudo multistrap -a armhf -f multistrap_suda.conf
+#<name>         <type>  <mode>  <uid>   <gid>   <major> <minor> <start> <inc> <count>
+/dev    		d       755     0       0       -       -       -       -       -
+/dev/mem        c       640     0       0       1       1       0       0      -
+/dev/kmem       c       640     0       0       1       2       0       0      -
+/dev/null       c       640     0       0       1       3       0       0      -
+/dev/zero       c       640     0       0       1       5       0       0      -
+/dev/random     c       640     0       0       1       8       0       0      -
+/dev/urandom    c       640     0       0       1       9       0       0      -
+/dev/tty        c       666     0       0       5       0       0       0      -
+/dev/tty        c       666     0       0       4       0       0       1      6
+/dev/console    c       640     0       0       5       1       0       0      -
+/dev/ram        b       640     0       0       1       1       0       0      -
+/dev/ram        b       640     0       0       1       0       0       1      4
+/dev/loop       b       640     0       0       7       0       0       1      2
+/dev/ptmx       c       666     0       0       5       2       0       0      -
+```
+
+4. 在根文件系统的dev中创建必要的设备
+
+```bash
+sudo /usr/share/multistrap/device-table.pl --no-fakeroot -d rootfs -f dev_table
+```
+
+5. 创建根文件系统
+
+```bash
+sudo multistrap -d rootfs -a armhf -f arm32.conf
 ```
 
 * 执行完成后，rootfs即是所需的根文件系统
 
-4. 使用qemu来配置软件包，将rootfs作为root挂载来操作
+6. 使用qemu来配置软件包，将rootfs作为root挂载来操作
 
 ```bash
 sudo cp /usr/bin/qemu-arm-static rootfs/usr/bin
 sudo mount -o bind /dev/ rootfs/dev/
-sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs dpkg --configure -a #不要选择dash作为默认shell
-#这里就可以模拟板子情况执行相关命令，比如安装额外的软件包
+export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+export LC_ALL=C LANGUAGE=C LANG=C
+sudo chroot rootfs /var/lib/dpkg/info/dash.preinst install#安装dash，比bash速度快，功能没有bash多，dash主要是为了执行脚本而存在
+sudo chroot rootfs dpkg --configure -a#配置、安装下载好的软件包
 sudo umount rootfs/dev/	#最后记得卸载
 ```
 
-5. 做一些配置
+7. 最后做一些个性化的设置，如主机名
 
 ```bash
 #!/bin/sh
@@ -446,37 +473,35 @@ echo hwaddress ether 00:04:25:12:34:56 >> $filename
 filename=$TARGET_ROOTFS_DIR/etc/inittab
 echo T0:2345:respawn:/sbin/getty -L ttyS0 115200 vt100 >> $filename
 
-#Set rules to change wlan dongles
-filename=$TARGET_ROOTFS_DIR/etc/udev/rules.d/70-persistent-net.rules
-echo SUBSYSTEM=='"net", ACTION=="add", DRIVERS=="?", ATTR{address}=="", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="wlan*", NAME="wlan0"' > $filename
-
 #microSD partitions mounting
 filename=$TARGET_ROOTFS_DIR/etc/fstab
 echo /dev/mmcblk0p1 /boot vfat noatime 0 1 > $filename
 echo /dev/mmcblk0p2 / ext4 noatime 0 1 >> $filename
 echo proc /proc proc defaults 0 0 >> $filename
 
-#Add the standard Debian non-free repositories useful to load
-#closed source firmware (i.e. WiFi dongle firmware)
+#添加软件源
+#使用 HTTPS 可以有效避免国内运营商的缓存劫持
+#使用https://mirrors.ustc.edu.cn/repogen/工具自动生成
 filename=$TARGET_ROOTFS_DIR/etc/apt/sources.list
-echo deb https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch main contrib non-free > $filename
-echo deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch main contrib non-free >> $filename
-echo deb http://ftp2.cn.debian.org/debian/ stretch-updates main contrib non-free >> $filename
-echo deb-src http://ftp2.cn.debian.org/debian/ stretch-updates main contrib non-free >> $filename
-echo deb http://ftp2.cn.debian.org/debian-security/ stretch/updates main contrib non-free >> $filename
-echo deb-src http://ftp2.cn.debian.org/debian-security/ stretch/updates main contrib non-free >> $filename
+echo deb https://mirrors.ustc.edu.cn/debian/ stretch main contrib non-free > $filename
+echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch main contrib non-free >> $filename
+echo deb https://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free >> $filename
+echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free >> $filename
+echo deb https://mirrors.ustc.edu.cn/debian/ stretch-backports main contrib non-free >> $filename
+echo deb-src https://mirrors.ustc.edu.cn/debian/ stretch-backports main contrib non-free >> $filename
+echo deb https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free >> $filename
+echo deb-src https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free >> $filename
 ```
 
-6. 设置密码及其他操作
+8. 设置密码及其他操作
 
 ```bash
 sudo chroot rootfs passwd
 sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install packagename
 ```
 
-7. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
-8. 将文件系统同步至SD卡的第二个分区
-
+9. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
+10. 将文件系统同步至SD卡的第二个分区
 
 ```bash
 sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/
