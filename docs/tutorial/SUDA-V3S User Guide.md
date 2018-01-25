@@ -245,7 +245,243 @@ umount /mnt
 
 
 
-### 根文件系统之Multistrap
+### Debian系统之debootstrap
+
+> Debootstrap可以用来在系统中安装Debian而不使用安装盘，也可以用来在chroot环境下运行不同风格的Debian。这样可以创建一个完整的（最小的）Debian系统，可以用于测试目的。制作流程分为四个步骤：
+>
+> 1. 从源里下载需要的.deb软件包
+> 2. 解压它们到相应的目标目录
+> 3. 用chroot命令将目标目录临时修改为根目录
+> 4. 运行每个软件包的安装和配置脚本，完成安装
+>
+> 完成第1和2步可以使用debootstrap，cdebootstrap或者multistrap，第3和4步可以在QEMU环境或者实际开发板上执行
+
+1. 安装必要的工具软件`sudo apt-get install qemu qemu-user-static binfmt-support dpkg-cross debootstrap debian-archive-keyring`其中debootstrap是根文件系统制作工具，qemu是模拟器，可以在宿主机上模拟开发版的环境
+2. 使用debootstrap安装指定版本的文件系统，其中distro表示版本的名字，比如ubuntu的**xenial**，debian的**stretch**，armhf是目标架构，最后加上Debian镜像站点，这里选择清华大学的开源镜像站，后面的.deb包将从这里下载
+
+```bash
+sudo debootstrap --foreign --arch armhf $distro rootfs http://ftp2.cn.debian.org/debian/
+```
+
+3. 拷贝**qemu-arm-static** 到刚构建的根文件系统中。为了能chroot到目标文件系统，针对目标CPU的qemu模拟器需要从内部访问
+
+```bash
+sudo cp /usr/bin/qemu-arm-static rootfs/usr/bin/
+sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs	#改变程序执行时所参考的根目录位置
+```
+
+4. 执行debootstrap的第二个步骤来解压安装的软件包
+
+```bash
+/debootstrap/debootstrap --second-stage
+dpkg --configure -a
+```
+
+5. 配置软件源
+
+```bash
+# for Debian
+cat <<EOT > etc/apt/sources.list
+deb http://http.debian.net/debian $distro main contrib non-free
+deb-src http://http.debian.net/debian $distro main contrib non-free
+deb http://http.debian.net/debian $distro-updates main contrib non-free
+deb-src http://http.debian.net/debian $distro-updates main contrib non-free
+deb http://security.debian.org/debian-security $distro/updates main contrib non-free
+deb-src http://security.debian.org/debian-security $distro/updates main contrib non-free
+EOT
+```
+
+```bash
+# for Ubuntu
+cat <<EOT > etc/apt/sources.list
+deb http://ports.ubuntu.com/ $distro main universe
+deb-src http://ports.ubuntu.com/ $distro main universe
+deb http://ports.ubuntu.com/ $distro-security main universe
+deb-src http://ports.ubuntu.com/ $distro-security main universe
+deb http://ports.ubuntu.com/ $distro-updates main universe
+deb-src http://ports.ubuntu.com/ $distro-updates main universe
+EOT#
+```
+
+6. 设置apt
+
+```bash
+cat <<EOT > /etc/apt/apt.conf.d/71-no-recommends
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOT
+```
+
+7. 从服务器更新最新的数据库`apt-get update`
+8. 更新系统`apt-get upgrade`
+9. 按需安装软件包
+
+```bash
+apt-get install openssh-server
+apt-get install dialog locales
+dpkg-reconfigure locales
+```
+
+10. 设置root密码`passwd`
+11. 设置主机名`echo suda-v3s > /etc/hostname`
+12. 清理无用的软件包，退出chroot会话
+
+```bash
+apt-get autoclean
+apt-get autoremove
+apt-get clean
+exit
+```
+
+13. 清理辅助文件
+
+```bash
+sudo rm rootfs/usr/bin/qemu-arm-static 
+```
+
+14. 安装驱动模块
+
+```bash
+mount ${card}${p}2 /mnt
+mkdir -p /mnt/lib/modules
+rm -rf /mnt/lib/modules/
+cp -r ${lib_dir}/lib /mnt/
+umount /mnt
+```
+
+
+
+### Debian系统之multistrap
+
+> Multistrap是一种与Debootstrap基本相同的工具，但具有不同的设计，拥有更多的灵活性。它通过简单地使用apt和dpkg，专注于为设备生成rootfs映像，而不是在现有的机器上chroots。Multistrap是一个自动创建完整的，可引导的根文件系统的工具。它可以合并来自不同存储库的软件包来创建rootfs。额外的软件包通过简单的列出来添加到rootfs中，所有的依赖关系都被处理了。
+
+1. 安装依赖包
+
+```bash
+sudo apt-get install multistrap qemu qemu-user-static binfmt-support dpkg-cross
+```
+
+2. 编辑multistrap_suda.conf配置文件，这里使用了清华大学的镜像站
+
+```makefile
+[General]
+directory=rootfs
+cleanup=true
+noauth=true
+unpack=true
+debootstrap=Debian Net Utils Init Python
+aptsources=Debian
+
+[Debian]
+packages=apt kmod lsof apt-utils
+source=http://ftp2.cn.debian.org/debian/
+keyring=debian-archive-keyring
+suite=stretch
+components=main contrib non-free
+
+[Net]
+#Basic packages to enable the networking
+packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh wget ca-certificates
+source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+
+[Utils]
+#General purpose utilities
+packages=locales adduser vim less wget dialog usbutils rsync git
+source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+
+[Init]
+#Init system
+packages=init systemd
+source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+
+[Python]
+#Python Language
+packages=python python-serial
+source=https://mirrors.tuna.tsinghua.edu.cn/debian/
+```
+
+3. 创建根文件系统
+
+```bash
+sudo multistrap -a armhf -f multistrap_suda.conf
+```
+
+* 执行完成后，rootfs即是所需的根文件系统
+
+4. 使用qemu来配置软件包，将rootfs作为root挂载来操作
+
+```bash
+sudo cp /usr/bin/qemu-arm-static rootfs/usr/bin
+sudo mount -o bind /dev/ rootfs/dev/
+sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs dpkg --configure -a #不要选择dash作为默认shell
+#这里就可以模拟板子情况执行相关命令，比如安装额外的软件包
+sudo umount rootfs/dev/	#最后记得卸载
+```
+
+5. 做一些配置
+
+```bash
+#!/bin/sh
+#Directory contains the target rootfs
+TARGET_ROOTFS_DIR="rootfs"
+
+#Board hostname
+filename=$TARGET_ROOTFS_DIR/etc/hostname
+echo suda-v3s > $filename
+
+#Default name servers
+filename=$TARGET_ROOTFS_DIR/etc/resolv.conf
+echo nameserver 8.8.8.8 > $filename
+echo nameserver 8.8.4.4 >> $filename
+
+#Default network interfaces
+filename=$TARGET_ROOTFS_DIR/etc/network/interfaces
+echo auto eth0 >> $filename
+echo allow-hotplug eth0 >> $filename
+echo iface eth0 inet dhcp >> $filename
+#eth0 MAC address
+echo hwaddress ether 00:04:25:12:34:56 >> $filename
+
+#Set the the debug port
+filename=$TARGET_ROOTFS_DIR/etc/inittab
+echo T0:2345:respawn:/sbin/getty -L ttyS0 115200 vt100 >> $filename
+
+#Set rules to change wlan dongles
+filename=$TARGET_ROOTFS_DIR/etc/udev/rules.d/70-persistent-net.rules
+echo SUBSYSTEM=='"net", ACTION=="add", DRIVERS=="?", ATTR{address}=="", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="wlan*", NAME="wlan0"' > $filename
+
+#microSD partitions mounting
+filename=$TARGET_ROOTFS_DIR/etc/fstab
+echo /dev/mmcblk0p1 /boot vfat noatime 0 1 > $filename
+echo /dev/mmcblk0p2 / ext4 noatime 0 1 >> $filename
+echo proc /proc proc defaults 0 0 >> $filename
+
+#Add the standard Debian non-free repositories useful to load
+#closed source firmware (i.e. WiFi dongle firmware)
+filename=$TARGET_ROOTFS_DIR/etc/apt/sources.list
+echo deb https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch main contrib non-free > $filename
+echo deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ stretch main contrib non-free >> $filename
+echo deb http://ftp2.cn.debian.org/debian/ stretch-updates main contrib non-free >> $filename
+echo deb-src http://ftp2.cn.debian.org/debian/ stretch-updates main contrib non-free >> $filename
+echo deb http://ftp2.cn.debian.org/debian-security/ stretch/updates main contrib non-free >> $filename
+echo deb-src http://ftp2.cn.debian.org/debian-security/ stretch/updates main contrib non-free >> $filename
+```
+
+6. 设置密码及其他操作
+
+```bash
+sudo chroot rootfs passwd
+sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install packagename
+```
+
+7. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
+8. 将文件系统同步至SD卡的第二个分区
+
+
+```bash
+sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/
+```
+
 
 
 
@@ -522,6 +758,21 @@ jpegtopnm $1 | pnmquant 224 | pnmtoplainpnm > logo_linux_clut224.ppm
 
 * 将uboot的stdout和stderr环境变量设置为vga即可`setenv stdout vga` `setenv stderr vga` `saveenv`
 * 将传递给内核的参数bootargs中**增加**`console=tty0`
+
+#### Framebuffer常用技巧
+
+1. 设置屏保超时时间
+   * 在内核参数中增加`consoleblank=0`可以取消屏保，设置为其余的数字表示屏保超时时间（单位秒）
+2. 隐藏光标
+   * 在内核参数中增加`vt.global_cursor_default=0`可以隐藏光标
+   * 在内核起来后，也可以通过设置`/sys/class/graphics/fbcon/cursor_blink`的值为1或0来开始或者关闭光标
+3. 旋转
+   * 在内核参数中增加`fbcon=rotate:<n>`可以“旋转”现实的屏幕,其中的n可以被设置为：
+     * 0，0度方向
+     * 1，顺时针90度旋转
+     * 2，顺时针180度旋转
+     * 3，顺时针270度旋转
+   * 在内核起来后，也可以通过设置`/sys/class/graphics/fbcon/rotate`的值为0,1,2,3来完成旋转操作
 
 
 
