@@ -1,0 +1,16 @@
+/.
+/lib
+/lib/arm-linux-gnueabihf
+/lib/arm-linux-gnueabihf/libexpat.so.1.6.2
+/usr
+/usr/lib
+/usr/lib/arm-linux-gnueabihf
+/usr/lib/arm-linux-gnueabihf/libexpatw.so.1.6.2
+/usr/share
+/usr/share/doc
+/usr/share/doc/libexpat1
+/usr/share/doc/libexpat1/changelog.Debian.gz
+/usr/share/doc/libexpat1/changelog.gz
+/usr/share/doc/libexpat1/copyright
+/lib/arm-linux-gnueabihf/libexpat.so.1
+/usr/lib/arm-linux-gnueabihf/libexpatw.so.1

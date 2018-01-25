@@ -1,0 +1,29 @@
+Package: otrs2
+Binary: otrs2, otrs
+Version: 5.0.16-1+deb9u5
+Maintainer: Patrick Matthäi <pmatthaei@debian.org>
+Uploaders: Thomas Mueller <thomas@chaschperli.ch>
+Build-Depends: debhelper (>= 9), yui-compressor
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 819cef99e1e01d20f61eb537a6361cbe 1838 otrs2_5.0.16-1+deb9u5.dsc
+ 9fe21e6993bcac71247fdcaf5e1f4e55 19417591 otrs2_5.0.16.orig.tar.bz2
+ 3fb7e12a0187f46cd075a13cad439057 52536 otrs2_5.0.16-1+deb9u5.debian.tar.xz
+Checksums-Sha1:
+ 73b616b059b33f1884949b7684fba5d1b3a0ecf2 1838 otrs2_5.0.16-1+deb9u5.dsc
+ 5538c2b9138a0b6d5816ff034507dd5ce26abf8d 19417591 otrs2_5.0.16.orig.tar.bz2
+ a5cc986229cad287ca37eed86dccaa87fc91cf1f 52536 otrs2_5.0.16-1+deb9u5.debian.tar.xz
+Checksums-Sha256:
+ 090df54e4bbdc318f060b9a08c25f1ad854d842d5c7d9d5f4e953c8f89287311 1838 otrs2_5.0.16-1+deb9u5.dsc
+ ddec039990c1bdfc27299ab175eff3e1665aa99ba48050f7f2dde480b28f4029 19417591 otrs2_5.0.16.orig.tar.bz2
+ 886a2bee29a6dd33b908ccf058824030d6e55e07ef15673911ba73bca60dcfaf 52536 otrs2_5.0.16-1+deb9u5.debian.tar.xz
+Homepage: http://www.otrs.org
+Package-List: 
+ otrs deb non-free/web optional arch=all
+ otrs2 deb non-free/web optional arch=all
+Directory: pool/updates/non-free/o/otrs2
+Priority: source
+Section: non-free/misc
+

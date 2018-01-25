@@ -1,0 +1,200 @@
+Package: geoipupdate
+Binary: geoipupdate
+Version: 2.5.0-1~bpo9+1
+Maintainer: Faidon Liambotis <paravoid@debian.org>
+Build-Depends: debhelper (>= 10), zlib1g-dev, libcurl4-gnutls-dev
+Architecture: any
+Standards-Version: 4.1.2
+Format: 3.0 (quilt)
+Files:
+ 19007dcd13f742f7f77411ed7fa82aa6 1957 geoipupdate_2.5.0-1~bpo9+1.dsc
+ 28f633c49ec87ab01ad3c0fb0228a696 371882 geoipupdate_2.5.0.orig.tar.gz
+ 0daadf9a02b02638f4e34cc23e60a31d 3680 geoipupdate_2.5.0-1~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/geoipupdate.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/geoipupdate.git
+Checksums-Sha256:
+ 3171b77137dd5ee9f18bbcac546c177e79a4d1f7562ab585c0fd6f338f23aff4 1957 geoipupdate_2.5.0-1~bpo9+1.dsc
+ 5119fd0e338cd083e886228b26679c64bcbaade8a815be092aecf865a610ab26 371882 geoipupdate_2.5.0.orig.tar.gz
+ 059471bdb156a20c38159e352bafd6c1672ef4b43729089269418e17aaf63dcf 3680 geoipupdate_2.5.0-1~bpo9+1.debian.tar.xz
+Homepage: http://dev.maxmind.com/geoip/geoipupdate/
+Package-List: 
+ geoipupdate deb contrib/net optional arch=any
+Directory: pool/contrib/g/geoipupdate
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-modprobe
+Binary: nvidia-modprobe
+Version: 384.111-1~bpo9+1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Andreas Beckmann <anbe@debian.org>, Vincent Cheng <vcheng@debian.org>
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.18.8), m4
+Architecture: i386 amd64 armhf ppc64el
+Standards-Version: 4.1.3
+Format: 3.0 (quilt)
+Files:
+ 498e0eaae7b0b0a658f3455b7f9d8554 2185 nvidia-modprobe_384.111-1~bpo9+1.dsc
+ 63ac7f5ed1a616abee5993300a832392 35934 nvidia-modprobe_384.111.orig.tar.bz2
+ 5ac00b086036c6b8bd26c0de6d2223b6 3092 nvidia-modprobe_384.111-1~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-modprobe.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-modprobe.git
+Checksums-Sha256:
+ 29279c5fa1e9deed7920f85664ce83957426fd62dfde62d6df9401fac698b820 2185 nvidia-modprobe_384.111-1~bpo9+1.dsc
+ eca2202864f298a3d070d15d228e076c47608d6a5fa6d548d3dac495c3993283 35934 nvidia-modprobe_384.111.orig.tar.bz2
+ f75ae19b3bf0c838ae026572edf7ab9984a1a9a20cec743ef786b8e1985d10a1 3092 nvidia-modprobe_384.111-1~bpo9+1.debian.tar.xz
+Homepage: https://github.com/NVIDIA/nvidia-modprobe
+Package-List: 
+ nvidia-modprobe deb contrib/utils optional arch=i386,amd64,armhf,ppc64el
+Directory: pool/contrib/n/nvidia-modprobe
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-persistenced
+Binary: nvidia-persistenced
+Version: 384.111-1~bpo9+1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Andreas Beckmann <anbe@debian.org>,
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.18.8), m4
+Architecture: i386 amd64 armhf
+Standards-Version: 4.1.3
+Format: 3.0 (quilt)
+Files:
+ 7767995cbd554466215f362f676bdd23 2183 nvidia-persistenced_384.111-1~bpo9+1.dsc
+ dcb10d10d1069b8101e3f0f74e5cfe6a 43570 nvidia-persistenced_384.111.orig.tar.bz2
+ 4259fc9ea63bdad267e1870e73d488bb 3248 nvidia-persistenced_384.111-1~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-persistenced.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-persistenced.git
+Checksums-Sha256:
+ 0a188e82b7c56111ffe5c795e3f7b11b8b5fed38086542a9879733c8920aeb72 2183 nvidia-persistenced_384.111-1~bpo9+1.dsc
+ 79cb3a8db96bdeece6c3e8352e447f5c6abb2f219b170cfa2e35084e3e1a27f8 43570 nvidia-persistenced_384.111.orig.tar.bz2
+ d9fafc033b98db237c62bfece284ae1d4ef22f2aecbd383866539ff65ec8aee0 3248 nvidia-persistenced_384.111-1~bpo9+1.debian.tar.xz
+Homepage: https://github.com/NVIDIA/nvidia-persistenced
+Package-List: 
+ nvidia-persistenced deb contrib/utils optional arch=i386,amd64,armhf
+Directory: pool/contrib/n/nvidia-persistenced
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-xconfig
+Binary: nvidia-xconfig
+Version: 384.111-1~bpo9+1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Andreas Beckmann <anbe@debian.org>, Vincent Cheng <vcheng@debian.org>
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.18.8), m4, pkg-config, xserver-xorg-dev
+Architecture: i386 amd64 armhf
+Standards-Version: 4.1.3
+Format: 3.0 (quilt)
+Files:
+ 8bd99793ae7bc32f363c6ceb9d5ce32c 2199 nvidia-xconfig_384.111-1~bpo9+1.dsc
+ 05b6c1b7a7c4f10eb59ac204f33f8005 106689 nvidia-xconfig_384.111.orig.tar.bz2
+ fa3bb8532895473d87fe79794c73ac84 8088 nvidia-xconfig_384.111-1~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-xconfig.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-xconfig.git
+Checksums-Sha256:
+ 19dd66fd021b9ed96fde6947ad6b961feb0f5bc8e2aa65079d35a790e58f9dfa 2199 nvidia-xconfig_384.111-1~bpo9+1.dsc
+ 98f9bf3eb12ac82e6c673246563f0272fb86a5812e4368cf020122e783c5f446 106689 nvidia-xconfig_384.111.orig.tar.bz2
+ edea955a87064bf66083af678babe2ad98992b5ddafa3c61799114d5ce536a77 8088 nvidia-xconfig_384.111-1~bpo9+1.debian.tar.xz
+Homepage: https://download.nvidia.com/XFree86/nvidia-xconfig/
+Package-List: 
+ nvidia-xconfig deb contrib/x11 optional arch=i386,amd64,armhf
+Directory: pool/contrib/n/nvidia-xconfig
+Priority: extra
+Section: contrib/misc
+
+Package: torbrowser-launcher
+Binary: torbrowser-launcher
+Version: 0.2.8-5~bpo9+1
+Maintainer: Debian Privacy Tools Maintainers <pkg-privacy-maintainers@lists.alioth.debian.org>
+Uploaders: Ulrike Uhlig <ulrike@debian.org>
+Build-Depends: debhelper (>= 9.20120909~), dh-apparmor, dh-python, help2man, lsb-release, python-all (>= 2.7.3-4)
+Architecture: i386 amd64
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ b0255df59277b87a0e1142e6fddbe726 2247 torbrowser-launcher_0.2.8-5~bpo9+1.dsc
+ 2a20ebf46cec36f9b84af1bc6367dcd7 379133 torbrowser-launcher_0.2.8.orig.tar.gz
+ c038621ac55703bd696c747207041a28 10972 torbrowser-launcher_0.2.8-5~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/git/pkg-privacy/packages/torbrowser-launcher.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-privacy/packages/torbrowser-launcher.git
+Checksums-Sha256:
+ f666149c4de55076902782d566e0f10aa04ffbb4090e1fb212e01f4266686504 2247 torbrowser-launcher_0.2.8-5~bpo9+1.dsc
+ b5d7abe4d62d7793ec5344aabac9319799b044fe17cdb13688d7dbca50903625 379133 torbrowser-launcher_0.2.8.orig.tar.gz
+ ae2408b6935b8c3cec767044a7a1b8a39b72a58f36d64fb84e50185ad4e0241e 10972 torbrowser-launcher_0.2.8-5~bpo9+1.debian.tar.xz
+Homepage: https://micahflee.com/torbrowser-launcher/
+Package-List: 
+ torbrowser-launcher deb contrib/web optional arch=i386,amd64
+Directory: pool/contrib/t/torbrowser-launcher
+Priority: extra
+Section: contrib/misc
+
+Package: virtualbox
+Binary: virtualbox-qt, virtualbox, virtualbox-dkms, virtualbox-source, virtualbox-guest-dkms, virtualbox-guest-source, virtualbox-guest-x11, virtualbox-guest-utils
+Version: 5.1.30-dfsg-1~bpo9+1
+Maintainer: Debian Virtualbox Team <pkg-virtualbox-devel@lists.alioth.debian.org>
+Uploaders: Ritesh Raj Sarraf <rrs@debian.org>, Gianfranco Costamagna <locutusofborg@debian.org>
+Build-Depends: bzip2, debhelper (>= 10), default-jdk, dh-python, dh-systemd (>= 1.5), dkms (>= 2.1.1.1), docbook-xml, docbook-xsl, dpkg-dev (>= 1.15.6~), g++-multilib, genisoimage, gsoap (>= 2.8.16), iasl, imagemagick, kbuild (>= 1:0.1.9998svn2814~), libasound2-dev, libcap-dev, libcurl4-gnutls-dev, libdevmapper-dev, libdrm-dev, libegl1-mesa-dev, libgl1-mesa-dev, libglu1-mesa-dev, libidl-dev, libpam0g-dev, libpixman-1-dev, libpng-dev, libpulse-dev, libqt5x11extras5-dev, libqt5opengl5-dev, qttools5-dev-tools, libsdl1.2-dev, libssl-dev, libvncserver-dev, libvpx-dev, libx11-dev, libxcomposite-dev, libxcursor-dev, libxdamage-dev, libxext-dev, libxi-dev, libxinerama-dev, libxml2-dev, libxml2-utils, libxmu-dev, libxrandr-dev, libxrender-dev, libxslt1-dev, libxt-dev, lsb-release, lynx-cur, makeself, module-assistant, python3-dev, texlive-fonts-extra, texlive-fonts-recommended, texlive-latex-extra, texlive-latex-recommended, uuid-dev, x11proto-gl-dev, x11proto-xf86dri-dev, xserver-xorg-dev, xsltproc, yasm (>= 0.7.0), zlib1g-dev
+Architecture: amd64 i386 all
+Standards-Version: 4.1.1
+Format: 3.0 (quilt)
+Files:
+ 1632fd6104f2a6063303ff65cbc7c1bc 3632 virtualbox_5.1.30-dfsg-1~bpo9+1.dsc
+ b133b61ffee1c60d22038466cc788853 53085860 virtualbox_5.1.30-dfsg.orig.tar.xz
+ fd6d888c7b6ffc7d587f58e2e35e1029 83924 virtualbox_5.1.30-dfsg-1~bpo9+1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-virtualbox/virtualbox.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-virtualbox/virtualbox.git
+Checksums-Sha256:
+ 05f7bbb956288634b10788279b89a8ccf563c9793cbac2c39adbee13b959b3b2 3632 virtualbox_5.1.30-dfsg-1~bpo9+1.dsc
+ 8d0177005b78e130bc439f1d53d41fd276bece9b85de7666708aec701d924c96 53085860 virtualbox_5.1.30-dfsg.orig.tar.xz
+ af268d189b0245708075346dafff5b9752689435c97ef9351cdde5c6f4ce76ab 83924 virtualbox_5.1.30-dfsg-1~bpo9+1.debian.tar.xz
+Homepage: http://www.virtualbox.org/
+Package-List: 
+ virtualbox deb contrib/misc optional arch=amd64,i386
+ virtualbox-dkms deb contrib/kernel optional arch=all
+ virtualbox-guest-dkms deb contrib/kernel optional arch=all
+ virtualbox-guest-source deb contrib/kernel optional arch=all
+ virtualbox-guest-utils deb contrib/misc optional arch=amd64,i386
+ virtualbox-guest-x11 deb contrib/x11 optional arch=amd64,i386
+ virtualbox-qt deb contrib/misc optional arch=amd64,i386
+ virtualbox-source deb contrib/kernel optional arch=all
+Directory: pool/contrib/v/virtualbox
+Priority: extra
+Section: contrib/misc
+
+Package: zfs-linux
+Binary: libnvpair1linux, libuutil1linux, libzfslinux-dev, libzfs2linux, libzpool2linux, zfs-dkms, zfs-initramfs, zfs-dracut, zfsutils-linux, zfs-zed, zfs-test, zfs-dbg
+Version: 0.7.4-1~bpo9+1
+Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
+Uploaders: Aron Xu <aron@debian.org>, Petter Reinholdtsen <pere@debian.org>, Carlos Alberto Lopez Perez <clopez@igalia.com>
+Build-Depends: dh-autoreconf, autotools-dev, debhelper (>= 10.2), dkms (>> 2.1.1.2-5), libselinux1-dev, libtool, lsb-release, po-debconf, uuid-dev, zlib1g-dev, python3, dh-python, libblkid-dev, libattr1-dev
+Architecture: linux-any all
+Standards-Version: 4.1.2
+Format: 3.0 (quilt)
+Files:
+ 1c2b1b50c2b3f031d0721b988ef0c690 2660 zfs-linux_0.7.4-1~bpo9+1.dsc
+ 092061297072a7c6d6ff7a9cc92f907e 6402864 zfs-linux_0.7.4.orig.tar.gz
+ 76a300a0e213738760aca09c31149d53 42048 zfs-linux_0.7.4-1~bpo9+1.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-zfsonlinux/zfs.git
+Vcs-Git: git://anonscm.debian.org/pkg-zfsonlinux/zfs.git
+Checksums-Sha256:
+ bc4be5c7dc7146109aa88e8ba3f26200c385a92d6d0b77db2107d86ad16344fe 2660 zfs-linux_0.7.4-1~bpo9+1.dsc
+ 9536a9be5d05329570afc9fc168be45cd38f832e2e7ede15f2c5cd223beb16d3 6402864 zfs-linux_0.7.4.orig.tar.gz
+ dd8a110ddd4cc3a0e3bc85a831cfe5a3c9b128b41a96d0681863efba5b4750bc 42048 zfs-linux_0.7.4-1~bpo9+1.debian.tar.xz
+Homepage: http://www.zfsonlinux.org/
+Package-List: 
+ libnvpair1linux deb contrib/libs optional arch=linux-any
+ libuutil1linux deb contrib/libs optional arch=linux-any
+ libzfs2linux deb contrib/libs optional arch=linux-any
+ libzfslinux-dev deb contrib/libdevel optional arch=linux-any
+ libzpool2linux deb contrib/libs optional arch=linux-any
+ zfs-dbg deb contrib/debug extra arch=linux-any
+ zfs-dkms deb contrib/kernel optional arch=all
+ zfs-dracut deb contrib/kernel optional arch=all
+ zfs-initramfs deb contrib/kernel optional arch=all
+ zfs-test deb contrib/admin optional arch=linux-any
+ zfs-zed deb contrib/admin optional arch=linux-any
+ zfsutils-linux deb contrib/admin optional arch=linux-any
+Testsuite: autopkgtest
+Directory: pool/contrib/z/zfs-linux
+Priority: extra
+Section: contrib/misc
+

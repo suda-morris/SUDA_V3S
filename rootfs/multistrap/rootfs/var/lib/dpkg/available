@@ -1,0 +1,3754 @@
+Package: adduser
+Version: 3.115
+Architecture: all
+Maintainer: Debian Adduser Developers <adduser-devel@lists.alioth.debian.org>
+Installed-Size: 849
+Depends: passwd, debconf (>= 0.5) | debconf-2.0
+Suggests: liblocale-gettext-perl, perl
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Homepage: http://alioth.debian.org/projects/adduser/
+Description: add and remove users and groups
+ This package includes the 'adduser' and 'deluser' commands for creating
+ and removing users.
+ .
+  - 'adduser' creates new users and groups and adds existing users to
+    existing groups;
+  - 'deluser' removes users and groups and removes users from a given
+    group.
+ .
+ Adding users with 'adduser' is much easier than adding them manually.
+ Adduser will choose appropriate UID and GID values, create a home
+ directory, copy skeletal user configuration, and automate setting
+ initial values for the user's password, real name and so on.
+ .
+ Deluser can back up and remove users' home directories
+ and mail spool or all the files they own on the system.
+ .
+ A custom script can be executed after each of the commands.
+ .
+  Development mailing list:
+    http://lists.alioth.debian.org/mailman/listinfo/adduser-devel/
+
+Package: apt-transport-https
+Source: apt
+Version: 1.4.8
+Architecture: armhf
+Maintainer: APT Development Team <deity@lists.debian.org>
+Installed-Size: 204
+Depends: libapt-pkg5.0 (>= 1.3~rc2), libc6 (>= 2.4), libcurl3-gnutls (>= 7.16.2), libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2)
+Recommends: ca-certificates
+Section: admin
+Priority: optional
+Description: https download transport for APT
+ This package enables the usage of 'deb https://foo distro main' lines
+ in the /etc/apt/sources.list so that all package managers using the
+ libapt-pkg library can access metadata and packages available in sources
+ accessible over https (Hypertext Transfer Protocol Secure).
+ .
+ This transport supports server as well as client authentication
+ with certificates.
+
+Package: apt-utils
+Source: apt
+Version: 1.4.8
+Architecture: armhf
+Maintainer: APT Development Team <deity@lists.debian.org>
+Installed-Size: 978
+Depends: apt (= 1.4.8), libapt-inst2.0 (>= 1.0.5), libapt-pkg5.0 (>= 1.3~rc2), libc6 (>= 2.4), libdb5.3, libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2)
+Section: admin
+Priority: important
+Description: package management related utility programs
+ This package contains some less used commandline utilities related
+ to package management with APT.
+ .
+  * apt-extracttemplates is used by debconf to prompt for configuration
+    questions before installation.
+  * apt-ftparchive is used to create Packages and other index files
+    needed to publish an archive of Debian packages
+  * apt-sortpkgs is a Packages/Sources file normalizer.
+
+Package: apt
+Version: 1.4.8
+Architecture: armhf
+Maintainer: APT Development Team <deity@lists.debian.org>
+Installed-Size: 3148
+Depends: adduser, gpgv | gpgv2 | gpgv1, debian-archive-keyring, init-system-helpers (>= 1.18~), libapt-pkg5.0 (>= 1.3~rc2), libc6 (>= 2.15), libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2)
+Recommends: gnupg | gnupg2 | gnupg1
+Suggests: apt-doc, aptitude | synaptic | wajig, dpkg-dev (>= 1.17.2), powermgmt-base, python-apt
+Breaks: apt-utils (<< 1.3~exp2~)
+Replaces: apt-utils (<< 1.3~exp2~)
+Section: admin
+Priority: important
+Description: commandline package manager
+ This package provides commandline tools for searching and
+ managing as well as querying information about packages
+ as a low-level access to all features of the libapt-pkg library.
+ .
+ These include:
+  * apt-get for retrieval of packages and information about them
+    from authenticated sources and for installation, upgrade and
+    removal of packages together with their dependencies
+  * apt-cache for querying available information about installed
+    as well as installable packages
+  * apt-cdrom to use removable media as a source for packages
+  * apt-config as an interface to the configuration settings
+  * apt-key as an interface to manage authentication keys
+
+Package: base-files
+Version: 9.9+deb9u3
+Architecture: armhf
+Essential: yes
+Maintainer: Santiago Vila <sanvila@debian.org>
+Installed-Size: 333
+Pre-Depends: awk
+Breaks: initscripts (<< 2.88dsf-13.3), sendfile (<< 2.1b.20080616-5.2~)
+Replaces: base, dpkg (<= 1.15.0), miscutils
+Provides: base
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Description: Debian base system miscellaneous files
+ This package contains the basic filesystem hierarchy of a Debian system, and
+ several important miscellaneous files, such as /etc/debian_version,
+ /etc/host.conf, /etc/issue, /etc/motd, /etc/profile, and others,
+ and the text of several common licenses in use on Debian systems.
+
+Package: base-passwd
+Version: 3.5.43
+Architecture: armhf
+Essential: yes
+Maintainer: Colin Watson <cjwatson@debian.org>
+Installed-Size: 220
+Depends: libc6 (>= 2.8), libdebconfclient0 (>= 0.145)
+Recommends: debconf (>= 0.5) | debconf-2.0
+Replaces: base
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Description: Debian base system master password and group files
+ These are the canonical master copies of the user database files
+ (/etc/passwd and /etc/group), containing the Debian-allocated user and
+ group IDs. The update-passwd tool is provided to keep the system databases
+ synchronized with these master files.
+
+Package: bash
+Version: 4.4-5
+Architecture: armhf
+Essential: yes
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 5442
+Pre-Depends: dash (>= 0.5.5.1-2.2), libc6 (>= 2.15), libtinfo5 (>= 6)
+Depends: base-files (>= 2.1.12), debianutils (>= 2.15)
+Recommends: bash-completion (>= 20060301-0)
+Suggests: bash-doc
+Conflicts: bash-completion (<< 20060301-0)
+Replaces: bash-completion (<< 20060301-0), bash-doc (<= 2.05-1)
+Section: shells
+Priority: required
+Multi-Arch: foreign
+Homepage: http://tiswww.case.edu/php/chet/bash/bashtop.html
+Description: GNU Bourne Again SHell
+ Bash is an sh-compatible command language interpreter that executes
+ commands read from the standard input or from a file.  Bash also
+ incorporates useful features from the Korn and C shells (ksh and csh).
+ .
+ Bash is ultimately intended to be a conformant implementation of the
+ IEEE POSIX Shell and Tools specification (IEEE Working Group 1003.2).
+ .
+ The Programmable Completion Code, by Ian Macdonald, is now found in
+ the bash-completion package.
+
+Package: bsdutils
+Source: util-linux (2.29.2-1)
+Version: 1:2.29.2-1
+Architecture: armhf
+Essential: yes
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 205
+Pre-Depends: libc6 (>= 2.16), libsystemd0
+Recommends: bsdmainutils
+Breaks: bash-completion (<< 1:2.1-4.1~)
+Replaces: bash-completion (<< 1:2.1-4.1~)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Description: basic utilities from 4.4BSD-Lite
+ This package contains the bare minimum of BSD utilities needed for a
+ Debian system: logger, renice, script, scriptreplay, and wall. The
+ remaining standard BSD utilities are provided by bsdmainutils.
+
+Package: ca-certificates
+Version: 20161130+nmu1
+Architecture: all
+Maintainer: Michael Shuler <michael@pbandjelly.org>
+Installed-Size: 468
+Depends: openssl (>= 1.0.0), debconf (>= 0.5) | debconf-2.0
+Enhances: openssl
+Breaks: ca-certificates-java (<< 20121112+nmu1)
+Section: misc
+Priority: optional
+Multi-Arch: foreign
+Description: Common CA certificates
+ Contains the certificate authorities shipped with Mozilla's browser to allow
+ SSL-based applications to check for the authenticity of SSL connections.
+ .
+ Please note that Debian can neither confirm nor deny whether the
+ certificate authorities whose certificates are included in this package
+ have in any way been audited for trustworthiness or RFC 3647 compliance.
+ Full responsibility to assess them belongs to the local system
+ administrator.
+
+Package: coreutils
+Version: 8.26-3
+Architecture: armhf
+Essential: yes
+Maintainer: Michael Stone <mstone@debian.org>
+Installed-Size: 13454
+Pre-Depends: libacl1 (>= 2.2.51-8), libattr1 (>= 1:2.4.46-8), libc6 (>= 2.17), libselinux1 (>= 2.1.13)
+Conflicts: timeout
+Replaces: mktemp, realpath, timeout
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Homepage: http://gnu.org/software/coreutils
+Description: GNU core utilities
+ This package contains the basic file, shell and text manipulation
+ utilities which are expected to exist on every operating system.
+ .
+ Specifically, this package includes:
+ arch base64 basename cat chcon chgrp chmod chown chroot cksum comm cp
+ csplit cut date dd df dir dircolors dirname du echo env expand expr
+ factor false flock fmt fold groups head hostid id install join link ln
+ logname ls md5sum mkdir mkfifo mknod mktemp mv nice nl nohup nproc numfmt
+ od paste pathchk pinky pr printenv printf ptx pwd readlink realpath rm
+ rmdir runcon sha*sum seq shred sleep sort split stat stty sum sync tac
+ tail tee test timeout touch tr true truncate tsort tty uname unexpand
+ uniq unlink users vdir wc who whoami yes
+
+Package: dash
+Version: 0.5.8-2.4
+Architecture: armhf
+Essential: yes
+Maintainer: Gerrit Pape <pape@smarden.org>
+Installed-Size: 163
+Pre-Depends: libc6 (>= 2.11)
+Depends: debianutils (>= 2.15), dpkg (>= 1.15.0)
+Section: shells
+Priority: required
+Homepage: http://gondor.apana.org.au/~herbert/dash/
+Description: POSIX-compliant shell
+ The Debian Almquist Shell (dash) is a POSIX-compliant shell derived
+ from ash.
+ .
+ Since it executes scripts faster than bash, and has fewer library
+ dependencies (making it more robust against software or hardware
+ failures), it is used as the default system shell on Debian systems.
+
+Package: debconf
+Version: 1.5.61
+Architecture: all
+Maintainer: Debconf Developers <debconf-devel@lists.alioth.debian.org>
+Installed-Size: 558
+Pre-Depends: perl-base (>= 5.20.1-3~)
+Recommends: apt-utils (>= 0.5.1), debconf-i18n
+Suggests: debconf-doc, debconf-utils, whiptail | dialog, libterm-readline-gnu-perl, libgtk2-perl (>= 1:1.130), libnet-ldap-perl, perl, libqtgui4-perl, libqtcore4-perl
+Conflicts: apt (<< 0.3.12.1), cdebconf (<< 0.96), debconf-tiny, debconf-utils (<< 1.3.22), dialog (<< 0.9b-20020814-1), menu (<= 2.1.3-1), whiptail (<< 0.51.4-11), whiptail-utf8 (<= 0.50.17-13)
+Replaces: debconf-tiny
+Provides: debconf-2.0
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Description: Debian configuration management system
+ Debconf is a configuration management system for debian packages. Packages
+ use Debconf to ask questions when they are installed.
+
+Package: debian-archive-keyring
+Version: 2017.5
+Architecture: all
+Maintainer: Debian Release Team <packages@release.debian.org>
+Installed-Size: 118
+Depends: gpgv
+Recommends: gnupg
+Breaks: apt (<< 0.7.25.1)
+Section: misc
+Priority: important
+Multi-Arch: foreign
+Description: GnuPG archive keys of the Debian archive
+ The Debian project digitally signs its Release files. This package
+ contains the archive keys used for that.
+
+Package: debianutils
+Version: 4.8.1.1
+Architecture: armhf
+Essential: yes
+Maintainer: Clint Adams <clint@debian.org>
+Installed-Size: 202
+Pre-Depends: libc6 (>= 2.15)
+Depends: sensible-utils
+Replaces: manpages-pl (<< 1:0.5)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Description: Miscellaneous utilities specific to Debian
+ This package provides a number of small utilities which are used
+ primarily by the installation scripts of Debian packages, although
+ you may use them directly.
+ .
+ The specific utilities included are:
+ add-shell installkernel ischroot remove-shell run-parts savelog
+ tempfile which
+
+Package: dialog
+Version: 1.3-20160828-2
+Architecture: armhf
+Maintainer: Santiago Vila <sanvila@debian.org>
+Installed-Size: 862
+Depends: libc6 (>= 2.15), libncursesw5 (>= 6), libtinfo5 (>= 6), debianutils (>= 1.6)
+Provides: libdialog-dev
+Section: misc
+Priority: optional
+Homepage: http://invisible-island.net/dialog/dialog.html
+Description: Displays user-friendly dialog boxes from shell scripts
+ This application provides a method of displaying several different types
+ of dialog boxes from shell scripts.  This allows a developer of a script
+ to interact with the user in a much friendlier manner.
+ .
+ The following types of boxes are at your disposal:
+  yes/no           Typical query style box with "Yes" and "No" answer buttons
+  menu             A scrolling list of menu choices with single entry selection
+  input            Query style box with text entry field
+  message          Similar to the yes/no box, but with only an "Ok" button
+  text             A scrollable text box that works like a simple file viewer
+  info             A message display that allows asynchronous script execution
+  checklist        Similar to the menu box, but allowing multiple selections
+  radiolist        Checklist style box allowing single selections
+  gauge            Typical "progress report" style box
+  tail             Allows viewing the end of files (tail) that auto updates
+  background tail  Similar to tail but runs in the background.
+  editbox          Allows editing an existing file
+
+Package: diffutils
+Version: 1:3.5-3
+Architecture: armhf
+Essential: yes
+Maintainer: Santiago Vila <sanvila@debian.org>
+Installed-Size: 1223
+Pre-Depends: libc6 (>= 2.17)
+Suggests: diffutils-doc, wdiff
+Replaces: diff
+Section: utils
+Priority: required
+Homepage: http://www.gnu.org/software/diffutils/
+Description: File comparison utilities
+ The diffutils package provides the diff, diff3, sdiff, and cmp programs.
+ .
+ `diff' shows differences between two files, or each corresponding file
+ in two directories.  `cmp' shows the offsets and line numbers where
+ two files differ.  `cmp' can also show all the characters that
+ differ between the two files, side by side.  `diff3' shows differences
+ among three files.  `sdiff' merges two files interactively.
+ .
+ The set of differences produced by `diff' can be used to distribute
+ updates to text files (such as program source code) to other people.
+ This method is especially useful when the differences are small compared
+ to the complete files.  Given `diff' output, the `patch' program can
+ update, or "patch", a copy of the file.
+
+Package: dmsetup
+Source: lvm2 (2.02.168-2)
+Version: 2:1.02.137-2
+Architecture: armhf
+Maintainer: Debian LVM Team <pkg-lvm-maintainers@lists.alioth.debian.org>
+Installed-Size: 201
+Depends: libc6 (>= 2.8), libdevmapper1.02.1 (>= 2:1.02.131)
+Section: admin
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://sources.redhat.com/lvm2/
+Description: Linux Kernel Device Mapper userspace library
+ The Linux Kernel Device Mapper is the LVM (Linux Logical Volume Management)
+ Team's implementation of a minimalistic kernel-space driver that handles
+ volume management, while keeping knowledge of the underlying device layout
+ in user-space.  This makes it useful for not only LVM, but software raid,
+ and other drivers that create "virtual" block devices.
+ .
+ This package contains a utility for modifying device mappings.
+
+Package: dpkg
+Version: 1.18.24
+Architecture: armhf
+Essential: yes
+Origin: debian
+Bugs: debbugs://bugs.debian.org
+Maintainer: Dpkg Developers <debian-dpkg@lists.debian.org>
+Installed-Size: 6364
+Pre-Depends: libbz2-1.0, libc6 (>= 2.11), liblzma5 (>= 5.2.2), libselinux1 (>= 2.3), zlib1g (>= 1:1.1.4)
+Depends: tar (>= 1.28-1)
+Suggests: apt, debsig-verify
+Breaks: acidbase (<= 1.4.5-4), amule (<< 2.3.1+git1a369e47-3), beep (<< 1.3-4), im (<< 1:151-4), libdpkg-perl (<< 1.18.11), netselect (<< 0.3.ds1-27), pconsole (<< 1.0-12), phpgacl (<< 3.3.7-7.3), pure-ftpd (<< 1.0.43-1), systemtap (<< 2.8-1), terminatorx (<< 4.0.1-1), xvt (<= 2.1-20.1)
+Replaces: manpages-it (<< 2.80-4)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: https://wiki.debian.org/Teams/Dpkg
+Description: Debian package management system
+ This package provides the low-level infrastructure for handling the
+ installation and removal of Debian software packages.
+ .
+ For Debian package development tools, install dpkg-dev.
+
+Package: e2fslibs
+Source: e2fsprogs
+Version: 1.43.4-2
+Architecture: armhf
+Maintainer: Theodore Y. Ts'o <tytso@mit.edu>
+Installed-Size: 335
+Depends: libc6 (>= 2.17)
+Replaces: e2fsprogs (<< 1.34-1)
+Provides: libe2p2, libext2fs2
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://e2fsprogs.sourceforge.net
+Description: ext2/ext3/ext4 file system libraries
+ The ext2, ext3 and ext4 file systems are successors of the original ext
+ ("extended") file system. They are the main file system types used for
+ hard disks on Debian and other Linux systems.
+ .
+ This package provides the ext2fs and e2p libraries, for userspace software
+ that directly accesses extended file systems. Programs that use libext2fs
+ include e2fsck, mke2fs, and tune2fs. Programs that use libe2p include
+ dumpe2fs, chattr, and lsattr.
+
+Package: e2fsprogs
+Version: 1.43.4-2
+Architecture: armhf
+Essential: yes
+Maintainer: Theodore Y. Ts'o <tytso@mit.edu>
+Installed-Size: 3750
+Pre-Depends: e2fslibs (= 1.43.4-2), libblkid1 (>= 2.17.2), libc6 (>= 2.11), libcomerr2 (>= 1.42~WIP-2011-10-05-1), libss2 (>= 1.34-1), libuuid1 (>= 2.16), util-linux (>= 2.15~rc1-1)
+Suggests: gpart, parted, fuse2fs, e2fsck-static
+Conflicts: dump (<< 0.4b4-4), initscripts (<< 2.85-4), quota (<< 1.55-8.1), sysvinit (<< 2.85-4)
+Replaces: hurd (<= 20040301-1), libblkid1 (<< 1.38+1.39-WIP-2005.12.10-2), libuuid1 (<< 1.38+1.39-WIP-2005.12.10-2)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: http://e2fsprogs.sourceforge.net
+Description: ext2/ext3/ext4 file system utilities
+ The ext2, ext3 and ext4 file systems are successors of the original ext
+ ("extended") file system. They are the main file system types used for
+ hard disks on Debian and other Linux systems.
+ .
+ This package contains programs for creating, checking, and maintaining
+ ext2/3/4-based file systems.  It also includes the "badblocks" program,
+ which can be used to scan for bad blocks on a disk or other storage device.
+
+Package: ethtool
+Source: ethtool (1:4.8-1)
+Version: 1:4.8-1+b1
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 295
+Depends: libc6 (>= 2.7)
+Section: net
+Priority: optional
+Homepage: https://www.kernel.org/pub/software/network/ethtool/
+Description: display or change Ethernet device settings
+ ethtool can be used to query and change settings such as speed, auto-
+ negotiation and checksum offload on many network devices, especially
+ Ethernet devices.
+
+Package: findutils
+Version: 4.6.0+git+20161106-2
+Architecture: armhf
+Essential: yes
+Maintainer: Andreas Metzler <ametzler@debian.org>
+Installed-Size: 1751
+Pre-Depends: libc6 (>= 2.17), libselinux1 (>= 1.32)
+Suggests: mlocate | locate
+Conflicts: debconf (<< 1.5.50)
+Breaks: binstats (<< 1.08-8.1), debhelper (<< 9.20130504), guilt (<< 0.36-0.2), kernel-package (<< 13.000), libpython3.4-minimal (<< 3.4.4-2), libpython3.5-minimal (<< 3.5.1-3), lsat (<< 0.9.7.1-2.1), mc (<< 3:4.8.11-1), sendmail (<< 8.14.4-5), switchconf (<< 0.0.9-2.1)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Homepage: http://savannah.gnu.org/projects/findutils/
+Description: utilities for finding files--find, xargs
+ GNU findutils provides utilities to find files meeting specified
+ criteria and perform various actions on the files which are found.
+ This package contains 'find' and 'xargs'; however, 'locate' has
+ been split off into a separate package.
+
+Package: gcc-6-base
+Source: gcc-6
+Version: 6.3.0-18
+Architecture: armhf
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Installed-Size: 209
+Breaks: gcc-4.4-base (<< 4.4.7), gcc-4.7-base (<< 4.7.3), gcj-4.4-base (<< 4.4.6-9~), gcj-4.6-base (<< 4.6.1-4~), gnat-4.4-base (<< 4.4.6-3~), gnat-4.6 (<< 4.6.1-5~)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://gcc.gnu.org/
+Description: GCC, the GNU Compiler Collection (base package)
+ This package contains files common to all languages and libraries
+ contained in the GNU Compiler Collection (GCC).
+
+Package: git-man
+Source: git
+Version: 1:2.11.0-3+deb9u2
+Architecture: all
+Maintainer: Gerrit Pape <pape@smarden.org>
+Installed-Size: 1482
+Breaks: git (<< 1:1.7.4~rc1)
+Replaces: git (<< 1:1.7.4~rc1), git-core (<< 1:1.7.0.4-1.)
+Section: doc
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://git-scm.com/
+Description: fast, scalable, distributed revision control system (manual pages)
+ Git is popular version control system designed to handle very large
+ projects with speed and efficiency; it is used for many high profile
+ open source projects, most notably the Linux kernel.
+ .
+ Git falls in the category of distributed source code management tools.
+ Every Git working directory is a full-fledged repository with full
+ revision tracking capabilities, not dependent on network access or a
+ central server.
+ .
+ This package provides reference documentation for use by the 'man'
+ utility and the 'git help' command.
+
+Package: git
+Version: 1:2.11.0-3+deb9u2
+Architecture: armhf
+Maintainer: Gerrit Pape <pape@smarden.org>
+Installed-Size: 20277
+Pre-Depends: dpkg (>= 1.17.13)
+Depends: libc6 (>= 2.16), libcurl3-gnutls (>= 7.16.2), libexpat1 (>= 2.0.1), libpcre3, zlib1g (>= 1:1.2.0), perl, liberror-perl, git-man (>> 1:2.11.0), git-man (<< 1:2.11.0-.)
+Recommends: patch, less, rsync, ssh-client
+Suggests: gettext-base, git-daemon-run | git-daemon-sysvinit, git-doc, git-el, git-email, git-gui, gitk, gitweb, git-arch, git-cvs, git-mediawiki, git-svn
+Breaks: bash-completion (<< 1:1.90-1), cogito (<= 0.18.2+), git-buildpackage (<< 0.6.5), git-core (<< 1:1.7.0.4-1.), gitosis (<< 0.2+20090917-7), gitpkg (<< 0.15), gitweb (<< 1:1.7.4~rc1), guilt (<< 0.33), stgit (<< 0.15), stgit-contrib (<< 0.15)
+Replaces: git-core (<< 1:1.7.0.4-1.), gitweb (<< 1:1.7.4~rc1)
+Provides: git-completion, git-core
+Section: vcs
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://git-scm.com/
+Description: fast, scalable, distributed revision control system
+ Git is popular version control system designed to handle very large
+ projects with speed and efficiency; it is used for many high profile
+ open source projects, most notably the Linux kernel.
+ .
+ Git falls in the category of distributed source code management tools.
+ Every Git working directory is a full-fledged repository with full
+ revision tracking capabilities, not dependent on network access or a
+ central server.
+ .
+ This package provides the git main components with minimal dependencies.
+ Additional functionality, e.g. a graphical user interface and revision
+ tree visualizer, tools for interoperating with other VCS's, or a web
+ interface, is provided as separate git* packages.
+
+Package: gpgv
+Source: gnupg2
+Version: 2.1.18-8~deb9u1
+Architecture: armhf
+Maintainer: Debian GnuPG Maintainers <pkg-gnupg-maint@lists.alioth.debian.org>
+Installed-Size: 572
+Depends: libbz2-1.0, libc6 (>= 2.7), libgcrypt20 (>= 1.7.0), libgpg-error0 (>= 1.14), zlib1g (>= 1:1.1.4)
+Suggests: gnupg
+Breaks: gnupg2 (<< 2.0.21-2), gpgv2 (<< 2.1.11-7+exp1), python-debian (<< 0.1.29)
+Replaces: gnupg2 (<< 2.0.21-2), gpgv2 (<< 2.1.11-7+exp1)
+Section: utils
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.gnupg.org/
+Description: GNU privacy guard - signature verification tool
+ GnuPG is GNU's tool for secure communication and data storage.
+ .
+ gpgv is actually a stripped-down version of gpg which is only able
+ to check signatures. It is somewhat smaller than the fully-blown gpg
+ and uses a different (and simpler) way to check that the public keys
+ used to make the signature are valid. There are no configuration
+ files and only a few options are implemented.
+
+Package: grep
+Version: 2.27-2
+Architecture: armhf
+Essential: yes
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 1054
+Pre-Depends: libc6 (>= 2.5), libpcre3
+Depends: dpkg (>= 1.15.4) | install-info
+Suggests: libpcre3 (>= 7.7)
+Conflicts: rgrep
+Provides: rgrep
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.gnu.org/software/grep/
+Description: GNU grep, egrep and fgrep
+ 'grep' is a utility to search for text in files; it can be used from the
+ command line or in scripts.  Even if you don't want to use it, other packages
+ on your system probably will.
+ .
+ The GNU family of grep utilities may be the "fastest grep in the west".
+ GNU grep is based on a fast lazy-state deterministic matcher (about
+ twice as fast as stock Unix egrep) hybridized with a Boyer-Moore-Gosper
+ search for a fixed string that eliminates impossible text from being
+ considered by the full regexp matcher without necessarily having to
+ look at every character. The result is typically many times faster
+ than Unix grep or egrep. (Regular expressions containing backreferencing
+ will run more slowly, however.)
+
+Package: gzip
+Source: gzip (1.6-5)
+Version: 1.6-5+b1
+Architecture: armhf
+Essential: yes
+Maintainer: Bdale Garbee <bdale@gag.com>
+Installed-Size: 197
+Pre-Depends: libc6 (>= 2.17)
+Depends: dpkg (>= 1.15.4) | install-info
+Suggests: less
+Section: utils
+Priority: required
+Description: GNU compression utilities
+ This package provides the standard GNU file compression utilities, which
+ are also the default compression tools for Debian.  They typically operate
+ on files with names ending in '.gz', but can also decompress files ending
+ in '.Z' created with 'compress'.
+
+Package: hostname
+Source: hostname (3.18)
+Version: 3.18+b1
+Architecture: armhf
+Essential: yes
+Maintainer: Debian Hostname Team <hostname-devel@lists.alioth.debian.org>
+Installed-Size: 42
+Pre-Depends: libc6 (>= 2.4)
+Breaks: nis (<< 3.17-30)
+Replaces: nis (<< 3.17-30)
+Section: admin
+Priority: required
+Description: utility to set/show the host name or domain name
+ This package provides commands which can be used to display the system's
+ DNS name, and to display or set its hostname or NIS domain name.
+
+Package: ifupdown
+Version: 0.8.19
+Architecture: armhf
+Maintainer: Guus Sliepen <guus@debian.org>
+Installed-Size: 173
+Depends: libc6 (>= 2.8), init-system-helpers (>= 1.18~), lsb-base, adduser, iproute2
+Recommends: isc-dhcp-client | dhcp-client
+Suggests: ppp, rdnssd
+Breaks: systemd (<< 228-3~)
+Replaces: systemd (<< 228-3~)
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Description: high level tools to configure network interfaces
+ This package provides the tools ifup and ifdown which may be used to
+ configure (or, respectively, deconfigure) network interfaces based on
+ interface definitions in the file /etc/network/interfaces.
+
+Package: init-system-helpers
+Version: 1.48
+Architecture: all
+Essential: yes
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 131
+Depends: perl-base (>= 5.20.1-3)
+Conflicts: file-rc (<< 0.8.17~), openrc (<= 0.18.3-1)
+Breaks: systemd (<< 44-12), sysvinit-utils (<< 2.88dsf-59.3~)
+Replaces: sysv-rc (<< 2.88dsf-59.3~), sysvinit-utils (<< 2.88dsf-59.3)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Description: helper tools for all init systems
+ This package contains helper tools that are necessary for switching between
+ the various init systems that Debian contains (e. g. sysvinit or
+ systemd). An example is deb-systemd-helper, a script that enables systemd unit
+ files without depending on a running systemd.
+ .
+ It also includes the "service", "invoke-rc.d", and "update-rc.d" scripts which
+ provide an abstraction for enabling, disabling, starting, and stopping
+ services for all supported Debian init systems as specified by the policy.
+ .
+ While this package is maintained by pkg-systemd-maintainers, it is NOT
+ specific to systemd at all. Maintainers of other init systems are welcome to
+ include their helpers in this package.
+
+Package: init
+Source: init-system-helpers
+Version: 1.48
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 19
+Pre-Depends: systemd-sysv | sysvinit-core
+Depends: init-system-helpers (>= 1.25)
+Section: metapackages
+Priority: important
+Multi-Arch: foreign
+Description: metapackage ensuring an init system is installed
+ This package is a metapackage which allows you to select from the available
+ init systems while ensuring that one of these is available on the system at
+ all times.
+Important: yes
+
+Package: iproute2
+Version: 4.9.0-1+deb9u1
+Architecture: armhf
+Maintainer: Debian iproute2 Maintainers <ah-iproute@debian.org>
+Installed-Size: 1331
+Depends: libc6 (>= 2.14), libdb5.3, libelf1 (>= 0.131), libmnl0 (>= 1.0.3-4~), libselinux1 (>= 2.0.15)
+Recommends: libatm1 (>= 2.4.1-17~), libxtables12 (>= 1.6.0+snapshot20161117)
+Suggests: iproute2-doc
+Conflicts: arpd, iproute (<< 20130000-1)
+Replaces: iproute
+Provides: arpd
+Section: net
+Priority: important
+Multi-Arch: foreign
+Homepage: https://wiki.linuxfoundation.org/networking/iproute2
+Description: networking and traffic control tools
+ The iproute2 suite is a collection of utilities for networking and
+ traffic control.
+ .
+ These tools communicate with the Linux kernel via the (rt)netlink
+ interface, providing advanced features not available through the
+ legacy net-tools commands 'ifconfig' and 'route'.
+
+Package: iproute
+Source: iproute2 (4.9.0-1+deb9u1)
+Version: 1:4.9.0-1+deb9u1
+Architecture: all
+Maintainer: Debian iproute2 Maintainers <ah-iproute@debian.org>
+Installed-Size: 23
+Depends: iproute2
+Section: oldlibs
+Priority: extra
+Homepage: https://wiki.linuxfoundation.org/networking/iproute2
+Description: transitional dummy package for iproute2
+ This is a transitional dummy package to get upgrading systems to install
+ the iproute2 package. It can safely be removed once no other package
+ depends on it.
+
+Package: iputils-ping
+Source: iputils
+Version: 3:20161105-1
+Architecture: armhf
+Maintainer: Noah Meyerhans <noahm@debian.org>
+Installed-Size: 98
+Depends: libc6 (>= 2.11), libcap2 (>= 1:2.10), libidn11 (>= 1.13), libnettle6
+Recommends: libcap2-bin
+Provides: ping
+Section: net
+Priority: important
+Description: Tools to test the reachability of network hosts
+ The ping command sends ICMP ECHO_REQUEST packets to a host in order to
+ test if the host is reachable via the network.
+ .
+ This package includes a ping6 utility which supports IPv6 network
+ connections.
+
+Package: isc-dhcp-client
+Source: isc-dhcp
+Version: 4.3.5-3
+Architecture: armhf
+Maintainer: Debian ISC DHCP maintainers <pkg-dhcp-devel@lists.alioth.debian.org>
+Installed-Size: 480
+Depends: libc6 (>= 2.15), libdns-export162, libisc-export160, debianutils (>= 2.8.2), iproute2
+Recommends: isc-dhcp-common
+Suggests: resolvconf, avahi-autoipd, isc-dhcp-client-ddns
+Provides: dhcp-client
+Section: net
+Priority: important
+Homepage: http://www.isc.org
+Description: DHCP client for automatically obtaining an IP address
+ This is the Internet Software Consortium's DHCP client.
+ .
+ Dynamic Host Configuration Protocol (DHCP) is a protocol like BOOTP
+ (actually dhcpd includes much of the functionality of bootpd). It
+ gives client machines "leases" for IP addresses and can
+ automatically set their network configuration. If your machine
+ depends on DHCP (especially likely if it's a workstation on a large
+ network, or a laptop, or attached to a cable modem), keep this or
+ another DHCP client installed.
+ .
+ Extra documentation can be found in the package isc-dhcp-common.
+
+Package: kmod
+Version: 23-2
+Architecture: armhf
+Maintainer: Marco d'Itri <md@linux.it>
+Installed-Size: 171
+Depends: libc6 (>= 2.17), libkmod2 (= 23-2), lsb-base
+Breaks: alsa-base (<= 1.0.25+3), oss-compat (= 4)
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Description: tools for managing Linux kernel modules
+ This package contains a set of programs for loading, inserting, and
+ removing kernel modules for Linux.
+ It replaces module-init-tools.
+
+Package: less
+Version: 481-2.1
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 221
+Depends: libc6 (>= 2.11), libtinfo5 (>= 6), debianutils (>= 1.8)
+Section: text
+Priority: important
+Multi-Arch: foreign
+Homepage: http://www.greenwoodsoftware.com/less/
+Description: pager program similar to more
+ This package provides "less", a file pager (that is, a memory-efficient
+ utility for displaying text one screenful at a time). Less has many
+ more features than the basic pager "more". As part of the GNU project,
+ it is widely regarded as the standard pager on UNIX-derived systems.
+ .
+ Also provided are "lessecho", a simple utility for ensuring arguments
+ with spaces are correctly quoted; "lesskey", a tool for modifying the
+ standard (vi-like) keybindings; and "lesspipe", a filter for specific
+ types of input, such as .doc or .txt.gz files.
+
+Package: libacl1
+Source: acl (2.2.52-3)
+Version: 2.2.52-3+b1
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 49
+Depends: libattr1 (>= 1:2.4.46-8), libc6 (>= 2.4)
+Conflicts: acl (<< 2.0.0), libacl1-kerberos4kth
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://savannah.nongnu.org/projects/acl/
+Description: Access control list shared library
+ This package contains the libacl.so dynamic library containing
+ the POSIX 1003.1e draft standard 17 functions for manipulating
+ access control lists.
+
+Package: libapparmor1
+Source: apparmor
+Version: 2.11.0-3
+Architecture: armhf
+Maintainer: Debian AppArmor Team <pkg-apparmor-team@lists.alioth.debian.org>
+Installed-Size: 118
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: extra
+Multi-Arch: same
+Homepage: http://apparmor.net/
+Description: changehat AppArmor library
+ This package provides the shared library used for making use of the
+ AppArmor profile and changehat functionality, as well as common log
+ parsing routines.
+
+Package: libapt-inst2.0
+Source: apt
+Version: 1.4.8
+Architecture: armhf
+Maintainer: APT Development Team <deity@lists.debian.org>
+Installed-Size: 453
+Depends: libapt-pkg5.0 (>= 1.1~exp9), libc6 (>= 2.4), libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2)
+Provides: libapt-inst (= 1.4.8)
+Section: libs
+Priority: important
+Multi-Arch: same
+Description: deb package format runtime library
+ This library provides methods to query and extract information
+ from deb packages. This includes the control data and the package
+ file content.
+
+Package: libapt-pkg5.0
+Source: apt
+Version: 1.4.8
+Architecture: armhf
+Maintainer: APT Development Team <deity@lists.debian.org>
+Installed-Size: 2405
+Depends: libbz2-1.0, libc6 (>= 2.15), libgcc1 (>= 1:3.5), liblz4-1 (>= 0.0~r127), liblzma5 (>= 5.1.1alpha+20120614), libstdc++6 (>= 5.2), zlib1g (>= 1:1.2.3.4)
+Recommends: apt (>= 1.4.8)
+Breaks: appstream (<< 0.9.0-3~), apt (<< 1.1~exp14), libapt-inst1.5 (<< 0.9.9~)
+Provides: libapt-pkg (= 1.4.8)
+Section: libs
+Priority: important
+Multi-Arch: same
+Description: package management runtime library
+ This library provides the common functionality for searching and
+ managing packages as well as information about packages.
+ Higher-level package managers can depend upon this library.
+ .
+ This includes:
+  * retrieval of information about packages from multiple sources
+  * retrieval of packages and all dependent packages
+    needed to satisfy a request either through an internal
+    solver or by interfacing with an external one
+  * authenticating the sources and validating the retrieved data
+  * installation and removal of packages in the system
+  * providing different transports to retrieve data over cdrom, ftp,
+    http, rsh as well as an interface to add more transports like
+    https (apt-transport-https) and debtorrent (apt-transport-debtorrent).
+
+Package: libattr1
+Source: attr (1:2.4.47-2)
+Version: 1:2.4.47-2+b2
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 37
+Depends: libc6 (>= 2.4)
+Conflicts: attr (<< 2.0.0)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://savannah.nongnu.org/projects/attr/
+Description: Extended attribute shared library
+ Contains the runtime environment required by programs that make use
+ of extended attributes.
+
+Package: libaudit-common
+Source: audit
+Version: 1:2.6.7-2
+Architecture: all
+Maintainer: Laurent Bigonville <bigon@debian.org>
+Installed-Size: 30
+Breaks: libaudit0, libaudit1 (<< 1:2.2.1-2)
+Replaces: libaudit0, libaudit1 (<< 1:2.2.1-2)
+Section: libs
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://people.redhat.com/sgrubb/audit/
+Description: Dynamic library for security auditing - common files
+ The audit-libs package contains the dynamic libraries needed for
+ applications to use the audit framework. It is used to monitor systems for
+ security related events.
+ .
+ This package contains the libaudit.conf configuration file and the associated
+ manpage.
+
+Package: libaudit1
+Source: audit
+Version: 1:2.6.7-2
+Architecture: armhf
+Maintainer: Laurent Bigonville <bigon@debian.org>
+Installed-Size: 134
+Depends: libaudit-common (>= 1:2.6.7-2), libc6 (>= 2.8), libcap-ng0
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://people.redhat.com/sgrubb/audit/
+Description: Dynamic library for security auditing
+ The audit-libs package contains the dynamic libraries needed for
+ applications to use the audit framework. It is used to monitor systems for
+ security related events.
+
+Package: libblkid1
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 261
+Depends: libc6 (>= 2.17), libuuid1 (>= 2.16)
+Section: libs
+Priority: required
+Multi-Arch: same
+Description: block device ID library
+ The blkid library allows system programs such as fsck and mount to
+ quickly and easily find block devices by filesystem UUID or label.
+ This allows system administrators to avoid specifying filesystems by
+ hard-coded device names and use a logical naming system instead.
+
+Package: libbsd0
+Source: libbsd
+Version: 0.8.3-1
+Architecture: armhf
+Maintainer: Guillem Jover <guillem@debian.org>
+Installed-Size: 154
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://libbsd.freedesktop.org/
+Description: utility functions from BSD systems - shared library
+ This library provides some C functions such as strlcpy() that are commonly
+ available on BSD systems but not on others like GNU systems.
+ .
+ For a detailed list of the provided functions, please see the libbsd-dev
+ package description.
+
+Package: libbz2-1.0
+Source: bzip2
+Version: 1.0.6-8.1
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 79
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://www.bzip.org/
+Description: high-quality block-sorting file compressor library - runtime
+ This package contains libbzip2 which is used by the bzip2 compressor.
+ .
+ bzip2 is a freely available, patent free, high-quality data compressor.
+ It typically compresses files to within 10% to 15% of the best available
+ techniques, whilst being around twice as fast at compression and six
+ times faster at decompression.
+ .
+ bzip2 compresses files using the Burrows-Wheeler block-sorting text
+ compression algorithm, and Huffman coding. Compression is generally
+ considerably better than that achieved by more conventional
+ LZ77/LZ78-based compressors, and approaches the performance of the PPM
+ family of statistical compressors.
+ .
+ The archive file format of bzip2 (.bz2) is incompatible with that of its
+ predecessor, bzip (.bz).
+
+Package: libc-bin
+Source: glibc
+Version: 2.24-11+deb9u1
+Architecture: armhf
+Essential: yes
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 2802
+Depends: libc6 (>> 2.24), libc6 (<< 2.25)
+Recommends: manpages
+Section: libs
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: Binaries
+ This package contains utility programs related to the GNU C Library.
+ .
+  * catchsegv: catch segmentation faults in programs
+  * getconf: query system configuration variables
+  * getent: get entries from administrative databases
+  * iconv, iconvconfig: convert between character encodings
+  * ldd, ldconfig: print/configure shared library dependencies
+  * locale, localedef: show/generate locale definitions
+  * tzselect, zdump, zic: select/dump/compile time zones
+
+Package: libc-l10n
+Source: glibc
+Version: 2.24-11+deb9u1
+Architecture: all
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 4210
+Breaks: locales (<< 2.21-1)
+Replaces: locales (<< 2.21-1)
+Section: localization
+Priority: standard
+Multi-Arch: foreign
+Homepage: http://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: localization files
+ This package contains the translation files for the GNU C library and
+ utility programs.
+
+Package: libc6
+Source: glibc
+Version: 2.24-11+deb9u1
+Architecture: armhf
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 8380
+Depends: libgcc1
+Suggests: glibc-doc, debconf | debconf-2.0, libc-l10n, locales
+Breaks: hurd (<< 1:0.5.git20140203-1), libtirpc1 (<< 0.2.3), locales (<< 2.24), locales-all (<< 2.24), nscd (<< 2.24)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: Shared libraries
+ Contains the standard libraries that are used by nearly all programs on
+ the system. This package includes shared versions of the standard C library
+ and the standard math library, as well as many others.
+
+Package: libcap-ng0
+Source: libcap-ng (0.7.7-3)
+Version: 0.7.7-3+b1
+Architecture: armhf
+Maintainer: Pierre Chifflier <pollux@debian.org>
+Installed-Size: 34
+Depends: libc6 (>= 2.8)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://people.redhat.com/sgrubb/libcap-ng
+Description: An alternate POSIX capabilities library
+ This library implements the user-space interfaces to the POSIX
+ 1003.1e capabilities available in Linux kernels.  These capabilities are
+ a partitioning of the all powerful root privilege into a set of distinct
+ privileges.
+ .
+ The libcap-ng library is intended to make programming with POSIX
+ capabilities much easier than the traditional libcap library.
+ .
+ This package contains header files and libraries for libcap-ng.
+
+Package: libcap2
+Version: 1:2.25-1
+Architecture: armhf
+Maintainer: Christian Kastner <ckk@debian.org>
+Installed-Size: 38
+Depends: libc6 (>= 2.8)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://sites.google.com/site/fullycapable/
+Description: POSIX 1003.1e capabilities (library)
+ Libcap implements the user-space interfaces to the POSIX 1003.1e capabilities
+ available in Linux kernels. These capabilities are a partitioning of the all
+ powerful root privilege into a set of distinct privileges.
+ .
+ This package contains the shared library.
+
+Package: libcomerr2
+Source: e2fsprogs
+Version: 1.43.4-2
+Architecture: armhf
+Maintainer: Theodore Y. Ts'o <tytso@mit.edu>
+Installed-Size: 79
+Depends: libc6 (>= 2.17)
+Replaces: e2fsprogs (<< 1.34-1)
+Provides: libcomerr-kth-compat
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://e2fsprogs.sourceforge.net
+Description: common error description library
+ libcomerr is an attempt to present a common error-handling mechanism to
+ manipulate the most common form of error code in a fashion that does not
+ have the problems identified with mechanisms commonly in use.
+
+Package: libcryptsetup4
+Source: cryptsetup
+Version: 2:1.7.3-4
+Architecture: armhf
+Maintainer: Debian Cryptsetup Team <pkg-cryptsetup-devel@lists.alioth.debian.org>
+Installed-Size: 163
+Depends: libc6 (>= 2.17), libdevmapper1.02.1 (>= 2:1.02.97), libgcrypt20 (>= 1.7.0), libuuid1 (>= 2.16), libgpg-error0 (>= 1.10-0.1)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://gitlab.com/cryptsetup/cryptsetup
+Description: disk encryption support - shared library
+ Cryptsetup provides an interface for configuring encryption on block
+ devices (such as /home or swap partitions), using the Linux kernel
+ device mapper target dm-crypt. It features integrated Linux Unified Key
+ Setup (LUKS) support.
+ .
+ This package provides the libcryptsetup shared library.
+
+Package: libcurl3-gnutls
+Source: curl
+Version: 7.52.1-5+deb9u3
+Architecture: armhf
+Maintainer: Alessandro Ghedini <ghedo@debian.org>
+Installed-Size: 423
+Depends: libc6 (>= 2.17), libcomerr2 (>= 1.01), libgnutls30 (>= 3.5.6), libgssapi-krb5-2 (>= 1.14+dfsg), libidn2-0 (>= 0.6), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libldap-2.4-2 (>= 2.4.7), libnettle6, libnghttp2-14 (>= 1.12.0), libpsl5 (>= 0.13.0), librtmp1 (>= 2.4+20131018.git79459a2-3~), libssh2-1 (>= 1.7.0), zlib1g (>= 1:1.1.4)
+Recommends: ca-certificates
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://curl.haxx.se
+Description: easy-to-use client-side URL transfer library (GnuTLS flavour)
+ libcurl is an easy-to-use client-side URL transfer library, supporting DICT,
+ FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S,
+ RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP.
+ .
+ libcurl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP
+ form based upload, proxies, cookies, user+password authentication (Basic,
+ Digest, NTLM, Negotiate, Kerberos), file transfer resume, http proxy tunneling
+ and more!
+ .
+ libcurl is free, thread-safe, IPv6 compatible, feature rich, well supported,
+ fast, thoroughly documented and is already used by many known, big and
+ successful companies and numerous applications.
+ .
+ SSL support is provided by GnuTLS.
+
+Package: libdb5.3
+Source: db5.3
+Version: 5.3.28-12+deb9u1
+Architecture: armhf
+Maintainer: Debian Berkeley DB Group <pkg-db-devel@lists.alioth.debian.org>
+Installed-Size: 1115
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.oracle.com/technetwork/database/database-technologies/berkeleydb/overview/index.html
+Description: Berkeley v5.3 Database Libraries [runtime]
+ This is the runtime package for programs that use the v5.3 Berkeley
+ database library.
+
+Package: libdebconfclient0
+Source: cdebconf
+Version: 0.227
+Architecture: armhf
+Maintainer: Debian Install System Team <debian-boot@lists.debian.org>
+Installed-Size: 62
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Description: Debian Configuration Management System (C-implementation library)
+ Debconf is a configuration management system for Debian packages. It is
+ used by some packages to prompt you for information before they are
+ installed. cdebconf is a reimplementation of the original debconf in C.
+ .
+ This library allows C programs to interface with cdebconf.
+
+Package: libdevmapper1.02.1
+Source: lvm2 (2.02.168-2)
+Version: 2:1.02.137-2
+Architecture: armhf
+Maintainer: Debian LVM Team <pkg-lvm-maintainers@lists.alioth.debian.org>
+Installed-Size: 303
+Depends: libc6 (>= 2.22), libselinux1 (>= 1.32), libudev1 (>= 183), dmsetup (>= 2:1.02.137-2)
+Conflicts: libdevmapper1.02
+Breaks: liblvm2app2.2 (<< 2.02.122), lvm2 (<< 2.02.122)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://sources.redhat.com/lvm2/
+Description: Linux Kernel Device Mapper userspace library
+ The Linux Kernel Device Mapper is the LVM (Linux Logical Volume Management)
+ Team's implementation of a minimalistic kernel-space driver that handles
+ volume management, while keeping knowledge of the underlying device layout
+ in user-space.  This makes it useful for not only LVM, but software raid,
+ and other drivers that create "virtual" block devices.
+ .
+ This package contains the (user-space) shared library for accessing the
+ device-mapper; it allows usage of the device-mapper through a clean,
+ consistent interface (as opposed to through kernel ioctls).
+
+Package: libdns-export162
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Architecture: armhf
+Maintainer: LaMont Jones <lamont@debian.org>
+Installed-Size: 1457
+Depends: libc6 (>= 2.4), libisc-export160, libssl1.0.2 (>= 1.0.2d)
+Section: libs
+Priority: optional
+Description: Exported DNS Shared Library
+ The Berkeley Internet Name Domain (BIND) implements an Internet domain
+ name server.  BIND is the most widely-used name server software on the
+ Internet, and is supported by the Internet Software Consortium, www.isc.org.
+ .
+ This package delivers the exported libdns shared library.
+
+Package: libedit2
+Source: libedit
+Version: 3.1-20160903-3
+Architecture: armhf
+Maintainer: LLVM Packaging Team <pkg-llvm-team@lists.alioth.debian.org>
+Installed-Size: 156
+Depends: libbsd0 (>= 0.0), libc6 (>= 2.17), libncurses5 (>= 6), libtinfo5 (>= 6)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.thrysoee.dk/editline/
+Description: BSD editline and history libraries
+ Command line editor library provides generic line editing,
+ history, and tokenization functions.
+ .
+ It slightly resembles GNU readline.
+
+Package: libelf1
+Source: elfutils
+Version: 0.168-1
+Architecture: armhf
+Maintainer: Kurt Roeckx <kurt@roeckx.be>
+Installed-Size: 901
+Depends: libc6 (>= 2.4), zlib1g (>= 1:1.1.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://sourceware.org/elfutils/
+Description: library to read and write ELF files
+ The libelf1 package provides a shared library which allows reading and
+ writing ELF files on a high level.  Third party programs depend on
+ this package to read internals of ELF files.  The programs of the
+ elfutils package use it also to generate new ELF files.
+ .
+ This library is part of elfutils.
+
+Package: liberror-perl
+Version: 0.17024-1
+Architecture: all
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Installed-Size: 65
+Depends: perl
+Section: perl
+Priority: optional
+Homepage: https://metacpan.org/release/Error
+Description: Perl module for error/exception handling in an OO-ish way
+ The Error module provides two interfaces.  Firstly "Error" provides a
+ procedural interface to exception handling. Secondly "Error" is a base class
+ for errors/exceptions that can either be thrown, for subsequent catch, or can
+ simply be recorded.
+ .
+ Errors in the class "Error" should not be thrown directly, but the user
+ should throw errors from a sub-class of "Error".
+ .
+ Warning: Using the "Error" module is no longer recommended due to the
+ black-magical nature of its syntactic sugar, which often tends to break. Its
+ maintainers have stopped actively writing code that uses it, and discourage
+ people from doing so.
+ .
+ Recommended alternatives are Exception::Class (libexception-class-perl),
+ Error::Exception (not packaged), TryCatch (libtrycatch-perl), and Try::Tiny
+ (libtry-tiny-perl).
+
+Package: libexpat1
+Source: expat
+Version: 2.2.0-2+deb9u1
+Architecture: armhf
+Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Installed-Size: 223
+Depends: libc6 (>= 2.4), libgcc1 (>= 1:3.5)
+Conflicts: wink (<= 1.5.1060-4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://expat.sourceforge.net
+Description: XML parsing C library - runtime library
+ This package contains the runtime, shared library of expat, the C
+ library for parsing XML. Expat is a stream-oriented parser in
+ which an application registers handlers for things the parser
+ might find in the XML document (like start tags).
+
+Package: libfdisk1
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 348
+Depends: libblkid1 (>= 2.24.2), libc6 (>= 2.17), libuuid1 (>= 2.16)
+Section: libs
+Priority: required
+Multi-Arch: same
+Description: fdisk partitioning library
+ The libfdisk library is used for manipulating partition tables. It is
+ the core of the fdisk, cfdisk, and sfdisk tools.
+
+Package: libffi6
+Source: libffi
+Version: 3.2.1-6
+Architecture: armhf
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Installed-Size: 43
+Depends: libc6 (>= 2.7), libgcc1 (>= 1:3.5)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Description: Foreign Function Interface library runtime
+ A foreign function interface is the popular name for the interface that
+ allows code written in one language to call code written in another
+ language.
+
+Package: libgcc1
+Source: gcc-6 (6.3.0-18)
+Version: 1:6.3.0-18
+Architecture: armhf
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Installed-Size: 149
+Depends: gcc-6-base (= 6.3.0-18), libc6 (>= 2.4)
+Breaks: gcc-4.3 (<< 4.3.6-1), gcc-4.4 (<< 4.4.6-4), gcc-4.5 (<< 4.5.3-2)
+Provides: libgcc1-armhf
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://gcc.gnu.org/
+Description: GCC support library
+ Shared version of the support library, a library of internal subroutines
+ that GCC uses to overcome shortcomings of particular machines, or
+ special needs for some languages.
+
+Package: libgcrypt20
+Version: 1.7.6-2+deb9u2
+Architecture: armhf
+Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
+Installed-Size: 798
+Depends: libc6 (>= 2.15), libgpg-error0 (>= 1.14)
+Suggests: rng-tools
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://directory.fsf.org/project/libgcrypt/
+Description: LGPL Crypto library - runtime library
+ libgcrypt contains cryptographic functions.  Many important free
+ ciphers, hash algorithms and public key signing algorithms have been
+ implemented:
+ .
+ Arcfour, Blowfish, CAST5, DES, AES, Twofish, Serpent, rfc2268 (rc2), SEED,
+ Poly1305, Camellia, ChaCha20, IDEA, Salsa, CRC, MD2, MD4, MD5, RIPE-MD160,
+ SHA-1, SHA-256, SHA-512, SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128,
+ SHAKE256 Tiger, Whirlpool, DSA, DSA2, ElGamal, RSA, ECC (Curve25519,
+ sec256k1, GOST R 34.10-2001 and GOST R 34.10-2012, etc.)
+
+Package: libgdbm3
+Source: gdbm
+Version: 1.8.3-14
+Architecture: armhf
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Installed-Size: 59
+Depends: libc6 (>= 2.4), dpkg (>= 1.15.4) | install-info
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://directory.fsf.org/project/gdbm/
+Description: GNU dbm database routines (runtime version)
+ GNU dbm ('gdbm') is a library of database functions that use extendible
+ hashing and works similarly to the standard UNIX 'dbm' functions.
+ .
+ The basic use of 'gdbm' is to store key/data pairs in a data file, thus
+ providing a persistent version of the 'dictionary' Abstract Data Type
+ ('hash' to perl programmers).
+
+Package: libgmp10
+Source: gmp
+Version: 2:6.1.2+dfsg-1
+Architecture: armhf
+Maintainer: Debian Science Team <debian-science-maintainers@lists.alioth.debian.org>
+Installed-Size: 334
+Depends: libc6 (>= 2.7)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://gmplib.org/
+Description: Multiprecision arithmetic library
+ GNU MP is a programmer's library for arbitrary precision
+ arithmetic (ie, a bignum package).  It can operate on signed
+ integer, rational, and floating point numeric types.
+ .
+ It has a rich set of functions, and the functions have a regular
+ interface.
+
+Package: libgnutls30
+Source: gnutls28
+Version: 3.5.8-5+deb9u3
+Architecture: armhf
+Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
+Installed-Size: 1944
+Depends: libc6 (>= 2.22), libgmp10 (>= 2:6), libhogweed4, libidn11 (>= 1.13), libnettle6, libp11-kit0 (>= 0.23.1), libtasn1-6 (>= 4.9), zlib1g (>= 1:1.1.4)
+Suggests: gnutls-bin
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.gnutls.org/
+Description: GNU TLS library - main runtime library
+ GnuTLS is a portable library which implements the Transport Layer
+ Security (TLS 1.0, 1.1, 1.2) and Secure Sockets Layer (SSL) 3.0 and Datagram
+ Transport Layer Security (DTLS 1.0, 1.2) protocols.
+ .
+ GnuTLS features support for:
+  - TLS extensions: server name indication, max record size, opaque PRF
+    input, etc.
+  - authentication using the SRP protocol.
+  - authentication using both X.509 certificates and OpenPGP keys.
+  - TLS Pre-Shared-Keys (PSK) extension.
+  - Inner Application (TLS/IA) extension.
+  - X.509 and OpenPGP certificate handling.
+  - X.509 Proxy Certificates (RFC 3820).
+  - all the strong encryption algorithms (including SHA-256/384/512 and
+    Camellia (RFC 4132)).
+ .
+ This package contains the main runtime library.
+
+Package: libgpg-error0
+Source: libgpg-error
+Version: 1.26-2
+Architecture: armhf
+Maintainer: Debian GnuPG Maintainers <pkg-gnupg-maint@lists.alioth.debian.org>
+Installed-Size: 543
+Depends: libc6 (>= 2.15)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: https://www.gnupg.org/related_software/libgpg-error/
+Description: library for common error values and messages in GnuPG components
+ Library that defines common error values for all GnuPG
+ components.  Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt,
+ pinentry, SmartCard Daemon and possibly more in the future.
+
+Package: libgpm2
+Source: gpm (1.20.4-6.2)
+Version: 1.20.4-6.2+b1
+Architecture: armhf
+Maintainer: Peter Samuelson <peter@p12n.org>
+Installed-Size: 55
+Depends: libc6 (>= 2.7)
+Suggests: gpm
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.nico.schottelius.org/software/gpm/
+Description: General Purpose Mouse - shared library
+ This package provides a library that handles mouse requests
+ and delivers them to applications. See the description for the 'gpm'
+ package for more information.
+
+Package: libgssapi-krb5-2
+Source: krb5
+Version: 1.15-1+deb9u1
+Architecture: armhf
+Maintainer: Sam Hartman <hartmans@debian.org>
+Installed-Size: 293
+Depends: libc6 (>= 2.8), libcomerr2 (>= 1.34), libk5crypto3 (>= 1.8+dfsg), libkeyutils1 (>= 1.4), libkrb5-3 (= 1.15-1+deb9u1), libkrb5support0 (>= 1.15~beta1)
+Suggests: krb5-doc, krb5-user
+Breaks: libgssglue1 (<< 0.2-2)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://web.mit.edu/kerberos/
+Description: MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains the runtime library for the MIT Kerberos
+ implementation of GSS-API used by applications and Kerberos clients.
+
+Package: libhogweed4
+Source: nettle (3.3-1)
+Version: 3.3-1+b2
+Architecture: armhf
+Maintainer: Magnus Holmgren <holmgren@debian.org>
+Installed-Size: 179
+Depends: libc6 (>= 2.4), libgmp10 (>= 2:6.0.0), libnettle6 (= 3.3-1+b2)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.lysator.liu.se/~nisse/nettle/
+Description: low level cryptographic library (public-key cryptos)
+ Nettle is a cryptographic library that is designed to fit easily in more or
+ less any context: In crypto toolkits for object-oriented languages (C++,
+ Python, Pike, ...), in applications like LSH or GNUPG, or even in kernel
+ space.
+ .
+ It tries to solve a problem of providing a common set of cryptographic
+ algorithms for higher-level applications by implementing a
+ context-independent set of cryptographic algorithms. In that light, Nettle
+ doesn't do any memory allocation or I/O, it simply provides the
+ cryptographic algorithms for the application to use in any environment and
+ in any way it needs.
+ .
+ This package contains the asymmetric cryptographic algorithms, which,
+ require the GNU multiple precision arithmetic library (libgmp) for
+ their large integer computations.
+
+Package: libidn11
+Source: libidn
+Version: 1.33-1
+Architecture: armhf
+Maintainer: Debian Libidn Team <help-libidn@gnu.org>
+Installed-Size: 289
+Depends: libc6 (>= 2.4)
+Conflicts: libidn9-dev
+Replaces: libidn11-dev
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: https://www.gnu.org/software/libidn/
+Description: GNU Libidn library, implementation of IETF IDN specifications
+ GNU Libidn is a fully documented implementation of the Stringprep,
+ Punycode and IDNA specifications.  Libidn's purpose is to encode and
+ decode internationalized domain names.  The Nameprep, XMPP, SASLprep,
+ and iSCSI profiles are supported.
+ .
+ This package contains the shared library.
+
+Package: libidn2-0
+Version: 0.16-1+deb9u1
+Architecture: armhf
+Maintainer: Debian Libidn team <help-libidn@gnu.org>
+Installed-Size: 170
+Depends: libc6 (>= 2.4), libunistring0
+Section: libs
+Priority: extra
+Multi-Arch: same
+Homepage: https://www.gnu.org/software/libidn/#libidn2
+Description: Internationalized domain names (IDNA2008) library
+ Libidn2 implements the revised algorithm for internationalized domain
+ names called IDNA2008.
+ .
+ This package contains runtime libraries.
+
+Package: libip4tc0
+Source: iptables
+Version: 1.6.0+snapshot20161117-6
+Architecture: armhf
+Maintainer: Arturo Borrero Gonzalez <arturo@debian.org>
+Installed-Size: 101
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.netfilter.org/
+Description: netfilter libip4tc library
+ The user-space iptables (IPv4) C library from the Netfilter xtables framework.
+ .
+ iptables IPv4 ruleset ADT and kernel interface.
+ .
+ This library has been considered private for years (and still is), in the
+ sense of changing symbols and backward compatibility not guaranteed.
+
+Package: libisc-export160
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Architecture: armhf
+Maintainer: LaMont Jones <lamont@debian.org>
+Installed-Size: 466
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Description: Exported ISC Shared Library
+ The Berkeley Internet Name Domain (BIND) implements an Internet domain
+ name server.  BIND is the most widely-used name server software on the
+ Internet, and is supported by the Internet Software Consortium, www.isc.org.
+ .
+ This package delivers the exported libisc shared library.
+
+Package: libk5crypto3
+Source: krb5
+Version: 1.15-1+deb9u1
+Architecture: armhf
+Maintainer: Sam Hartman <hartmans@debian.org>
+Installed-Size: 258
+Depends: libc6 (>= 2.4), libkeyutils1 (>= 1.4), libkrb5support0 (>= 1.15~beta1)
+Suggests: krb5-doc, krb5-user
+Breaks: libgssapi-krb5-2 (<= 1.10+dfsg~alpha1), libkrb5-3 (<= 1.8~aa)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://web.mit.edu/kerberos/
+Description: MIT Kerberos runtime libraries - Crypto Library
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains the runtime cryptography libraries used by
+ applications and Kerberos clients.
+
+Package: libkeyutils1
+Source: keyutils
+Version: 1.5.9-9
+Architecture: armhf
+Maintainer: Christian Kastner <ckk@debian.org>
+Installed-Size: 32
+Depends: libc6 (>= 2.7)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://people.redhat.com/~dhowells/keyutils/
+Description: Linux Key Management Utilities (library)
+ Keyutils is a set of utilities for managing the key retention facility in the
+ kernel, which can be used by filesystems, block devices and more to gain and
+ retain the authorization and encryption keys required to perform secure
+ operations.
+ .
+ This package provides a wrapper library for the key management facility system
+ calls.
+
+Package: libkmod2
+Source: kmod
+Version: 23-2
+Architecture: armhf
+Maintainer: Marco d'Itri <md@linux.it>
+Installed-Size: 87
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: important
+Multi-Arch: same
+Description: libkmod shared library
+ This library provides an API for insertion, removal, configuration and
+ listing of kernel modules.
+
+Package: libkrb5-3
+Source: krb5
+Version: 1.15-1+deb9u1
+Architecture: armhf
+Maintainer: Sam Hartman <hartmans@debian.org>
+Installed-Size: 697
+Depends: libc6 (>= 2.16), libcomerr2 (>= 1.34), libk5crypto3 (>= 1.15~beta1), libkeyutils1 (>= 1.5.9), libkrb5support0 (= 1.15-1+deb9u1)
+Recommends: krb5-locales
+Suggests: krb5-doc, krb5-user
+Breaks: libsmbclient (<= 2:3.6.1-2), sssd (<= 1.2.1-4.3)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://web.mit.edu/kerberos/
+Description: MIT Kerberos runtime libraries
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains the runtime library for the main Kerberos v5 API
+ used by applications and Kerberos clients.
+
+Package: libkrb5support0
+Source: krb5
+Version: 1.15-1+deb9u1
+Architecture: armhf
+Maintainer: Sam Hartman <hartmans@debian.org>
+Installed-Size: 137
+Depends: libc6 (>= 2.8), libkeyutils1 (>= 1.4)
+Breaks: libgssapi-krb5-2 (<< 1.13~alpha1-1), libk5crypto3 (<< 1.13~alpha1-1), libkadm5clnt-mit9 (<< 1.13~alpha1-1), libkadm5srv-mit9 (<< 1.13~alpha1-1), libkdb5-7 (<< 1.13~alpha1-1)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://web.mit.edu/kerberos/
+Description: MIT Kerberos runtime libraries - Support library
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains an internal runtime support library used by other
+ Kerberos libraries.
+
+Package: libldap-2.4-2
+Source: openldap
+Version: 2.4.44+dfsg-5+deb9u1
+Architecture: armhf
+Maintainer: Debian OpenLDAP Maintainers <pkg-openldap-devel@lists.alioth.debian.org>
+Installed-Size: 367
+Depends: libc6 (>= 2.12), libgnutls30 (>= 3.5.6), libsasl2-2, libldap-common (>= 2.4.44+dfsg-5+deb9u1)
+Conflicts: ldap-utils (<= 2.1.23-1)
+Replaces: libldap-2.3-0, libldap2
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.openldap.org/
+Description: OpenLDAP libraries
+ These are the run-time libraries for the OpenLDAP (Lightweight Directory
+ Access Protocol) servers and clients.
+
+Package: libldap-common
+Source: openldap
+Version: 2.4.44+dfsg-5+deb9u1
+Architecture: all
+Maintainer: Debian OpenLDAP Maintainers <pkg-openldap-devel@lists.alioth.debian.org>
+Installed-Size: 108
+Replaces: libldap-2.4-2 (<< 2.4.44+dfsg-1)
+Section: libs
+Priority: standard
+Multi-Arch: foreign
+Homepage: http://www.openldap.org/
+Description: OpenLDAP common files for libraries
+ These are common files for the run-time libraries for the OpenLDAP
+ (Lightweight Directory Access Protocol) servers and clients.
+
+Package: liblz4-1
+Source: lz4 (0.0~r131-2)
+Version: 0.0~r131-2+b1
+Architecture: armhf
+Maintainer: Nobuhiro Iwamatsu <iwamatsu@debian.org>
+Installed-Size: 68
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: extra
+Multi-Arch: same
+Homepage: https://github.com/Cyan4973/lz4
+Description: Fast LZ compression algorithm library - runtime
+ LZ4 is a very fast lossless compression algorithm, providing compression speed
+ at 400 MB/s per core, scalable with multi-cores CPU. It also features an
+ extremely fast decoder, with speed in multiple GB/s per core, typically
+ reaching RAM speed limits on multi-core systems.
+ .
+ This package includes the shared library.
+
+Package: liblzma5
+Source: xz-utils (5.2.2-1.2)
+Version: 5.2.2-1.2+b1
+Architecture: armhf
+Maintainer: Jonathan Nieder <jrnieder@gmail.com>
+Installed-Size: 290
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://tukaani.org/xz/
+Description: XZ-format compression library
+ XZ is the successor to the Lempel-Ziv/Markov-chain Algorithm
+ compression format, which provides memory-hungry but powerful
+ compression (often better than bzip2) and fast, easy decompression.
+ .
+ The native format of liblzma is XZ; it also supports raw (headerless)
+ streams and the older LZMA format used by lzma. (For 7-Zip's related
+ format, use the p7zip package instead.)
+
+Package: libmnl0
+Source: libmnl
+Version: 1.0.4-2
+Architecture: armhf
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 38
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://netfilter.org/projects/libmnl/
+Description: minimalistic Netlink communication library
+ libmnl is a minimalistic user-space library oriented to Netlink developers.
+ There are a lot of common tasks in parsing, validating, constructing of
+ both the Netlink header and TLVs that are repetitive and easy to get wrong.
+ This library aims to provide simple helpers that allows you to re-use code
+ and to avoid re-inventing the wheel.
+ .
+ The main features of this library are:
+ .
+ Small: the shared library requires around 30KB for an x86-based computer.
+ .
+ Simple: this library avoids complexity and elaborated abstractions that
+ tend to hide Netlink details.
+ .
+ Easy to use: the library simplifies the work for Netlink-wise developers.
+ It provides functions to make socket handling, message building,
+ validating, parsing and sequence tracking, easier.
+ .
+ Easy to re-use: you can use the library to build your own abstraction
+ layer on top of this library.
+ .
+ Decoupling: the interdependency of the main bricks that compose the
+ library is reduced, i.e. the library provides many helpers, but the
+ programmer is not forced to use them.
+ .
+ This package contains the shared libraries needed to run programs that use
+ the minimalistic Netlink communication library.
+
+Package: libmount1
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 293
+Depends: libblkid1 (>= 2.17.2), libc6 (>= 2.17), libselinux1 (>= 2.6-3~)
+Section: libs
+Priority: required
+Multi-Arch: same
+Description: device mounting library
+ This device mounting library is used by mount and umount helpers.
+
+Package: libncurses5
+Source: ncurses
+Version: 6.0+20161126-1+deb9u1
+Architecture: armhf
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 184
+Depends: libtinfo5 (= 6.0+20161126-1+deb9u1), libc6 (>= 2.4)
+Recommends: libgpm2
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://invisible-island.net/ncurses/
+Description: shared libraries for terminal handling
+ The ncurses library routines are a terminal-independent method of
+ updating character screens with reasonable optimization.
+ .
+ This package contains the shared libraries necessary to run programs
+ compiled with ncurses.
+
+Package: libncursesw5
+Source: ncurses
+Version: 6.0+20161126-1+deb9u1
+Architecture: armhf
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 224
+Depends: libtinfo5 (= 6.0+20161126-1+deb9u1), libc6 (>= 2.4)
+Recommends: libgpm2
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://invisible-island.net/ncurses/
+Description: shared libraries for terminal handling (wide character support)
+ The ncurses library routines are a terminal-independent method of
+ updating character screens with reasonable optimization.
+ .
+ This package contains the shared libraries necessary to run programs
+ compiled with ncursesw, which includes support for wide characters.
+
+Package: libnettle6
+Source: nettle (3.3-1)
+Version: 3.3-1+b2
+Architecture: armhf
+Maintainer: Magnus Holmgren <holmgren@debian.org>
+Installed-Size: 325
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.lysator.liu.se/~nisse/nettle/
+Description: low level cryptographic library (symmetric and one-way cryptos)
+ Nettle is a cryptographic library that is designed to fit easily in more or
+ less any context: In crypto toolkits for object-oriented languages (C++,
+ Python, Pike, ...), in applications like LSH or GNUPG, or even in kernel
+ space.
+ .
+ It tries to solve a problem of providing a common set of cryptographic
+ algorithms for higher-level applications by implementing a
+ context-independent set of cryptographic algorithms. In that light, Nettle
+ doesn't do any memory allocation or I/O, it simply provides the
+ cryptographic algorithms for the application to use in any environment and
+ in any way it needs.
+ .
+ This package contains the symmetric and one-way cryptographic
+ algorithms. To avoid having this package depend on libgmp, the
+ asymmetric cryptos reside in a separate library, libhogweed.
+
+Package: libnghttp2-14
+Source: nghttp2
+Version: 1.18.1-1
+Architecture: armhf
+Maintainer: Dave Beckett <dajobe@debian.org>
+Installed-Size: 144
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://nghttp2.org/
+Description: library implementing HTTP/2 protocol (shared library)
+ This is an implementation of the Hypertext Transfer Protocol version
+ 2 in C. The framing layer of HTTP/2 is implemented as a reusable C
+ library.
+ .
+ This package installs a shared library.
+
+Package: libp11-kit0
+Source: p11-kit
+Version: 0.23.3-2
+Architecture: armhf
+Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
+Installed-Size: 275
+Depends: libc6 (>= 2.16), libffi6 (>= 3.0.4)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://p11-glue.freedesktop.org/p11-kit.html
+Description: library for loading and coordinating access to PKCS#11 modules - runtime
+ The p11-kit library provides a way to load and enumerate Public-Key
+ Cryptography Standard #11 modules, along with a standard configuration
+ setup for installing PKCS#11 modules so that they're discoverable. It
+ also solves problems with coordinating the use of PKCS#11 by different
+ components or libraries living in the same process.
+ .
+ This package contains the shared library required for applications loading
+ and accessing PKCS#11 modules.
+
+Package: libpam-modules-bin
+Source: pam
+Version: 1.1.8-3.6
+Architecture: armhf
+Maintainer: Steve Langasek <vorlon@debian.org>
+Installed-Size: 186
+Depends: libaudit1 (>= 1:2.2.1), libc6 (>= 2.4), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32)
+Replaces: libpam-modules (<< 1.1.3-8)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.linux-pam.org/
+Description: Pluggable Authentication Modules for PAM - helper binaries
+ This package contains helper binaries used by the standard set of PAM
+ modules in the libpam-modules package.
+
+Package: libpam-modules
+Source: pam
+Version: 1.1.8-3.6
+Architecture: armhf
+Maintainer: Steve Langasek <vorlon@debian.org>
+Installed-Size: 668
+Pre-Depends: libaudit1 (>= 1:2.2.1), libc6 (>= 2.15), libdb5.3, libpam0g (>= 1.1.3-2), libselinux1 (>= 2.1.9), debconf (>= 0.5) | debconf-2.0, libpam-modules-bin (= 1.1.8-3.6)
+Conflicts: libpam-mkhomedir, libpam-motd, libpam-umask
+Replaces: libpam-umask, libpam0g-util
+Provides: libpam-mkhomedir, libpam-motd, libpam-umask
+Section: admin
+Priority: required
+Multi-Arch: same
+Homepage: http://www.linux-pam.org/
+Description: Pluggable Authentication Modules for PAM
+ This package completes the set of modules for PAM. It includes the
+  pam_unix.so module as well as some specialty modules.
+
+Package: libpam-runtime
+Source: pam
+Version: 1.1.8-3.6
+Architecture: all
+Maintainer: Steve Langasek <vorlon@debian.org>
+Installed-Size: 1016
+Depends: debconf (>= 0.5) | debconf-2.0, debconf (>= 1.5.19) | cdebconf, libpam-modules (>= 1.0.1-6)
+Conflicts: libpam0g-util
+Replaces: libpam0g-dev, libpam0g-util
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.linux-pam.org/
+Description: Runtime support for the PAM library
+ Contains configuration files and  directories required for
+ authentication  to work on Debian systems.  This package is required
+ on almost all installations.
+
+Package: libpam0g
+Source: pam
+Version: 1.1.8-3.6
+Architecture: armhf
+Maintainer: Steve Langasek <vorlon@debian.org>
+Installed-Size: 202
+Depends: libaudit1 (>= 1:2.2.1), libc6 (>= 2.8), debconf (>= 0.5) | debconf-2.0
+Suggests: libpam-doc
+Replaces: libpam0g-util
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://www.linux-pam.org/
+Description: Pluggable Authentication Modules library
+ Contains the shared library for Linux-PAM, a library that enables the
+ local system administrator to choose how applications authenticate users.
+ In other words, without rewriting or recompiling a PAM-aware application,
+ it is possible to switch between the authentication mechanism(s) it uses.
+ One may entirely upgrade the local authentication system without touching
+ the applications themselves.
+
+Package: libpcre3
+Source: pcre3
+Version: 2:8.39-3
+Architecture: armhf
+Maintainer: Matthew Vernon <matthew@debian.org>
+Installed-Size: 524
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.4)
+Conflicts: libpcre3-dev (<= 4.3-3)
+Breaks: approx (<< 4.4-1~), cduce (<< 0.5.3-2~), cmigrep (<< 1.5-7~), galax (<< 1.1-7~), libpcre-ocaml (<< 6.0.1~), liquidsoap (<< 0.9.2-3~), ocsigen (<< 1.3.3-1~)
+Section: libs
+Priority: important
+Multi-Arch: same
+Description: Old Perl 5 Compatible Regular Expression Library - runtime files
+ This is a library of functions to support regular expressions whose syntax
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ New packages should use the newer pcre2 packages, and existing
+ packages should migrate to pcre2.
+ .
+ This package contains the runtime libraries.
+
+Package: libperl5.24
+Source: perl
+Version: 5.24.1-3+deb9u2
+Architecture: armhf
+Maintainer: Niko Tyni <ntyni@debian.org>
+Installed-Size: 13698
+Depends: libbz2-1.0, libc6 (>= 2.23), libdb5.3, libgdbm3 (>= 1.8.3), zlib1g (>= 1:1.2.2.3), perl-modules-5.24 (>= 5.24.1-3+deb9u2)
+Breaks: dh-make-perl (<< 0.73-1), ftpmirror (<< 1.96+dfsg-13), libcompress-raw-bzip2-perl (<< 2.069), libcompress-raw-zlib-perl (<< 2.069), libcompress-zlib-perl (<< 2.069.001), libdigest-md5-perl (<< 2.54), libdigest-sha-perl (<< 5.95.01), libencode-perl (<< 2.86), libhtml-template-compiled-perl (<< 0.95-1), libio-compress-base-perl (<< 2.069.001), libio-compress-bzip2-perl (<< 2.069.001), libio-compress-perl (<< 2.069.001), libio-compress-zlib-perl (<< 2.069.001), libload-perl (<< 0.20-1), libmime-base64-perl (<< 3.15), libnet-jifty-perl (<< 0.14-1), libperl-apireference-perl (<< 0.09-1), libregexp-optimizer-perl (<< 0.15-3), libsoap-lite-perl (<< 0.712-4), libstorable-perl (<< 2.56.01), libsys-syslog-perl (<< 0.33.01), libthreads-perl (<< 2.07), libthreads-shared-perl (<< 1.51), libtime-hires-perl (<< 1.9733), libtime-piece-perl (<< 1.31), libxml-parser-lite-tree-perl (<< 0.14-1), libyaml-perl (<< 0.73-1), mrtg (<< 2.16.3-3.1)
+Replaces: libarchive-tar-perl (<= 1.38-2), libcompress-raw-bzip2-perl (<< 2.069), libcompress-raw-zlib-perl (<< 2.069), libcompress-zlib-perl (<< 2.069.001), libdigest-md5-perl (<< 2.54), libdigest-sha-perl (<< 5.95.01), libencode-perl (<< 2.86), libio-compress-base-perl (<< 2.069.001), libio-compress-bzip2-perl (<< 2.069.001), libio-compress-perl (<< 2.069.001), libio-compress-zlib-perl (<< 2.069.001), libmime-base64-perl (<< 3.15), libmodule-corelist-perl (<< 2.14-2), libstorable-perl (<< 2.56.01), libsys-syslog-perl (<< 0.33.01), libthreads-perl (<< 2.07), libthreads-shared-perl (<< 1.51), libtime-hires-perl (<< 1.9733), libtime-piece-perl (<< 1.31), perl (<< 5.22.0~), perl-base (<< 5.22.0~)
+Provides: libcompress-raw-bzip2-perl, libcompress-raw-zlib-perl, libcompress-zlib-perl, libdigest-md5-perl, libdigest-sha-perl, libencode-perl, libio-compress-base-perl, libio-compress-bzip2-perl, libio-compress-perl, libio-compress-zlib-perl, libmime-base64-perl, libstorable-perl, libsys-syslog-perl, libthreads-perl, libthreads-shared-perl, libtime-hires-perl, libtime-piece-perl, perl-cross-config
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://dev.perl.org/perl5/
+Description: shared Perl library
+ This package contains the shared Perl library, used by applications
+ which embed a Perl interpreter.
+ .
+ It also contains the architecture-dependent parts of the standard
+ library (and depends on perl-modules-5.24 which contains the
+ architecture-independent parts).
+
+Package: libpopt0
+Source: popt (1.16-10)
+Version: 1.16-10+b2
+Architecture: armhf
+Maintainer: Paul Martin <pm@debian.org>
+Installed-Size: 207
+Depends: libc6 (>= 2.17)
+Conflicts: libpopt-dev (<= 1.4-1), popt, rpm (<= 4.0.2-3)
+Replaces: popt
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://rpm5.org/
+Description: lib for parsing cmdline parameters
+ Popt was heavily influenced by the getopt() and getopt_long() functions,
+ but it allows more powerful argument expansion. It can parse arbitrary
+ argv[] style arrays and automatically set variables based on command
+ line arguments. It also allows command line arguments to be aliased via
+ configuration files and includes utility functions for parsing arbitrary
+ strings into argv[] arrays using shell-like rules.
+ .
+ This package contains the runtime library and locale data.
+
+Package: libprocps6
+Source: procps
+Version: 2:3.3.12-3
+Architecture: armhf
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 96
+Depends: libc6 (>= 2.4), libsystemd0 (>= 209)
+Replaces: procps (<< 1:3.3.2-1)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: https://gitlab.com/procps-ng/procps
+Description: library for accessing process information from /proc
+ The libprocps library is a way of accessing information out of the /proc
+ filesystem.
+ .
+ This package contains the shared libraries necessary to run programs
+ compiled with libprocps.
+
+Package: libpsl5
+Source: libpsl
+Version: 0.17.0-3
+Architecture: armhf
+Maintainer: Tim Rühsen <tim.ruehsen@gmx.de>
+Installed-Size: 65
+Depends: libidn2-0 (>= 0.16), libc6 (>= 2.4), libunistring0
+Recommends: publicsuffix (>= 20150507)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/rockdaboot/libpsl
+Description: Library for Public Suffix List (shared libraries)
+ Libpsl allows checking domains against the Public Suffix List.
+ It can be used to avoid privacy-leaking 'super-cookies',
+ 'super domain' certificates, for domain highlighting purposes
+ sorting domain lists by site and more.
+ .
+ Please see https://publicsuffix.org for more detailed information.
+ .
+ This package contains runtime libraries.
+
+Package: libpython-stdlib
+Source: python-defaults
+Version: 2.7.13-2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 37
+Depends: libpython2.7-stdlib (>= 2.7.13-1~)
+Section: python
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.python.org/
+Description: interactive high-level object-oriented language (default python version)
+ Python, the high-level, interactive object oriented language,
+ includes an extensive class library with lots of goodies for
+ network programming, system administration, sounds and graphics.
+ .
+ This package is a dependency package, which depends on Debian's default
+ Python version (currently v2.7).
+
+Package: libpython2.7-minimal
+Source: python2.7
+Version: 2.7.13-2+deb9u2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 2767
+Recommends: libpython2.7-stdlib
+Conflicts: binfmt-support (<< 1.1.2)
+Breaks: python2.7-minimal (<< 2.7.4~rc1-1~)
+Replaces: libpython2.7-stdlib (<< 2.7.8-7), python2.7 (<< 2.7.4-2), python2.7-minimal (<< 2.7.3-10)
+Section: python
+Priority: optional
+Multi-Arch: same
+Description: Minimal subset of the Python language (version 2.7)
+ This package contains some essential modules. It is normally not
+ used on it's own, but as a dependency of python2.7-minimal.
+
+Package: libpython2.7-stdlib
+Source: python2.7
+Version: 2.7.13-2+deb9u2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 7921
+Depends: libpython2.7-minimal (= 2.7.13-2+deb9u2), mime-support, libbz2-1.0, libc6 (>= 2.15), libdb5.3, libexpat1 (>= 2.1~beta3), libffi6 (>= 3.0.4), libncursesw5 (>= 6), libreadline7 (>= 7.0~beta), libsqlite3-0 (>= 3.5.9), libssl1.1 (>= 1.1.0), libtinfo5 (>= 6)
+Breaks: python-urllib3 (<< 1.9.1-3)
+Replaces: python2.7 (<< 2.7.5-0~)
+Provides: python-argparse, python2.7-argparse, python2.7-celementtree, python2.7-cjkcodecs, python2.7-ctypes, python2.7-elementtree, python2.7-profiler, python2.7-wsgiref
+Section: python
+Priority: optional
+Multi-Arch: same
+Description: Interactive high-level object-oriented language (standard library, version 2.7)
+ Python is a high-level, interactive, object-oriented language. Its 2.7 version
+ includes an extensive class library with lots of goodies for
+ network programming, system administration, sounds and graphics.
+ .
+ This package contains Python 2.7's standard library. It is normally not
+ used on its own, but as a dependency of python2.7.
+
+Package: libreadline7
+Source: readline
+Version: 7.0-3
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 280
+Depends: readline-common, libc6 (>= 2.15), libtinfo5 (>= 6)
+Section: libs
+Priority: important
+Multi-Arch: same
+Description: GNU readline and history libraries, run-time libraries
+ The GNU readline library aids in the consistency of user interface
+ across discrete programs that need to provide a command line
+ interface.
+ .
+ The GNU history library provides a consistent user interface for
+ recalling lines of previously typed input.
+
+Package: librtmp1
+Source: rtmpdump (2.4+20151223.gitfa8646d.1-1)
+Version: 2.4+20151223.gitfa8646d.1-1+b1
+Architecture: armhf
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Installed-Size: 105
+Depends: libc6 (>= 2.7), libgmp10, libgnutls30 (>= 3.5.6), libhogweed4, libnettle6, zlib1g (>= 1:1.1.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://rtmpdump.mplayerhq.hu/
+Description: toolkit for RTMP streams (shared library)
+ A small dumper for media content streamed over the RTMP protocol (like BBC's
+ iPlayer high quality streams). Supplying an RTMP URL will result in a dumped
+ flv file, which can be played/transcoded with standard tools.
+ .
+ This package contains the shared libraries, header files needed by
+ programs that want to use librtmp.
+
+Package: libsasl2-2
+Source: cyrus-sasl2
+Version: 2.1.27~101-g0780600+dfsg-3
+Architecture: armhf
+Maintainer: Debian Cyrus SASL Team <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
+Installed-Size: 142
+Depends: libsasl2-modules-db (>= 2.1.27~101-g0780600+dfsg-3), libc6 (>= 2.15)
+Recommends: libsasl2-modules (>= 2.1.27~101-g0780600+dfsg-3)
+Breaks: postfix (<= 2.8.3-1), slapd (<= 2.4.25-3)
+Replaces: libsasl2
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: https://www.cyrusimap.org/
+Description: Cyrus SASL - authentication abstraction library
+ This is the Cyrus SASL API implementation, version 2.1.
+ .
+ SASL is the Simple Authentication and Security Layer, a method for
+ adding authentication support to connection-based protocols. To use
+ SASL, a protocol includes a command for identifying and
+ authenticating a user to a server and for optionally negotiating
+ protection of subsequent protocol interactions. If its use is
+ negotiated, a security layer is inserted between the protocol and the
+ connection. See RFC 2222 for more information.
+ .
+ Any of: ANONYMOUS, CRAM-MD5, DIGEST-MD5, GSSAPI (MIT or Heimdal
+ Kerberos 5), NTLM, OTP, PLAIN, or LOGIN can be used.
+
+Package: libsasl2-modules-db
+Source: cyrus-sasl2
+Version: 2.1.27~101-g0780600+dfsg-3
+Architecture: armhf
+Maintainer: Debian Cyrus SASL Team <pkg-cyrus-sasl2-debian-devel@lists.alioth.debian.org>
+Installed-Size: 88
+Depends: libc6 (>= 2.4), libdb5.3
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: https://www.cyrusimap.org/
+Description: Cyrus SASL - pluggable authentication modules (DB)
+ This is the Cyrus SASL API implementation, version 2.1. See package
+ libsasl2-2 and RFC 2222 for more information.
+ .
+ This package provides the DB plugin, which supports Berkeley DB lookups.
+
+Package: libseccomp2
+Source: libseccomp
+Version: 2.3.1-2.1
+Architecture: armhf
+Maintainer: Kees Cook <kees@debian.org>
+Installed-Size: 144
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://github.com/seccomp/libseccomp
+Description: high level interface to Linux seccomp filter
+ This library provides a high level interface to constructing, analyzing
+ and installing seccomp filters via a BPF passed to the Linux Kernel's
+ prctl() syscall.
+
+Package: libselinux1
+Source: libselinux (2.6-3)
+Version: 2.6-3+b3
+Architecture: armhf
+Maintainer: Debian SELinux maintainers <selinux-devel@lists.alioth.debian.org>
+Installed-Size: 156
+Depends: libc6 (>= 2.8), libpcre3
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://userspace.selinuxproject.org/
+Description: SELinux runtime shared libraries
+ This package provides the shared libraries for Security-enhanced
+ Linux that provides interfaces (e.g. library functions for the
+ SELinux kernel APIs like getcon(), other support functions like
+ getseuserbyname()) to SELinux-aware applications. Security-enhanced
+ Linux is a patch of the Linux kernel and a number of utilities with
+ enhanced security functionality designed to add mandatory access
+ controls to Linux.  The Security-enhanced Linux kernel contains new
+ architectural components originally developed to improve the security
+ of the Flask operating system. These architectural components provide
+ general support for the enforcement of many kinds of mandatory access
+ control policies, including those based on the concepts of Type
+ Enforcement, Role-based Access Control, and Multi-level Security.
+ .
+ libselinux1 provides an API for SELinux applications to get and set
+ process and file security contexts and to obtain security policy
+ decisions.  Required for any applications that use the SELinux
+ API. libselinux may use the shared libsepol to manipulate the binary
+ policy if necessary (e.g. to downgrade the policy format to an older
+ version supported by the kernel) when loading policy.
+
+Package: libsemanage-common
+Source: libsemanage
+Version: 2.6-2
+Architecture: all
+Maintainer: Debian SELinux maintainers <selinux-devel@lists.alioth.debian.org>
+Installed-Size: 39
+Breaks: libsemanage1 (<= 2.0.41-1), libsemanage1-dev (<< 2.1.6-3~)
+Replaces: libsemanage1 (<= 2.0.41-1), libsemanage1-dev (<< 2.1.6-3~)
+Section: libs
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://userspace.selinuxproject.org/
+Description: Common files for SELinux policy management libraries
+ This package provides the common files used by the shared libraries
+ for SELinux policy management.
+ .
+ Security-enhanced Linux is a patch of the Linux kernel and a
+ number of utilities with enhanced security functionality designed to
+ add mandatory access controls to Linux.  The Security-enhanced Linux
+ kernel contains new architectural components originally developed to
+ improve the security of the Flask operating system. These
+ architectural components provide general support for the enforcement
+ of many kinds of mandatory access control policies, including those
+ based on the concepts of Type Enforcement, Role-based Access
+ Control, and Multi-level Security.
+
+Package: libsemanage1
+Source: libsemanage
+Version: 2.6-2
+Architecture: armhf
+Maintainer: Debian SELinux maintainers <selinux-devel@lists.alioth.debian.org>
+Installed-Size: 200
+Depends: libsemanage-common (= 2.6-2), libaudit1 (>= 1:2.2.1), libbz2-1.0, libc6 (>= 2.8), libselinux1 (>= 2.6), libsepol1 (>= 2.6), libustr-1.0-1 (>= 1.0.4)
+Breaks: policycoreutils (<< 2.4), selinux-policy-default (<< 2:2.20140421-10~), selinux-policy-mls (<< 2:2.20140421-10~)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://userspace.selinuxproject.org/
+Description: SELinux policy management library
+ This package provides the shared libraries for SELinux policy management.
+ It uses libsepol for binary policy manipulation and libselinux for
+ interacting with the SELinux system.  It also exec's helper programs
+ for loading policy and for checking whether the file_contexts
+ configuration is valid (load_policy and setfiles from
+ policycoreutils) presently, although this may change at least for the
+ bootstrapping case
+ .
+ Security-enhanced Linux is a patch of the Linux kernel and a
+ number of utilities with enhanced security functionality designed to
+ add mandatory access controls to Linux.  The Security-enhanced Linux
+ kernel contains new architectural components originally developed to
+ improve the security of the Flask operating system. These
+ architectural components provide general support for the enforcement
+ of many kinds of mandatory access control policies, including those
+ based on the concepts of Type Enforcement, Role-based Access
+ Control, and Multi-level Security.
+
+Package: libsepol1
+Source: libsepol
+Version: 2.6-2
+Architecture: armhf
+Maintainer: Debian SELinux maintainers <selinux-devel@lists.alioth.debian.org>
+Installed-Size: 417
+Depends: libc6 (>= 2.8)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://userspace.selinuxproject.org/
+Description: SELinux library for manipulating binary security policies
+ Security-enhanced Linux is a patch of the Linux kernel and a number
+ of utilities with enhanced security functionality designed to add
+ mandatory access controls to Linux.  The Security-enhanced Linux
+ kernel contains new architectural components originally developed to
+ improve the security of the Flask operating system. These
+ architectural components provide general support for the enforcement
+ of many kinds of mandatory access control policies, including those
+ based on the concepts of Type Enforcement®, Role-based Access
+ Control, and Multi-level Security.
+ .
+ libsepol provides an API for the manipulation of SELinux binary policies.
+ It is used by checkpolicy (the policy compiler) and similar tools, as well
+ as by programs like load_policy that need to perform specific transformations
+ on binary policies such as customizing policy boolean settings.
+
+Package: libsmartcols1
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 191
+Depends: libc6 (>= 2.17)
+Section: libs
+Priority: required
+Multi-Arch: same
+Description: smart column output alignment library
+ This smart column output alignment library is used by fdisk utilities.
+
+Package: libsqlite3-0
+Source: sqlite3
+Version: 3.16.2-5+deb9u1
+Architecture: armhf
+Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Installed-Size: 734
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.sqlite.org/
+Description: SQLite 3 shared library
+ SQLite is a C library that implements an SQL database engine.
+ Programs that link with the SQLite library can have SQL database
+ access without running a separate RDBMS process.
+
+Package: libss2
+Source: e2fsprogs
+Version: 1.43.4-2
+Architecture: armhf
+Maintainer: Theodore Y. Ts'o <tytso@mit.edu>
+Installed-Size: 87
+Depends: libcomerr2, libc6 (>= 2.17)
+Replaces: e2fsprogs (<< 1.34-1)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://e2fsprogs.sourceforge.net
+Description: command-line interface parsing library
+ libss provides a simple command-line interface parser which will
+ accept input from the user, parse the command into an argv argument
+ vector, and then dispatch it to a handler function.
+ .
+ It was originally inspired by the Multics SubSystem library.
+
+Package: libssh2-1
+Source: libssh2
+Version: 1.7.0-1
+Architecture: armhf
+Maintainer: Mikhail Gusarov <dottedmag@debian.org>
+Installed-Size: 196
+Depends: libc6 (>= 2.4), libgcrypt20 (>= 1.7.0), zlib1g (>= 1:1.1.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://libssh2.org/
+Description: SSH2 client-side library
+ libssh2 is a client-side C library implementing the SSH2 protocol.
+ It supports regular terminal, SCP and SFTP (v1-v5) sessions;
+ port forwarding, X11 forwarding; password, key-based and
+ keyboard-interactive authentication.
+ .
+ This package contains the runtime library.
+
+Package: libssl1.0.2
+Source: openssl1.0
+Version: 1.0.2l-2+deb9u1
+Architecture: armhf
+Maintainer: Debian OpenSSL Team <pkg-openssl-devel@lists.alioth.debian.org>
+Installed-Size: 1999
+Depends: libc6 (>= 2.16), debconf (>= 0.5) | debconf-2.0
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: https://www.openssl.org
+Description: Secure Sockets Layer toolkit - shared libraries
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It provides the libssl and libcrypto shared libraries.
+
+Package: libssl1.1
+Source: openssl
+Version: 1.1.0f-3+deb9u1
+Architecture: armhf
+Maintainer: Debian OpenSSL Team <pkg-openssl-devel@lists.alioth.debian.org>
+Installed-Size: 2173
+Depends: libc6 (>= 2.16), debconf (>= 0.5) | debconf-2.0
+Breaks: salt-common (<= 2016.3.3+ds-3)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: https://www.openssl.org/
+Description: Secure Sockets Layer toolkit - shared libraries
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It provides the libssl and libcrypto shared libraries.
+
+Package: libstdc++6
+Source: gcc-6
+Version: 6.3.0-18
+Architecture: armhf
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Installed-Size: 1466
+Depends: gcc-6-base (= 6.3.0-18), libc6 (>= 2.18), libgcc1 (>= 1:3.5)
+Conflicts: scim (<< 1.4.2-1)
+Breaks: blockattack (<= 1.4.1+ds1-2.1+b2), boo (<= 0.9.5~git20110729.r1.202a430-2), c++-annotations (<= 10.2.0-1), clustalx (<= 2.1+lgpl-3), dff (<= 1.3.0+dfsg.1-4.1+b3), digikam-private-libs (<= 4:4.4.0-1.1+b2), emscripten (<= 1.22.1-1), ergo (<= 3.4.0-1), fceux (<= 2.2.2+dfsg0-1), fiona (<= 1.5.1-2), flush (<= 0.9.12-3.1), freeorion (<= 0.4.4+git20150327-2), fslview (<= 4.0.1-4), fwbuilder (<= 5.1.0-4), gcc-4.3 (<< 4.3.6-1), gcc-4.4 (<< 4.4.6-4), gcc-4.5 (<< 4.5.3-2), gnote (<= 3.16.2-1), gnudatalanguage (<= 0.9.5-2+b2), innoextract (<= 1.4-1+b1), libantlr-dev (<= 2.7.7+dfsg-6), libapache2-mod-passenger (<= 5.0.7-1), libaqsis1 (<= 1.8.2-1), libassimp3 (<= 3.0~dfsg-4), libboost-date-time1.54.0, libboost-date-time1.55.0, libchemps2-1 (<= 1.5-1), libcpprest2.4 (<= 2.4.0-2), libdap17 (<= 3.14.0-2), libdapclient6 (<= 3.14.0-2), libdapserver7 (<= 3.14.0-2), libdavix0 (<= 0.4.0-1+b1), libdballe6 (<= 6.8-1), libdiet-admin2.8 (<= 2.8.0-1+b3), libdiet-client2.8 (<= 2.8.0-1+b3), libdiet-sed2.8 (<= 2.8.0-1+b3), libfreefem++ (<= 3.37.1-1), libgazebo5 (<= 5.0.1+dfsg-2.1), libgetfem4++ (<= 4.2.1~beta1~svn4635~dfsg-3+b1), libgmsh2 (<= 2.9.3+dfsg1-1), libinsighttoolkit4.7 (<= 4.7.2-2), libkolabxml1 (<= 1.1.0-3), libmarisa0 (<= 0.2.4-8), libogre-1.8.0 (<= 1.8.0+dfsg1-7+b1), libogre-1.9.0 (<= 1.9.0+dfsg1-4), libopencv-core2.4, libopenmpi1.6, libopenwalnut1 (<= 1.4.0~rc1+hg3a3147463ee2-1+b1), libpqxx-4.0 (<= 4.0.1+dfsg-3), libreoffice-core (<= 1:4.4.5-2), librime1 (<= 1.2+dfsg-2), libsigc++-2.0-0c2a (<= 2.4.1-1+b1), libwibble-dev (<= 1.1-1), libwreport2 (<= 2.14-1), libxmltooling6 (<= 1.5.3-2.1), lightspark (<= 0.7.2+git20150512-2+b1), mira-assembler (<= 4.9.5-1), mongodb (<= 1:2.4.14-2), mongodb-server (<= 1:2.4.14-2), ncbi-blast+ (<= 2.2.30-4), openscad (<= 2014.03+dfsg-1+b1), passepartout (<= 0.7.1-1.1), pdf2djvu (<= 0.7.21-2), photoprint (<= 0.4.2~pre2-2.3+b2), plastimatch (<= 1.6.2+dfsg-1), plee-the-bear (<= 0.6.0-3.1), povray (<= 1:3.7.0.0-8), powertop (<= 2.6.1-1), printer-driver-brlaser (<= 3-3), psi4 (<= 4.0~beta5+dfsg-2+b1), python-fiona (<= 1.5.1-2), python-guiqwt (<= 2.3.1-1), python-healpy (<= 1.8.1-1+b1), python-htseq (<= 0.5.4p3-2), python-imposm (<= 2.5.0-3+b2), python-pysph (<= 0~20150606.gitfa26de9-5), python-rasterio (<= 0.24.0-1), python-scipy (<= 0.14.1-1), python-sfml (<= 2.2~git20150611.196c88+dfsg-1+b1), python3-fiona (<= 1.5.1-2), python3-scipy (<= 0.14.1-1), python3-sfml (<= 2.2~git20150611.196c88+dfsg-1+b1), python3-taglib (<= 0.3.6+dfsg-2+b2), realtimebattle (<= 1.0.8-14), ruby-passenger (<= 5.0.7-1), schroot (<= 1.6.10-1+b1), sqlitebrowser (<= 3.5.1-3), tecnoballz (<= 0.93.1-6), wesnoth-1.12-core (<= 1:1.12.4-1), widelands (<= 1:18-3+b1), xflr5 (<= 6.09.06-2)
+Replaces: libstdc++6-6-dbg (<< 4.9.0-3)
+Provides: libstdc++6-armhf
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: http://gcc.gnu.org/
+Description: GNU Standard C++ Library v3
+ This package contains an additional runtime library for C++ programs
+ built with the GNU compiler.
+ .
+ libstdc++-v3 is a complete rewrite from the previous libstdc++-v2, which
+ was included up to g++-2.95. The first version of libstdc++-v3 appeared
+ in g++-3.0.
+
+Package: libsystemd0
+Source: systemd
+Version: 232-25+deb9u1
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 458
+Pre-Depends: libc6 (>= 2.17), libgcc1 (>= 1:3.5), libgcrypt20 (>= 1.7.0), liblz4-1 (>= 0.0~r113), liblzma5 (>= 5.1.1alpha+20120614), libselinux1 (>= 2.1.9)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: https://www.freedesktop.org/wiki/Software/systemd
+Description: systemd utility library
+ The libsystemd0 library provides interfaces to various systemd components.
+
+Package: libtasn1-6
+Version: 4.10-1.1
+Architecture: armhf
+Maintainer: Debian GnuTLS Maintainers <pkg-gnutls-maint@lists.alioth.debian.org>
+Installed-Size: 84
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Homepage: http://www.gnu.org/software/libtasn1/
+Description: Manage ASN.1 structures (runtime)
+ Manage ASN1 (Abstract Syntax Notation One) structures.
+ The main features of this library are:
+   * on-line ASN1 structure management that doesn't require any C code
+     file generation.
+   * off-line ASN1 structure management with C code file generation
+     containing an array.
+   * DER (Distinguish Encoding Rules) encoding
+   * no limits for INTEGER and ENUMERATED values
+ .
+ This package contains runtime libraries.
+
+Package: libtinfo5
+Source: ncurses
+Version: 6.0+20161126-1+deb9u1
+Architecture: armhf
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 400
+Depends: libc6 (>= 2.16)
+Breaks: dialog (<< 1.2-20130523)
+Replaces: libncurses5 (<< 5.9-3)
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://invisible-island.net/ncurses/
+Description: shared low-level terminfo library for terminal handling
+ The ncurses library routines are a terminal-independent method of
+ updating character screens with reasonable optimization.
+ .
+ This package contains the shared low-level terminfo library.
+
+Package: libudev1
+Source: systemd
+Version: 232-25+deb9u1
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 180
+Depends: libc6 (>= 2.16), libgcc1 (>= 1:3.5)
+Section: libs
+Priority: important
+Multi-Arch: same
+Homepage: https://www.freedesktop.org/wiki/Software/systemd
+Description: libudev shared library
+ This library provides access to udev device information.
+
+Package: libunistring0
+Source: libunistring
+Version: 0.9.6+really0.9.3-0.1
+Architecture: armhf
+Maintainer: Andreas Rottmann <rotty@debian.org>
+Installed-Size: 995
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.gnu.org/software/libunistring/
+Description: Unicode string library for C
+ The 'libunistring' library implements Unicode strings (in the UTF-8,
+ UTF-16, and UTF-32 encodings), together with functions for Unicode
+ characters (character names, classifications, properties) and
+ functions for string processing (formatted output, width, word
+ breaks, line breaks, normalization, case folding, regular
+ expressions).
+ .
+ This package contains the shared library.
+
+Package: libusb-1.0-0
+Source: libusb-1.0
+Version: 2:1.0.21-1
+Architecture: armhf
+Maintainer: Aurelien Jarno <aurel32@debian.org>
+Installed-Size: 100
+Depends: libc6 (>= 2.17), libudev1 (>= 183)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.libusb.info
+Description: userspace USB programming library
+ Library for programming USB applications without the knowledge
+ of Linux kernel internals.
+ .
+ This package contains what you need to run programs that use this
+ library.
+
+Package: libustr-1.0-1
+Source: ustr
+Version: 1.0.4-6
+Architecture: armhf
+Maintainer: Vaclav Ovsik <vaclav.ovsik@i.cz>
+Installed-Size: 150
+Depends: libc6 (>= 2.4)
+Section: libs
+Priority: optional
+Multi-Arch: same
+Homepage: http://www.and.org/ustr/
+Description: Micro string library: shared library
+ ustr (Micro string library) is a string API for C. It has tiny overhead over
+ just plain strdup(), is much safer, is easier to use, is faster for many
+ operations, can be used with read-only or automatically allocated data. You
+ don't even need to link to the library to use it (so there are no
+ dependencies).
+ .
+ This package contains the shared library.
+
+Package: libuuid1
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 102
+Depends: passwd, libc6 (>= 2.4)
+Recommends: uuid-runtime
+Replaces: e2fsprogs (<< 1.34-1)
+Section: libs
+Priority: required
+Multi-Arch: same
+Description: Universally Unique ID library
+ The libuuid library generates and parses 128-bit Universally Unique
+ IDs (UUIDs). A UUID is an identifier that is unique within the space
+ of all such identifiers across both space and time. It can be used for
+ multiple purposes, from tagging objects with an extremely short lifetime
+ to reliably identifying very persistent objects across a network.
+ .
+ See RFC 4122 for more information.
+
+Package: libwrap0
+Source: tcp-wrappers
+Version: 7.6.q-26
+Architecture: armhf
+Maintainer: Marco d'Itri <md@linux.it>
+Installed-Size: 91
+Depends: libc6 (>= 2.11)
+Recommends: tcpd
+Breaks: tcpd (<< 7.6.q-20)
+Replaces: tcpd (<< 7.6.q-20)
+Section: libs
+Priority: standard
+Multi-Arch: same
+Description: Wietse Venema's TCP wrappers library
+ Wietse Venema's network logger, also known as TCPD or LOG_TCP.
+ .
+ These programs log the client host name of incoming telnet,
+ ftp, rsh, rlogin, finger etc. requests.
+ .
+ Security options are:
+  - access control per host, domain and/or service;
+  - detection of host name spoofing or host address spoofing;
+  - booby traps to implement an early-warning system.
+
+Package: locales
+Source: glibc
+Version: 2.24-11+deb9u1
+Architecture: all
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 9244
+Depends: libc-bin (>> 2.24), libc-l10n (>> 2.24), debconf (>= 0.5) | debconf-2.0
+Replaces: manpages-fr-extra (<< 20141022)
+Section: localization
+Priority: standard
+Homepage: http://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: National Language (locale) data [support]
+ Machine-readable data files, shared objects and programs used by the
+ C library for localization (l10n) and internationalization (i18n) support.
+ .
+ This package contains tools to generate locale definitions from source
+ files (included in this package). It allows you to customize which
+ definitions actually get generated. This is a space-saver over how this
+ package used to be, with all locales generated by default. This created
+ a package that unpacked to an excess of 30 megs.
+
+Package: login
+Source: shadow
+Version: 1:4.4-4.1
+Architecture: armhf
+Essential: yes
+Maintainer: Shadow package maintainers <pkg-shadow-devel@lists.alioth.debian.org>
+Installed-Size: 2698
+Pre-Depends: libaudit1 (>= 1:2.2.1), libc6 (>= 2.7), libpam0g (>= 0.99.7.1), libpam-runtime, libpam-modules (>= 1.1.8-1)
+Conflicts: amavisd-new (<< 2.3.3-8), backupninja (<< 0.9.3-5), echolot (<< 2.1.8-4), gnunet (<< 0.7.0c-2), python-4suite (<< 0.99cvs20060405-1)
+Replaces: manpages-de (<< 0.5-3), manpages-tr (<< 1.0.5), manpages-zh (<< 1.5.1-1)
+Section: admin
+Priority: required
+Homepage: https://github.com/shadow-maint/shadow
+Description: system login tools
+ These tools are required to be able to login and use your system. The
+ login program invokes your user shell and enables command execution. The
+ newgrp program is used to change your effective group ID (useful for
+ workgroup type situations). The su program allows changing your effective
+ user ID (useful being able to execute commands as another user).
+
+Package: lsb-base
+Source: lsb
+Version: 9.20161125
+Architecture: all
+Maintainer: Debian LSB Team <debian-lsb@lists.debian.org>
+Installed-Size: 49
+Section: misc
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.linuxfoundation.org/collaborate/workgroups/lsb
+Description: Linux Standard Base init script functionality
+ The Linux Standard Base (http://www.linuxbase.org/) is a standard
+ core system that third-party applications written for Linux can
+ depend upon.
+ .
+ This package only includes the init-functions shell library, which
+ may be used by other packages' initialization scripts for console
+ logging and other purposes.
+
+Package: lsof
+Version: 4.89+dfsg-0.1
+Architecture: armhf
+Maintainer: Norbert Tretkowski <nobse@debian.org>
+Installed-Size: 411
+Depends: libc6 (>= 2.11), libselinux1 (>= 1.32)
+Suggests: perl
+Section: utils
+Priority: standard
+Homepage: http://people.freebsd.org/~abe/
+Description: Utility to list open files
+ Lsof is a Unix-specific diagnostic tool.  Its name stands
+ for LiSt Open Files, and it does just that.  It lists
+ information about any files that are open, by processes
+ currently running on the system.
+
+Package: mawk
+Source: mawk (1.3.3-17)
+Version: 1.3.3-17+b3
+Architecture: armhf
+Maintainer: Steve Langasek <vorlon@debian.org>
+Installed-Size: 144
+Pre-Depends: libc6 (>= 2.11)
+Provides: awk
+Section: interpreters
+Priority: required
+Multi-Arch: foreign
+Description: a pattern scanning and text processing language
+ Mawk is an interpreter for the AWK Programming Language. The AWK
+ language is useful for manipulation of data files, text retrieval and
+ processing, and for prototyping and experimenting with algorithms. Mawk
+ is a new awk meaning it implements the AWK language as defined in Aho,
+ Kernighan and Weinberger, The AWK Programming Language, Addison-Wesley
+ Publishing, 1988. (Hereafter referred to as the AWK book.) Mawk conforms
+ to the POSIX 1003.2 (draft 11.3) definition of the AWK language
+ which contains a few features not described in the AWK book, and mawk
+ provides a small number of extensions.
+ .
+ Mawk is smaller and much faster than gawk. It has some compile-time
+ limits such as NF = 32767 and sprintf buffer = 1020.
+
+Package: mime-support
+Version: 3.60
+Architecture: all
+Maintainer: Mime-Support Maintainers <mime-support@plessy.org>
+Installed-Size: 110
+Recommends: bzip2, file, xz-utils
+Section: net
+Priority: standard
+Multi-Arch: foreign
+Description: MIME files 'mime.types' & 'mailcap', and support programs
+ As these files can be used by all MIME compliant programs, they
+ have been moved into their own package that others can depend upon.
+ .
+ Other packages add themselves as viewers/editors/composers/etc by
+ using the provided "update-mime" program.
+ .
+ In addition, the commands "see", "edit", "compose", and "print"
+ will display, alter, create, and print (respectively) any file using
+ a program determined from the entries in the mime.types and mailcap
+ files.
+
+Package: mount
+Source: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Essential: yes
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 357
+Pre-Depends: libblkid1 (>= 2.17.2), libc6 (>= 2.17), libmount1 (>= 2.25), libselinux1 (>= 2.6-3~), libsmartcols1 (>= 2.28~rc1), libudev1 (>= 183)
+Suggests: nfs-common (>= 1:1.1.0-13)
+Breaks: bash-completion (<< 1:2.1-4.3~)
+Replaces: bash-completion (<< 1:2.1-4.3~)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Description: tools for mounting and manipulating filesystems
+ This package provides the mount(8), umount(8), swapon(8),
+ swapoff(8), and losetup(8) commands.
+
+Package: multiarch-support
+Source: glibc
+Version: 2.24-11+deb9u1
+Architecture: armhf
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 220
+Depends: libc6 (>= 2.13-5)
+Section: libs
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.gnu.org/software/libc/libc.html
+Description: Transitional package to ensure multiarch compatibility
+ This is a transitional package used to ensure multiarch support is present
+ in ld.so before unpacking libraries to the multiarch directories.  It can
+ be removed once nothing on the system depends on it.
+
+Package: ncurses-base
+Source: ncurses
+Version: 6.0+20161126-1+deb9u1
+Architecture: all
+Essential: yes
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 340
+Breaks: ncurses-term (<< 5.7+20100313-3)
+Provides: ncurses-runtime
+Section: misc
+Priority: required
+Multi-Arch: foreign
+Homepage: http://invisible-island.net/ncurses/
+Description: basic terminal type definitions
+ The ncurses library routines are a terminal-independent method of
+ updating character screens with reasonable optimization.
+ .
+ This package contains terminfo data files to support the most common types of
+ terminal, including ansi, dumb, linux, rxvt, screen, sun, vt100, vt102, vt220,
+ vt52, and xterm.
+
+Package: ncurses-bin
+Source: ncurses
+Version: 6.0+20161126-1+deb9u1
+Architecture: armhf
+Essential: yes
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 481
+Pre-Depends: libc6 (>= 2.4), libtinfo5 (>= 6.0+20151017), libtinfo5 (<< 6.1~)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Homepage: http://invisible-island.net/ncurses/
+Description: terminal-related programs and man pages
+ The ncurses library routines are a terminal-independent method of
+ updating character screens with reasonable optimization.
+ .
+ This package contains the programs used for manipulating the terminfo
+ database and individual terminfo entries, as well as some programs for
+ resetting terminals and such.
+
+Package: net-tools
+Version: 1.60+git20161116.90da8a0-1
+Architecture: armhf
+Maintainer: net-tools Team <pkg-net-tools-maintainers@lists.alioth.debian.org>
+Installed-Size: 778
+Depends: libc6 (>= 2.4), libselinux1 (>= 1.32)
+Conflicts: ja-trans (<= 0.8-2)
+Replaces: ja-trans (<= 0.8-2), netbase (<< 4.00)
+Section: net
+Priority: important
+Multi-Arch: foreign
+Homepage: http://sourceforge.net/projects/net-tools/
+Description: NET-3 networking toolkit
+ This package includes the important tools for controlling the network
+ subsystem of the Linux kernel.  This includes arp, ifconfig, netstat,
+ rarp, nameif and route.  Additionally, this package contains utilities
+ relating to particular network hardware types (plipconfig, slattach,
+ mii-tool) and advanced aspects of IP configuration (iptunnel, ipmaddr).
+ .
+ In the upstream package 'hostname' and friends are included. Those are
+ not installed by this package, since there is a special "hostname*.deb".
+
+Package: netbase
+Version: 5.4
+Architecture: all
+Maintainer: Marco d'Itri <md@linux.it>
+Installed-Size: 44
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Description: Basic TCP/IP networking system
+ This package provides the necessary infrastructure for basic TCP/IP based
+ networking.
+
+Package: openssh-client
+Source: openssh
+Version: 1:7.4p1-10+deb9u2
+Architecture: armhf
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 3589
+Depends: adduser (>= 3.10), dpkg (>= 1.7.0), passwd, libc6 (>= 2.17), libedit2 (>= 2.11-20080614), libgssapi-krb5-2 (>= 1.14+dfsg), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), zlib1g (>= 1:1.1.4)
+Recommends: xauth
+Suggests: keychain, libpam-ssh, monkeysphere, ssh-askpass
+Conflicts: sftp
+Replaces: ssh, ssh-krb5
+Provides: rsh-client, ssh-client
+Section: net
+Priority: standard
+Multi-Arch: foreign
+Homepage: http://www.openssh.com/
+Description: secure shell (SSH) client, for secure access to remote machines
+ This is the portable version of OpenSSH, a free implementation of
+ the Secure Shell protocol as specified by the IETF secsh working
+ group.
+ .
+ Ssh (Secure Shell) is a program for logging into a remote machine
+ and for executing commands on a remote machine.
+ It provides secure encrypted communications between two untrusted
+ hosts over an insecure network. X11 connections and arbitrary TCP/IP
+ ports can also be forwarded over the secure channel.
+ It can be used to provide applications with a secure communication
+ channel.
+ .
+ This package provides the ssh, scp and sftp clients, the ssh-agent
+ and ssh-add programs to make public key authentication more convenient,
+ and the ssh-keygen, ssh-keyscan, ssh-copy-id and ssh-argv0 utilities.
+ .
+ In some countries it may be illegal to use any encryption at all
+ without a special permit.
+ .
+ ssh replaces the insecure rsh, rcp and rlogin programs, which are
+ obsolete for most purposes.
+
+Package: openssh-server
+Source: openssh
+Version: 1:7.4p1-10+deb9u2
+Architecture: armhf
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 705
+Depends: adduser (>= 3.9), dpkg (>= 1.9.0), libpam-modules (>= 0.72-9), libpam-runtime (>= 0.76-14), lsb-base (>= 4.1+Debian3), openssh-client (= 1:7.4p1-10+deb9u2), openssh-sftp-server, procps, ucf (>= 0.28), debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), libaudit1 (>= 1:2.2.1), libc6 (>= 2.17), libcomerr2 (>= 1.01), libgssapi-krb5-2 (>= 1.14+dfsg), libkrb5-3 (>= 1.13~alpha1+dfsg), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libssl1.0.2 (>= 1.0.2d), libsystemd0, libwrap0 (>= 7.6-4~), zlib1g (>= 1:1.1.4)
+Recommends: libpam-systemd, ncurses-term, xauth
+Suggests: molly-guard, monkeysphere, rssh, ssh-askpass, ufw
+Conflicts: sftp, ssh-socks, ssh2
+Replaces: ssh, ssh-krb5
+Provides: ssh-server
+Section: net
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://www.openssh.com/
+Description: secure shell (SSH) server, for secure access from remote machines
+ This is the portable version of OpenSSH, a free implementation of
+ the Secure Shell protocol as specified by the IETF secsh working
+ group.
+ .
+ Ssh (Secure Shell) is a program for logging into a remote machine
+ and for executing commands on a remote machine.
+ It provides secure encrypted communications between two untrusted
+ hosts over an insecure network. X11 connections and arbitrary TCP/IP
+ ports can also be forwarded over the secure channel.
+ It can be used to provide applications with a secure communication
+ channel.
+ .
+ This package provides the sshd server.
+ .
+ In some countries it may be illegal to use any encryption at all
+ without a special permit.
+ .
+ sshd replaces the insecure rshd program, which is obsolete for most
+ purposes.
+
+Package: openssh-sftp-server
+Source: openssh
+Version: 1:7.4p1-10+deb9u2
+Architecture: armhf
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 73
+Depends: openssh-client (= 1:7.4p1-10+deb9u2), libc6 (>= 2.17)
+Recommends: openssh-server | ssh-server
+Enhances: openssh-server, ssh-server
+Breaks: openssh-server (<< 1:6.5p1-5)
+Replaces: openssh-server (<< 1:6.5p1-5)
+Section: net
+Priority: optional
+Homepage: http://www.openssh.com/
+Description: secure shell (SSH) sftp server module, for SFTP access from remote machines
+ This is the portable version of OpenSSH, a free implementation of
+ the Secure Shell protocol as specified by the IETF secsh working
+ group.
+ .
+ Ssh (Secure Shell) is a program for logging into a remote machine
+ and for executing commands on a remote machine.
+ It provides secure encrypted communications between two untrusted
+ hosts over an insecure network. X11 connections and arbitrary TCP/IP
+ ports can also be forwarded over the secure channel.
+ It can be used to provide applications with a secure communication
+ channel.
+ .
+ This package provides the SFTP server module for the SSH server. It
+ is needed if you want to access your SSH server with SFTP. The SFTP
+ server module also works with other SSH daemons like dropbear.
+ .
+ OpenSSH's sftp and sftp-server implement revision 3 of the SSH filexfer
+ protocol described in:
+ .
+  http://www.openssh.com/txt/draft-ietf-secsh-filexfer-02.txt
+ .
+ Newer versions of the draft will not be supported, though some features
+ are individually implemented as extensions.
+
+Package: openssl
+Version: 1.1.0f-3+deb9u1
+Architecture: armhf
+Maintainer: Debian OpenSSL Team <pkg-openssl-devel@lists.alioth.debian.org>
+Installed-Size: 1027
+Depends: libc6 (>= 2.15), libssl1.1 (>= 1.1.0)
+Suggests: ca-certificates
+Section: utils
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://www.openssl.org/
+Description: Secure Sockets Layer toolkit - cryptographic utility
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It contains the general-purpose command line binary /usr/bin/openssl,
+ useful for cryptographic operations such as:
+  * creating RSA, DH, and DSA key parameters;
+  * creating X.509 certificates, CSRs, and CRLs;
+  * calculating message digests;
+  * encrypting and decrypting with ciphers;
+  * testing SSL/TLS clients and servers;
+  * handling S/MIME signed or encrypted mail.
+
+Package: passwd
+Source: shadow
+Version: 1:4.4-4.1
+Architecture: armhf
+Maintainer: Shadow package maintainers <pkg-shadow-devel@lists.alioth.debian.org>
+Installed-Size: 1979
+Depends: libaudit1 (>= 1:2.2.1), libc6 (>= 2.8), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libsemanage1 (>= 2.0.3), libpam-modules
+Replaces: manpages-tr (<< 1.0.5), manpages-zh (<< 1.5.1-1)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: https://github.com/shadow-maint/shadow
+Description: change and administer password and group data
+ This package includes passwd, chsh, chfn, and many other programs to
+ maintain password and group data.
+ .
+ Shadow passwords are supported.  See /usr/share/doc/passwd/README.Debian
+
+Package: perl-base
+Source: perl
+Version: 5.24.1-3+deb9u2
+Architecture: armhf
+Essential: yes
+Maintainer: Niko Tyni <ntyni@debian.org>
+Installed-Size: 6010
+Pre-Depends: libc6 (>= 2.23), dpkg (>= 1.17.17)
+Suggests: perl
+Conflicts: defoma (<< 0.11.12), doc-base (<< 0.10.3), mono-gac (<< 2.10.8.1-3), safe-rm (<< 0.8), update-inetd (<< 4.41)
+Breaks: amanda-common (<< 1:3.3.9-2), autoconf2.13 (<< 2.13-45), backuppc (<< 3.3.1-2), dh-haskell (<< 0.3), libalien-wxwidgets-perl (<< 0.65+dfsg-2), libanyevent-perl (<< 7.070-2), libcommon-sense-perl (<< 3.72-2~), libexception-class-perl (<< 1.42), libfile-path-perl (<< 2.12.01), libfile-spec-perl (<< 3.6301), libfile-temp-perl (<< 0.2304), libgtk2-perl-doc (<< 2:1.2491-4), libio-socket-ip-perl (<< 0.37), libjcode-perl (<< 2.13-3), libmarc-charset-perl (<< 1.2), libsbuild-perl (<< 0.67.0-1), libscalar-list-utils-perl (<< 1:1.42.02), libsocket-perl (<< 2.020.03), libxsloader-perl (<< 0.22), mailagent (<< 1:3.1-81-2), pdl (<< 1:2.007-4), perl (<< 5.24.1~), perl-modules (<< 5.24.1~), texinfo (<< 6.1.0.dfsg.1-8)
+Replaces: libfile-path-perl (<< 2.12.01), libfile-temp-perl (<< 0.2304), libio-socket-ip-perl (<< 0.37), libscalar-list-utils-perl (<< 1:1.42.02), libsocket-perl (<< 2.020.03), libxsloader-perl (<< 0.22), perl (<< 5.10.1-12), perl-modules (<< 5.20.1-3)
+Provides: libfile-path-perl, libfile-temp-perl, libio-socket-ip-perl, libscalar-list-utils-perl, libsocket-perl, libxsloader-perl, perlapi-5.24.1
+Section: perl
+Priority: required
+Homepage: http://dev.perl.org/perl5/
+Description: minimal Perl system
+ Perl is a scripting language used in many system scripts and utilities.
+ .
+ This package provides a Perl interpreter and the small subset of the
+ standard run-time library required to perform basic tasks. For a full
+ Perl installation, install "perl" (and its dependencies, "perl-modules-5.24"
+ and "perl-doc").
+
+Package: perl-modules-5.24
+Source: perl
+Version: 5.24.1-3+deb9u2
+Architecture: all
+Maintainer: Niko Tyni <ntyni@debian.org>
+Installed-Size: 17630
+Pre-Depends: dpkg (>= 1.17.17)
+Depends: perl-base (>= 5.24.1-1)
+Recommends: perl (>= 5.24.1-1)
+Conflicts: defoma (<< 0.11.12), mono-gac (<< 2.10.8.1-3), perl-modules (<< 5.22.0~)
+Breaks: cli-common (<< 0.9+nmu1), libansicolor-perl (<< 4.04), libarchive-tar-perl (<< 2.04.01), libattribute-handlers-perl (<< 0.99), libautodie-perl (<< 2.29-2), libcpan-meta-perl (<< 2.150005), libcpan-meta-requirements-perl (<< 2.140), libcpan-meta-yaml-perl (<< 0.018), libdigest-perl (<< 1.17.01), libexperimental-perl (<< 0.016), libextutils-cbuilder-perl (<< 0.280225), libextutils-command-perl (<< 7.10.02), libextutils-install-perl (<< 2.04), libextutils-parsexs-perl (<< 3.310000), libfile-spec-perl (<< 3.6301), libhttp-tiny-perl (<< 0.056.001), libi18n-langtags-perl (<< 0.40), libio-zlib-perl (<< 1.10), libjson-pp-perl (<< 2.27300.01), liblocale-codes-perl (<< 3.37), liblocale-maketext-perl (<< 1.26.01), liblocale-maketext-simple-perl (<< 0.21.01), libmath-bigint-perl (<< 1.999715), libmath-complex-perl (<< 1.59), libmodule-corelist-perl (<< 5.20170114.24), libmodule-load-conditional-perl (<< 0.64), libmodule-load-perl (<< 0.32), libmodule-metadata-perl (<< 1.000031), libnet-perl (<= 1:1.22), libnet-ping-perl (<< 2.43.01), libparams-check-perl (<< 0.38), libparent-perl (<< 0.234), libparse-cpan-meta-perl (<< 1.4417.001), libperl-ostype-perl (<< 1.009), libpod-escapes-perl (<< 1.07), libpod-parser-perl (<< 1.63), libpod-simple-perl (<< 3.32), libtest-harness-perl (<< 3.36.01), libtest-simple-perl (<< 1.001014), libtest-tester-perl (<< 0.114), libtest-use-ok-perl (<< 0.16), libthread-queue-perl (<< 3.09), libtime-local-perl (<< 1.2300), libunicode-collate-perl (<< 1.14), libversion-perl (<< 1:0.9916), libversion-requirements-perl (<< 0.101022), maildirsync (<< 1.2-2.1), mono-apache-server2 (<< 3.8-2.1), mono-apache-server4 (<< 3.8-2.1), mono-fastcgi-server2 (<< 3.8-2.1), mono-fastcgi-server4 (<< 3.8-2.1), patcher (<< 0.0.20040521-6.1), pdl (<< 1:2.007-4), perl (<< 5.24.1~), podlators-perl (<< 2.3.1), polygen-data (<< 1.0.6.ds2-13.1), pristine-tar (<< 1.33), pure-ftpd-common (<< 1.0.36-3.2), rinse (<< 3.0.7), shorewall (<< 4.6.4.3-2), shorewall-core (<< 4.6.4.3-2), tvtime (<< 1.0.2-14)
+Replaces: libansicolor-perl (<< 4.04), libarchive-tar-perl (<< 2.04.01), libattribute-handlers-perl (<< 0.99), libautodie-perl (<< 2.29-2), libcpan-meta-perl (<< 2.150005), libcpan-meta-requirements-perl (<< 2.140), libcpan-meta-yaml-perl (<< 0.018), libdigest-perl (<< 1.17.01), libexperimental-perl (<< 0.016), libextutils-cbuilder-perl (<< 0.280225), libextutils-command-perl (<< 7.10.02), libextutils-install-perl (<< 2.04), libextutils-parsexs-perl (<< 3.310000), libfile-spec-perl (<< 3.6301), libhttp-tiny-perl (<< 0.056.001), libi18n-langtags-perl (<< 0.40), libio-zlib-perl (<< 1.10), libjson-pp-perl (<< 2.27300.01), liblocale-codes-perl (<< 3.37), liblocale-maketext-perl (<< 1.26.01), liblocale-maketext-simple-perl (<< 0.21.01), libmath-bigint-perl (<< 1.999715), libmath-complex-perl (<< 1.59), libmodule-corelist-perl (<< 5.20170114.24), libmodule-load-conditional-perl (<< 0.64), libmodule-load-perl (<< 0.32), libmodule-metadata-perl (<< 1.000031), libnet-perl, libnet-ping-perl (<< 2.43.01), libpackage-constants-perl, libparams-check-perl (<< 0.38), libparent-perl (<< 0.234), libparse-cpan-meta-perl (<< 1.4417.001), libperl-ostype-perl (<< 1.009), libpod-escapes-perl (<< 1.07), libpod-parser-perl (<< 1.63), libpod-simple-perl (<< 3.32), libtest-harness-perl (<< 3.36.01), libtest-simple-perl (<< 1.001014), libtest-tester-perl (<< 0.114), libtest-use-ok-perl (<< 0.16), libthread-queue-perl (<< 3.09), libtime-local-perl (<< 1.2300), libunicode-collate-perl (<< 1.14), libversion-perl (<< 1:0.9916), libversion-requirements-perl, perl-base (<< 5.22.0~), perl-modules, podlators-perl
+Provides: libansicolor-perl, libarchive-tar-perl, libattribute-handlers-perl, libautodie-perl, libcpan-meta-perl, libcpan-meta-requirements-perl, libcpan-meta-yaml-perl, libdigest-perl, libexperimental-perl, libextutils-cbuilder-perl, libextutils-command-perl, libextutils-install-perl, libextutils-parsexs-perl, libfile-spec-perl, libhttp-tiny-perl, libi18n-langtags-perl, libio-zlib-perl, libjson-pp-perl, liblocale-codes-perl, liblocale-maketext-perl, liblocale-maketext-simple-perl, libmath-bigint-perl, libmath-complex-perl, libmodule-corelist-perl, libmodule-load-conditional-perl, libmodule-load-perl, libmodule-metadata-perl, libnet-perl, libnet-ping-perl, libparams-check-perl, libparent-perl, libparse-cpan-meta-perl, libperl-ostype-perl, libpod-escapes-perl, libpod-parser-perl, libpod-simple-perl, libtest-harness-perl, libtest-simple-perl, libtest-tester-perl, libtest-use-ok-perl, libthread-queue-perl, libtime-local-perl, libunicode-collate-perl, libversion-perl, libversion-requirements-perl, perl-modules, podlators-perl
+Section: perl
+Priority: standard
+Multi-Arch: foreign
+Homepage: http://dev.perl.org/perl5/
+Description: Core Perl modules
+ Architecture independent Perl modules.  These modules are part of Perl and
+ required if the `perl' package is installed.
+ .
+ Note that this package only exists to save archive space and should be
+ considered an internal implementation detail of the `perl' package.
+ Other packages should not depend on `perl-modules-5.24' directly, they
+ should use `perl' (which depends on `perl-modules-5.24') instead.
+
+Package: perl
+Version: 5.24.1-3+deb9u2
+Architecture: armhf
+Maintainer: Niko Tyni <ntyni@debian.org>
+Installed-Size: 651
+Pre-Depends: dpkg (>= 1.17.17)
+Depends: perl-base (= 5.24.1-3+deb9u2), perl-modules-5.24 (>= 5.24.1-3+deb9u2), libperl5.24 (= 5.24.1-3+deb9u2)
+Recommends: netbase, rename
+Suggests: perl-doc, libterm-readline-gnu-perl | libterm-readline-perl-perl, make
+Conflicts: libjson-pp-perl (<< 2.27200-2)
+Breaks: libperl-dev (<< 5.24.0~), perl-doc (<< 5.24.1-1)
+Replaces: perl-modules (<< 5.22.0~)
+Section: perl
+Priority: standard
+Multi-Arch: allowed
+Homepage: http://dev.perl.org/perl5/
+Description: Larry Wall's Practical Extraction and Report Language
+ Perl is a highly capable, feature-rich programming language with over
+ 20 years of development. Perl 5 runs on over 100 platforms from
+ portables to mainframes. Perl is suitable for both rapid prototyping
+ and large scale development projects.
+ .
+ Perl 5 supports many programming styles, including procedural,
+ functional, and object-oriented. In addition to this, it is supported
+ by an ever-growing collection of reusable modules which accelerate
+ development. Some of these modules include Web frameworks, database
+ integration, networking protocols, and encryption. Perl provides
+ interfaces to C and C++ for custom extension development.
+
+Package: procps
+Version: 2:3.3.12-3
+Architecture: armhf
+Maintainer: Craig Small <csmall@debian.org>
+Installed-Size: 551
+Depends: libc6 (>= 2.15), libncurses5 (>= 6), libncursesw5 (>= 6), libprocps6, libtinfo5 (>= 6), lsb-base (>= 3.0-10), init-system-helpers (>= 1.29~)
+Recommends: psmisc
+Conflicts: pgrep (<< 3.3-5), w-bassman (<< 1.0-3)
+Breaks: guymager (<= 0.5.9-1), open-vm-tools (<= 2011.12.20-562307-1)
+Provides: watch
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Homepage: https://gitlab.com/procps-ng/procps
+Description: /proc file system utilities
+ This package provides command line and full screen utilities for browsing
+ procfs, a "pseudo" file system dynamically generated by the kernel to
+ provide information about the status of entries in its process table
+ (such as whether the process is running, stopped, or a "zombie").
+ .
+ It contains free, kill, pkill, pgrep, pmap, ps, pwdx, skill, slabtop,
+ snice, sysctl, tload, top, uptime, vmstat, w, and watch.
+
+Package: python-minimal
+Source: python-defaults
+Version: 2.7.13-2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 145
+Depends: python2.7-minimal (>= 2.7.13-1~), dpkg (>= 1.13.20)
+Recommends: python
+Conflicts: python-central (<< 0.5.5)
+Breaks: idle (<< 2.6), python (<= 2.7.3-1~), python-all (<< 2.6), python-all-dbg (<< 2.6), python-all-dev (<< 2.6), python-dbg (<< 2.6), python-dev (<< 2.6), python-examples (<< 2.6), python-support (<< 1.0.10ubuntu2), python2.5-minimal (<< 2.5.5-7), python2.6-minimal (<< 2.6.5~rc2-2), python3.1-minimal (<< 3.1.2~rc1-2)
+Replaces: python (<= 2.7.3-1~)
+Section: python
+Priority: optional
+Multi-Arch: allowed
+Homepage: http://www.python.org/
+Description: minimal subset of the Python language (default version)
+ This package contains the interpreter and some essential modules.  It's used
+ in the boot process for some basic tasks.
+ See /usr/share/doc/python2.7-minimal/README.Debian for a list of the modules
+ contained in this package.
+
+Package: python-pip-whl
+Source: python-pip
+Version: 9.0.1-2
+Architecture: all
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Installed-Size: 1593
+Depends: ca-certificates
+Breaks: python-chardet-whl (<< 2.3.0-2), python-colorama-whl (<< 0.3.6-1), python-distlib-whl (<< 0.2.2-1), python-html5lib-whl (<< 0.999-4), python-requests-whl (<< 2.9.1-3), python-setuptools-whl (<< 20.1.1-1), python-six-whl (<< 1.10.0-3), python-urllib3-whl (<< 1.13.1-2), virtualenv (<< 14.0.5+ds-5)
+Replaces: python-chardet-whl (<< 2.3.0-2), python-colorama-whl (<< 0.3.6-1), python-distlib-whl (<< 0.2.2-1), python-html5lib-whl (<< 0.999-4), python-requests-whl (<< 2.9.1-3), python-setuptools-whl (<< 20.1.1-1), python-six-whl (<< 1.10.0-3), python-urllib3-whl (<< 1.13.1-2), virtualenv (<< 14.0.5+ds-5)
+Built-Using: appdirs (= 1.4.0-2), chardet (= 2.3.0-2), distlib (= 0.2.4-1), html5lib (= 0.999999999-1), pyparsing (= 2.1.10+dfsg1-1), python-cachecontrol (= 0.11.7-1), python-colorama (= 0.3.7-1), python-distro (= 1.0.1-1), python-ipaddress (= 1.0.17-1), python-lockfile (= 1:0.12.2-2), python-packaging (= 16.7-2), python-progress (= 1.2-1), python-retrying (= 1.3.3-1), python-setuptools (= 32.3.1-1), python-urllib3 (= 1.16-1), python-webencodings (= 0.5-1), requests (= 2.11.1-1), six (= 1.10.0-3)
+Section: python
+Priority: optional
+Homepage: https://pip.pypa.io/en/stable/
+Description: Python package installer
+ pip is the Python package installer.  It integrates with virtualenv, doesn't
+ do partial installs, can save package state for replaying, can install from
+ non-egg sources, and can install from version control repositories.
+ .
+ This is the support package for the PEP 427 wheel version of the package,
+ required for using pip inside a virtual environment.
+
+Package: python-pip
+Version: 9.0.1-2
+Architecture: all
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Installed-Size: 655
+Depends: ca-certificates, python-pip-whl (= 9.0.1-2), python:any (<< 2.8), python:any (>= 2.7.5-5~)
+Recommends: build-essential, python-all-dev (>= 2.6), python-setuptools, python-wheel
+Section: python
+Priority: optional
+Homepage: https://pip.pypa.io/en/stable/
+Description: Python package installer
+ pip is the Python package installer.  It integrates with virtualenv, doesn't
+ do partial installs, can save package state for replaying, can install from
+ non-egg sources, and can install from version control repositories.
+
+Package: python2.7-minimal
+Source: python2.7
+Version: 2.7.13-2+deb9u2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 2650
+Pre-Depends: libc6 (>= 2.15)
+Depends: libpython2.7-minimal (= 2.7.13-2+deb9u2), zlib1g (>= 1:1.2.0)
+Recommends: python2.7
+Suggests: binfmt-support
+Conflicts: binfmt-support (<< 1.1.2)
+Replaces: python2.7 (<< 2.7.8-7~)
+Section: python
+Priority: optional
+Multi-Arch: allowed
+Description: Minimal subset of the Python language (version 2.7)
+ This package contains the interpreter and some essential modules.  It can
+ be used in the boot process for some basic tasks.
+ See /usr/share/doc/python2.7-minimal/README.Debian for a list of the modules
+ contained in this package.
+
+Package: python2.7
+Version: 2.7.13-2+deb9u2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 359
+Depends: python2.7-minimal (= 2.7.13-2+deb9u2), libpython2.7-stdlib (= 2.7.13-2+deb9u2), mime-support
+Suggests: python2.7-doc, binutils
+Conflicts: python-profiler (<= 2.7.1-2)
+Breaks: python-virtualenv (<< 1.7.1.2-2~), vim-athena (<< 2:7.3.547-4), vim-gnome (<< 2:7.3.547-4), vim-gtk (<< 2:7.3.547-4), vim-nox (<< 2:7.3.547-4)
+Replaces: python-profiler (<= 2.7.1-2), python2.7-minimal (<< 2.7.3-7~)
+Section: python
+Priority: optional
+Multi-Arch: allowed
+Description: Interactive high-level object-oriented language (version 2.7)
+ Python is a high-level, interactive, object-oriented language. Its 2.7 version
+ includes an extensive class library with lots of goodies for
+ network programming, system administration, sounds and graphics.
+
+Package: python
+Source: python-defaults
+Version: 2.7.13-2
+Architecture: armhf
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 648
+Pre-Depends: python-minimal (= 2.7.13-2)
+Depends: python2.7 (>= 2.7.13-1~), libpython-stdlib (= 2.7.13-2)
+Suggests: python-doc (= 2.7.13-2), python-tk (>= 2.7.13-1~)
+Conflicts: python-central (<< 0.5.5)
+Breaks: update-manager-core (<< 0.200.5-2)
+Replaces: python-dev (<< 2.6.5-2)
+Provides: python-ctypes, python-email, python-importlib, python-profiler, python-wsgiref
+Section: python
+Priority: optional
+Multi-Arch: allowed
+Homepage: http://www.python.org/
+Description: interactive high-level object-oriented language (default version)
+ Python, the high-level, interactive object oriented language,
+ includes an extensive class library with lots of goodies for
+ network programming, system administration, sounds and graphics.
+ .
+ This package is a dependency package, which depends on Debian's default
+ Python version (currently v2.7).
+
+Package: readline-common
+Source: readline
+Version: 7.0-3
+Architecture: all
+Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 89
+Depends: dpkg (>= 1.15.4) | install-info
+Suggests: readline-doc
+Conflicts: libreadline-common, libreadline5 (<< 5.0-11)
+Replaces: libreadline-common, libreadline4 (<< 4.3-16), libreadline5 (<< 5.0-11)
+Section: utils
+Priority: important
+Multi-Arch: foreign
+Description: GNU readline and history libraries, common files
+ The GNU readline library aids in the consistency of user interface
+ across discrete programs that need to provide a command line
+ interface.
+ .
+ The GNU history library provides a consistent user interface for
+ recalling lines of previously typed input.
+
+Package: rsync
+Version: 3.1.2-1
+Architecture: armhf
+Maintainer: Paul Slootman <paul@debian.org>
+Installed-Size: 560
+Depends: libacl1 (>= 2.2.51-8), libattr1 (>= 1:2.4.46-8), libc6 (>= 2.15), libpopt0 (>= 1.14), lsb-base (>= 3.2-14), base-files (>= 4.0.1), init-system-helpers (>= 1.18~)
+Suggests: openssh-client, openssh-server
+Breaks: duplicity (<< 0.6.11)
+Section: net
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://rsync.samba.org/
+Description: fast, versatile, remote (and local) file-copying tool
+ rsync is a fast and versatile file-copying tool which can copy locally
+ and to/from a remote host. It offers many options to control its behavior,
+ and its remote-update protocol can minimize network traffic to make
+ transferring updates between machines fast and efficient.
+ .
+ It is widely used for backups and mirroring and as an improved copy
+ command for everyday use.
+ .
+ This package provides both the rsync command line tool and optional
+ daemon functionality.
+
+Package: sed
+Version: 4.4-1
+Architecture: armhf
+Essential: yes
+Maintainer: Clint Adams <clint@debian.org>
+Installed-Size: 762
+Pre-Depends: libc6 (>= 2.7), libselinux1 (>= 1.32)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Homepage: https://www.gnu.org/software/sed/
+Description: GNU stream editor for filtering/transforming text
+ sed reads the specified files or the standard input if no
+ files are specified, makes editing changes according to a
+ list of commands, and writes the results to the standard
+ output.
+
+Package: sensible-utils
+Version: 0.0.9
+Architecture: all
+Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Installed-Size: 110
+Replaces: debianutils (<= 2.32.3), manpages-pl (<= 20060617-3~)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Description: Utilities for sensible alternative selection
+ This package provides a number of small utilities which are used
+ by programs to sensibly select and spawn an appropriate browser,
+ editor, or pager.
+ .
+ The specific utilities included are: sensible-browser sensible-editor
+ sensible-pager
+
+Package: ssh
+Source: openssh
+Version: 1:7.4p1-10+deb9u2
+Architecture: all
+Maintainer: Debian OpenSSH Maintainers <debian-ssh@lists.debian.org>
+Installed-Size: 203
+Pre-Depends: dpkg (>= 1.17.5)
+Depends: openssh-client (>= 1:7.4p1-10+deb9u2), openssh-server (>= 1:7.4p1-10+deb9u2)
+Section: net
+Priority: extra
+Homepage: http://www.openssh.com/
+Description: secure shell client and server (metapackage)
+ This metapackage is a convenient way to install both the OpenSSH client
+ and the OpenSSH server. It provides nothing in and of itself, so you
+ may remove it if nothing depends on it.
+
+Package: systemd-sysv
+Source: systemd
+Version: 232-25+deb9u1
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 105
+Pre-Depends: systemd
+Conflicts: file-rc, openrc (<< 0.20.4-2.1), sysvinit-core, upstart (<< 1.13.2-0ubuntu10~), upstart-sysv
+Replaces: sysvinit (<< 2.88dsf-44~), sysvinit-core, upstart (<< 1.13.2-0ubuntu10~), upstart-sysv
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.freedesktop.org/wiki/Software/systemd
+Description: system and service manager - SysV links
+ systemd is a system and service manager for Linux. It provides aggressive
+ parallelization capabilities, uses socket and D-Bus activation for starting
+ services, offers on-demand starting of daemons, keeps track of processes using
+ Linux control groups, maintains mount and automount points and implements an
+ elaborate transactional dependency-based service control logic.
+ .
+ systemd is compatible with SysV and LSB init scripts and can work as a
+ drop-in replacement for sysvinit.
+ .
+ This package provides the manual pages and links needed for systemd
+ to replace sysvinit. Installing systemd-sysv will overwrite /sbin/init with a
+ link to systemd.
+
+Package: systemd
+Version: 232-25+deb9u1
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 6829
+Pre-Depends: libc6 (>= 2.8), libgcc1 (>= 1:3.5)
+Depends: libacl1 (>= 2.2.51-8), libapparmor1 (>= 2.9.0-3+exp2), libaudit1 (>= 1:2.2.1), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libcap2 (>= 1:2.10), libcryptsetup4 (>= 2:1.4.3), libgcrypt20 (>= 1.7.0), libgpg-error0 (>= 1.14), libidn11 (>= 1.13), libip4tc0 (>= 1.6.0+snapshot20161117), libkmod2 (>= 5~), liblz4-1 (>= 0.0~r127), liblzma5 (>= 5.1.1alpha+20120614), libmount1 (>= 2.26.2), libpam0g (>= 0.99.7.1), libseccomp2 (>= 2.3.1), libselinux1 (>= 2.1.9), libsystemd0 (= 232-25+deb9u1), util-linux (>= 2.27.1), mount (>= 2.26), adduser, procps
+Recommends: libpam-systemd, dbus
+Suggests: systemd-ui, systemd-container, policykit-1
+Breaks: adjtimex (<< 1.29-6), aoetools (<< 36-1.1), apparmor (<< 2.10.95-1), arno-iptables-firewall (<< 2.0.1.f-1), atm-tools (<< 1:2.5.1-1.6), clvm (<< 2.02.156-1), cman (<< 3.1.8-1.3+rm), console-common (<< 0.7.89), ebtables (<< 2.0.10.4-3.5), eeepc-acpi-scripts (<< 1.1.12+nmu1), espeakup (<< 1:0.71-27.1), ferm (<< 2.2-3.1), fiaif (<< 1.23.1-4+rm), gfs2-cluster (<< 3.1.8-1), gfs2-utils (<< 3.1.8-1), gom (<< 0.30.2-7), hdparm (<< 9.48+ds-1), ifrename (<< 30~pre9-9), ifscheme (<< 1.7-4), ifupdown (<< 0.8.5~), ifupdown-extra (<< 0.27), ipsec-tools (<< 1:0.8.2+20140711-6), kbd (<< 2.0.3-2), keyboard-configuration (<< 1.141), laptop-mode-tools (<< 1.68~), live-tools (<< 1:20151214+nmu1), lvm2 (<< 2.02.104-1), mdadm (<< 3.4-2), mt-st (<< 1.3-1), multipath-tools (<< 0.5.0+git1.656f8865-3), natlog (<< 1.02.00-4), nbd-client (<< 1:3.14-1), netenv (<< 0.94.3-30+rm), nfs-common (<< 1:1.2.8-9.1), ocfs2-tools (<< 1.8.4-2), pidentd (<< 3.0.19.ds1-7.1), rdnssd (<< 1.0.1-5), rgmanager (<< 3.1.8-1.3+rm), rpcbind (<< 0.2.3-0.1), screen (<< 4.3.1-2), scsitools (<< 0.12-2.3), selinux-basics (<< 0.5.3), setserial (<< 2.17-49), shorewall (<< 5.0.3.1-1), shorewall-init (<< 5.0.3.1-1), shorewall-lite (<< 5.0.3.1-1), shorewall6 (<< 5.0.3.1-1), shorewall6-lite (<< 5.0.3.1-1), srptools (<< 1.0.3-1), switchconf (<< 0.0.15-1), systemd-shim (<< 10-3~), udev (<< 228-5), ufw (<< 0.34-1), virtualbox-guest-x11 (<< 5.0.12-dfsg-2), zfs-fuse (<< 0.7.0-13.1), zvbi (<< 0.2.35-10)
+Replaces: udev (<< 228-5)
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.freedesktop.org/wiki/Software/systemd
+Description: system and service manager
+ systemd is a system and service manager for Linux. It provides aggressive
+ parallelization capabilities, uses socket and D-Bus activation for starting
+ services, offers on-demand starting of daemons, keeps track of processes using
+ Linux control groups, maintains mount and automount points and implements an
+ elaborate transactional dependency-based service control logic.
+ .
+ systemd is compatible with SysV and LSB init scripts and can work as a
+ drop-in replacement for sysvinit.
+ .
+ Installing the systemd package will not switch your init system unless you
+ boot with init=/bin/systemd or install systemd-sysv in addition.
+
+Package: sysvinit-utils
+Source: sysvinit
+Version: 2.88dsf-59.9
+Architecture: armhf
+Essential: yes
+Maintainer: Debian sysvinit maintainers <pkg-sysvinit-devel@lists.alioth.debian.org>
+Installed-Size: 100
+Depends: libc6 (>= 2.4), init-system-helpers (>= 1.25~), util-linux (>> 2.28-2~)
+Breaks: systemd (<< 215)
+Replaces: initscripts (<< 2.88dsf-59.5)
+Section: admin
+Priority: required
+Multi-Arch: foreign
+Homepage: http://savannah.nongnu.org/projects/sysvinit
+Description: System-V-like utilities
+ This package contains the important System-V-like utilities.
+ .
+ Specifically, this package includes:
+ killall5, pidof
+
+Package: tar
+Version: 1.29b-1.1
+Architecture: armhf
+Essential: yes
+Maintainer: Bdale Garbee <bdale@gag.com>
+Installed-Size: 2606
+Pre-Depends: libacl1 (>= 2.2.51-8), libc6 (>= 2.17), libselinux1 (>= 1.32)
+Suggests: bzip2, ncompress, xz-utils, tar-scripts
+Conflicts: cpio (<= 2.4.2-38)
+Breaks: dpkg-dev (<< 1.14.26)
+Replaces: cpio (<< 2.4.2-39)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Description: GNU version of the tar archiving utility
+ Tar is a program for packaging a set of files as a single archive in tar
+ format.  The function it performs is conceptually similar to cpio, and to
+ things like PKZIP in the DOS world.  It is heavily used by the Debian package
+ management system, and is useful for performing system backups and exchanging
+ sets of files with others.
+
+Package: tzdata
+Version: 2017c-0+deb9u1
+Architecture: all
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Installed-Size: 3009
+Depends: debconf (>= 0.5) | debconf-2.0
+Replaces: libc0.1, libc0.3, libc6, libc6.1
+Provides: tzdata-stretch
+Section: localization
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.iana.org/time-zones
+Description: time zone and daylight-saving time data
+ This package contains data required for the implementation of
+ standard local time for many representative locations around the
+ globe. It is updated periodically to reflect changes made by
+ political bodies to time zone boundaries, UTC offsets, and
+ daylight-saving rules.
+
+Package: ucf
+Version: 3.0036
+Architecture: all
+Maintainer: Manoj Srivastava <srivasta@debian.org>
+Installed-Size: 191
+Depends: debconf (>= 1.5.19), coreutils (>= 5.91)
+Section: utils
+Priority: standard
+Multi-Arch: foreign
+Description: Update Configuration File(s): preserve user changes to config files
+ Debian policy mandates that user changes to configuration files must be
+ preserved during package upgrades. The easy way to achieve this behavior
+ is to make the configuration file a 'conffile', in which case dpkg
+ handles the file specially during upgrades, prompting the user as
+ needed.
+ .
+ This is appropriate only if it is possible to distribute a default
+ version that will work for most installations, although some system
+ administrators may choose to modify it. This implies that the
+ default version will be part of the package distribution, and must
+ not be modified by the maintainer scripts during installation (or at
+ any other time).
+ .
+ This script attempts to provide conffile-like handling for files that
+ may not be labelled conffiles, and are not shipped in a Debian package,
+ but handled by the postinst instead. This script allows one to
+ maintain files in /etc, preserving user changes and in general
+ offering the same facilities while upgrading that dpkg normally
+ provides for 'conffiles'.
+ .
+ Additionally, this script provides facilities for transitioning a
+ file that had not been provided with conffile-like protection to come
+ under this schema, and attempts to minimize questions asked at
+ installation time. Indeed, the transitioning facility is better than the
+ one offered by dpkg while transitioning a file from a non-conffile to
+ conffile status.
+
+Package: udev
+Source: systemd
+Version: 232-25+deb9u1
+Architecture: armhf
+Maintainer: Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>
+Installed-Size: 6673
+Pre-Depends: dpkg (>= 1.17.14)
+Depends: libacl1 (>= 2.2.51-8), libblkid1 (>= 2.19.1), libc6 (>= 2.17), libgcc1 (>= 1:3.5), libkmod2 (>= 5~), libselinux1 (>= 2.1.9), adduser, libudev1 (= 232-25+deb9u1), lsb-base (>= 3.0-6), util-linux (>= 2.27.1), procps
+Conflicts: hal
+Breaks: bash-completion (<< 1:2.1), consolekit (<< 0.4.6-1), ifplugd (<< 0.28-19.1~), ifupdown (<< 0.8.5~), joystick (<< 1:1.4.9-1~), kmod (<< 14), plymouth (<< 0.9.0-7), systemd (<< 232-20), usb-modeswitch (<< 2.3.0+repack0-1~)
+Replaces: bash-completion (<< 1:2.1), systemd (<< 232-20)
+Section: admin
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.freedesktop.org/wiki/Software/systemd
+Description: /dev/ and hotplug management daemon
+ udev is a daemon which dynamically creates and removes device nodes from
+ /dev/, handles hotplug events and loads drivers at boot time.
+
+Package: usbutils
+Source: usbutils (1:007-4)
+Version: 1:007-4+b1
+Architecture: armhf
+Maintainer: Aurelien Jarno <aurel32@debian.org>
+Installed-Size: 687
+Depends: libc6 (>= 2.4), libusb-1.0-0 (>= 2:1.0.16), zlib1g (>= 1:1.2.3.3)
+Suggests: wget (>= 1.8.1-6) | lynx-cur
+Section: utils
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/gregkh/usbutils
+Description: Linux USB utilities
+ This package contains the lsusb utility for inspecting the devices
+ connected to the USB bus. It shows a graphical representation of the
+ devices that are currently plugged in, showing the topology of the
+ USB bus. It also displays information on each individual device on
+ the bus.
+
+Package: util-linux
+Version: 2.29.2-1
+Architecture: armhf
+Essential: yes
+Maintainer: Debian util-linux Maintainers <ah-util-linux@debian.org>
+Installed-Size: 2620
+Pre-Depends: libblkid1 (>= 2.25), libc6 (>= 2.15), libfdisk1 (>= 2.29~rc2), libmount1 (>= 2.25), libncursesw5 (>= 6), libpam0g (>= 0.99.7.1), libselinux1 (>= 2.6-3~), libsmartcols1 (>= 2.28~rc1), libsystemd0, libtinfo5 (>= 6), libudev1 (>= 183), libuuid1 (>= 2.16), zlib1g (>= 1:1.1.4)
+Suggests: dosfstools, kbd | console-tools, util-linux-locales
+Breaks: bash-completion (<< 1:2.1-4.1~), cloud-utils (<< 0.27-1~), grml-debootstrap (<< 0.68), mount (= 2.26.2-3), mount (= 2.26.2-3ubuntu1), sysvinit-utils (<< 2.88dsf-59.4~)
+Replaces: bash-completion (<< 1:2.1-4.1~), initscripts (<< 2.88dsf-59.2~), mount (= 2.26.2-3), mount (= 2.26.2-3ubuntu1), sysvinit-utils (<< 2.88dsf-59.1~)
+Section: utils
+Priority: required
+Multi-Arch: foreign
+Description: miscellaneous system utilities
+ This package contains a number of important utilities, most of which
+ are oriented towards maintenance of your system. Some of the more
+ important utilities included in this package allow you to partition
+ your hard disk, view kernel messages, and create new filesystems.
+
+Package: vim-common
+Source: vim
+Version: 2:8.0.0197-4+deb9u1
+Architecture: all
+Maintainer: Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>
+Installed-Size: 275
+Depends: xxd
+Recommends: vim | vim-gtk | vim-gtk3 | vim-athena | vim-nox | vim-tiny
+Breaks: vim-gui-common (<< 2:7.4.488-4~)
+Replaces: vim-gui-common (<< 2:7.4.488-4~)
+Section: editors
+Priority: important
+Homepage: http://www.vim.org/
+Description: Vi IMproved - Common files
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ This package contains files shared by all non GUI-enabled vim variants
+ available in Debian.  Examples of such shared files are: manpages and
+ configuration files.
+
+Package: vim-runtime
+Source: vim
+Version: 2:8.0.0197-4+deb9u1
+Architecture: all
+Maintainer: Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>
+Installed-Size: 27580
+Recommends: vim | vim-gtk | vim-gtk3 | vim-athena | vim-nox | vim-tiny
+Enhances: vim-tiny
+Breaks: vim-tiny (<< 2:8.0.0197-4+deb9u1)
+Section: editors
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://www.vim.org/
+Description: Vi IMproved - Runtime files
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ This package contains vimtutor and the architecture independent runtime
+ files, used, if available, by all vim variants available in Debian.
+ Example of such runtime files are: online documentation, rules for
+ language-specific syntax highlighting and indentation, color schemes,
+ and standard plugins.
+
+Package: vim
+Version: 2:8.0.0197-4+deb9u1
+Architecture: armhf
+Maintainer: Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>
+Installed-Size: 1524
+Depends: vim-common (= 2:8.0.0197-4+deb9u1), vim-runtime (= 2:8.0.0197-4+deb9u1), libacl1 (>= 2.2.51-8), libc6 (>= 2.15), libgpm2 (>= 1.20.4), libselinux1 (>= 1.32), libtinfo5 (>= 6)
+Suggests: ctags, vim-doc, vim-scripts
+Provides: editor
+Section: editors
+Priority: optional
+Homepage: http://www.vim.org/
+Description: Vi IMproved - enhanced vi editor
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ Many new features have been added: multi level undo, syntax
+ highlighting, command line history, on-line help, filename
+ completion, block operations, folding, Unicode support, etc.
+ .
+ This package contains a version of vim compiled with a rather
+ standard set of features.  This package does not provide a GUI
+ version of Vim.  See the other vim-* packages if you need more
+ (or less).
+
+Package: wget
+Version: 1.18-5+deb9u1
+Architecture: armhf
+Maintainer: Noël Köthe <noel@debian.org>
+Installed-Size: 2618
+Depends: libc6 (>= 2.17), libgnutls30 (>= 3.5.6), libidn11 (>= 1.13), libnettle6, libpcre3, libpsl5 (>= 0.13.0), libuuid1 (>= 2.16), zlib1g (>= 1:1.1.4)
+Recommends: ca-certificates
+Conflicts: wget-ssl
+Section: web
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.gnu.org/software/wget/
+Description: retrieves files from the web
+ Wget is a network utility to retrieve files from the web
+ using HTTP(S) and FTP, the two most widely used internet
+ protocols. It works non-interactively, so it will work in
+ the background, after having logged off. The program supports
+ recursive retrieval of web-authoring pages as well as FTP
+ sites -- you can use Wget to make mirrors of archives and
+ home pages or to travel the web like a WWW robot.
+ .
+ Wget works particularly well with slow or unstable connections
+ by continuing to retrieve a document until the document is fully
+ downloaded. Re-getting files from where it left off works on
+ servers (both HTTP and FTP) that support it. Both HTTP and FTP
+ retrievals can be time stamped, so Wget can see if the remote
+ file has changed since the last retrieval and automatically
+ retrieve the new version if it has.
+ .
+ Wget supports proxy servers; this can lighten the network load,
+ speed up retrieval, and provide access behind firewalls.
+
+Package: xxd
+Source: vim
+Version: 2:8.0.0197-4+deb9u1
+Architecture: armhf
+Maintainer: Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>
+Installed-Size: 162
+Depends: libc6 (>= 2.4)
+Breaks: vim-common (<< 2:7.4.2347-1~)
+Replaces: vim-common (<< 2:7.4.2347-1~)
+Section: editors
+Priority: extra
+Homepage: http://www.vim.org/
+Description: tool to make (or reverse) a hex dump
+ xxd creates a hex dump of a given file or standard input.  It can also convert
+ a hex dump back to its original binary form.
+
+Package: zlib1g
+Source: zlib
+Version: 1:1.2.8.dfsg-5
+Architecture: armhf
+Maintainer: Mark Brown <broonie@debian.org>
+Installed-Size: 123
+Depends: libc6 (>= 2.4)
+Conflicts: zlib1 (<= 1:1.0.4-7)
+Breaks: libxml2 (<< 2.7.6.dfsg-2), texlive-binaries (<< 2009-12)
+Provides: libz1
+Section: libs
+Priority: required
+Multi-Arch: same
+Homepage: http://zlib.net/
+Description: compression library - runtime
+ zlib is a library implementing the deflate compression method found
+ in gzip and PKZIP.  This package includes the shared library.
+

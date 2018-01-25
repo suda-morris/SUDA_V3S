@@ -1,0 +1,12 @@
+/.
+/usr
+/usr/lib
+/usr/lib/arm-linux-gnueabihf
+/usr/lib/arm-linux-gnueabihf/liblz4.so.1.7.1
+/usr/share
+/usr/share/doc
+/usr/share/doc/liblz4-1
+/usr/share/doc/liblz4-1/changelog.Debian.armhf.gz
+/usr/share/doc/liblz4-1/changelog.Debian.gz
+/usr/share/doc/liblz4-1/copyright
+/usr/lib/arm-linux-gnueabihf/liblz4.so.1

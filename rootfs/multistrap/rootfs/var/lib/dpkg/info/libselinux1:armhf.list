@@ -1,0 +1,12 @@
+/.
+/lib
+/lib/arm-linux-gnueabihf
+/lib/arm-linux-gnueabihf/libselinux.so.1
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libselinux1
+/usr/share/doc/libselinux1/changelog.Debian.armhf.gz
+/usr/share/doc/libselinux1/changelog.Debian.gz
+/usr/share/doc/libselinux1/changelog.gz
+/usr/share/doc/libselinux1/copyright

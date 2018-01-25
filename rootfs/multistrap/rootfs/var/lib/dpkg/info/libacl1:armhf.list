@@ -1,0 +1,13 @@
+/.
+/lib
+/lib/arm-linux-gnueabihf
+/lib/arm-linux-gnueabihf/libacl.so.1.1.0
+/usr
+/usr/share
+/usr/share/doc
+/usr/share/doc/libacl1
+/usr/share/doc/libacl1/changelog.Debian.armhf.gz
+/usr/share/doc/libacl1/changelog.Debian.gz
+/usr/share/doc/libacl1/changelog.gz
+/usr/share/doc/libacl1/copyright
+/lib/arm-linux-gnueabihf/libacl.so.1

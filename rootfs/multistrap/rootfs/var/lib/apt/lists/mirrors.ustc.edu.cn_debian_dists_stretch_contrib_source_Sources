@@ -1,0 +1,3669 @@
+Package: alien-arena
+Binary: alien-arena, alien-arena-server
+Version: 7.66+dfsg-3
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Michael Gilbert <mgilbert@debian.org>, Barry deFreese <bddebian@comcast.net>
+Build-Depends: debhelper (>= 9), dh-autoreconf, sharutils, libglu1-mesa-dev, libgl1-mesa-dev, libjpeg-dev, libpng-dev, libxxf86vm-dev, libxxf86dga-dev, libxext-dev, libx11-dev, libcurl4-gnutls-dev, libopenal-dev, libvorbis-dev, libfreetype6-dev, pkg-config
+Architecture: any
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ de1674317ee7d5d8110f11819eac4039 3011 alien-arena_7.66+dfsg-3.dsc
+ af12838d2346b05a6e043141ceb40c49 1767600 alien-arena_7.66+dfsg.orig.tar.gz
+ 795225b3d92fd662481014daf777449a 17020 alien-arena_7.66+dfsg-3.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/viewvc/pkg-games/packages/trunk/alien-arena
+Vcs-Svn: svn://anonscm.debian.org/pkg-games/packages/trunk/alien-arena
+Checksums-Sha256:
+ fe9a28b093ea5df04e1d8580f607ce49b27e76b7231613ecdd18e29702f3106f 3011 alien-arena_7.66+dfsg-3.dsc
+ d4d173aba65fbdbf338e4fbdcb04a888e0cd3790e6de72597ba74b0bef42c14b 1767600 alien-arena_7.66+dfsg.orig.tar.gz
+ 78a2a3a926625a176627c51d05fd3da9da7d33b8b342fda4151a1e4932c984f7 17020 alien-arena_7.66+dfsg-3.debian.tar.xz
+Homepage: http://red.planetarena.org
+Package-List: 
+ alien-arena deb contrib/games extra arch=any
+ alien-arena-server deb contrib/games extra arch=any
+Directory: pool/contrib/a/alien-arena
+Priority: source
+Section: contrib/games
+
+Package: amoeba
+Binary: amoeba
+Version: 1.1-29.1
+Maintainer: Steinar H. Gunderson <sesse@debian.org>
+Build-Depends: debhelper (>> 5.0.0), libpng-dev, zlib1g-dev, libjpeg-dev, libexpat1-dev, libvorbis-dev, libogg-dev, libfreetype6-dev, libx11-dev, libxext-dev, libxxf86vm-dev, libgl1-mesa-dev | libgl-dev, libglu1-mesa-dev, libgtk2.0-dev, libasound2-dev
+Architecture: any
+Standards-Version: 3.9.1
+Format: 3.0 (quilt)
+Files:
+ 3b57bea8fb32e83f9fde274a822753b0 1860 amoeba_1.1-29.1.dsc
+ c3ebf17b4df13f7f33c7743a102fae55 92271 amoeba_1.1.orig.tar.gz
+ f768446775ea63cf148c96a49983e7a0 22104 amoeba_1.1-29.1.debian.tar.xz
+Checksums-Sha256:
+ 4cea8bf603c0922fac9915e0144d7073cca60f77e0fb25081c13f6100688b7d2 1860 amoeba_1.1-29.1.dsc
+ 353ea832e0254dc55912762330217e043fa4dffc3b2df5849a3e9b910967dec3 92271 amoeba_1.1.orig.tar.gz
+ e396b3f08198335126fcd5e322b235b776a42633d8b3361a34fc24fcb116f1f5 22104 amoeba_1.1-29.1.debian.tar.xz
+Package-List: 
+ amoeba deb contrib/x11 optional arch=any
+Directory: pool/contrib/a/amoeba
+Priority: source
+Section: contrib/x11
+
+Package: assaultcube
+Binary: assaultcube
+Version: 1.1.0.4+dfsg2-1.2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Martin Erik Werner <martinerikwerner@gmail.com>
+Build-Depends: debhelper (>= 7.0.50~), dh-autoreconf, libsdl-image1.2-dev, libsdl1.2-dev, libgl1-mesa-dev, zlib1g-dev, libopenal-dev, libvorbis-dev
+Architecture: any
+Standards-Version: 3.9.2
+Format: 3.0 (quilt)
+Files:
+ a65e13f3a209c66018c381e5bfbc7b68 2144 assaultcube_1.1.0.4+dfsg2-1.2.dsc
+ 2544fac082b4f75b8e8ceec968729920 753028 assaultcube_1.1.0.4+dfsg2.orig.tar.gz
+ 9d129227981e5b63261654a4150d8b02 9976 assaultcube_1.1.0.4+dfsg2-1.2.debian.tar.xz
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-games/non-free/packages/trunk/assaultcube/?view=log
+Vcs-Svn: svn://svn.debian.org/svn/pkg-games/non-free/packages/trunk/assaultcube/
+Checksums-Sha256:
+ 90a370c5d97a8387333f1ebe6f33ba991ce8cc4d589e9bc007ddf8383303d288 2144 assaultcube_1.1.0.4+dfsg2-1.2.dsc
+ cf50eba1c2875620ba84174021d5788ec9ee41cfd541e7f4d03009ba1194f5e6 753028 assaultcube_1.1.0.4+dfsg2.orig.tar.gz
+ 16d15a36e71cba3f6496a37168985cfb43d3c5f3162d9bb79605b36f5408813c 9976 assaultcube_1.1.0.4+dfsg2-1.2.debian.tar.xz
+Homepage: http://assault.cubers.net/
+Package-List: 
+ assaultcube deb contrib/games optional arch=any
+Directory: pool/contrib/a/assaultcube
+Priority: source
+Section: contrib/games
+
+Package: astromenace
+Binary: astromenace
+Version: 1.3.2+repack-3
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Dmitry Smirnov <onlyjob@debian.org>, Boris Pek <tehnick@debian.org>
+Build-Depends: debhelper (>= 9), imagemagick, cmake, libalut-dev, libfreetype6-dev, libjpeg-dev, libogg-dev, libopenal-dev, libsdl1.2-dev, libvorbis-dev, libxinerama-dev, libfontconfig1-dev
+Architecture: any
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ 6ba98b55b93ced103477cf5cdafdf9d6 2203 astromenace_1.3.2+repack-3.dsc
+ 1f3d2bee17e7667238053274d3ca1e6c 424896 astromenace_1.3.2+repack.orig.tar.xz
+ 8ad6ec9c04b353f88439c87769b38732 6372 astromenace_1.3.2+repack-3.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/astromenace.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/astromenace.git
+Checksums-Sha256:
+ 9174528f950f91ccded453af72903df89f69658f44499f79c260d9e456367e4b 2203 astromenace_1.3.2+repack-3.dsc
+ 89c24714961087e63fedb9190af422432f7813c65da1db0b1dbd93838bd04b20 424896 astromenace_1.3.2+repack.orig.tar.xz
+ 91cf07d676adc56d5494433c7a3ef7640b102e6c15cdcffaf165510daa578c5e 6372 astromenace_1.3.2+repack-3.debian.tar.xz
+Homepage: http://www.viewizard.com/astromenace/index_linux.php
+Package-List: 
+ astromenace deb contrib/games optional
+Directory: pool/contrib/a/astromenace
+Priority: extra
+Section: contrib/misc
+
+Package: astrometry-data-2mass
+Binary: astrometry-data-2mass-00, astrometry-data-2mass-01, astrometry-data-2mass-02, astrometry-data-2mass-03, astrometry-data-2mass-04, astrometry-data-2mass-05, astrometry-data-2mass-06, astrometry-data-2mass-07, astrometry-data-2mass-08-19, astrometry-data-2mass
+Version: 1.1
+Maintainer: Debian Astronomy Team <debian-astro-maintainers@lists.alioth.debian.org>
+Uploaders: Ole Streicher <olebole@debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (native)
+Files:
+ 31251d668dc82224e46342a2a59eed5c 2573 astrometry-data-2mass_1.1.dsc
+ ee4f73c49b6b43d689d52c6feb248e2e 4024 astrometry-data-2mass_1.1.tar.xz
+Vcs-Browser: http://anonscm.debian.org/cgit/debian-astro/packages/astrometry-data-2mass.git
+Vcs-Git: git://anonscm.debian.org/debian-astro/packages/astrometry-data-2mass.git
+Checksums-Sha256:
+ ec0db5522cd7d212fe52ab866b23369d927b49f1b6ca4e1044d47b77bcbe5d96 2573 astrometry-data-2mass_1.1.dsc
+ 66ec2c37d9c2aa28eeaee44fbb9f0690318c6485a95b1fc70a53d478776545af 4024 astrometry-data-2mass_1.1.tar.xz
+Homepage: http://data.astrometry.net/4200
+Package-List: 
+ astrometry-data-2mass deb contrib/science optional arch=all
+ astrometry-data-2mass-00 deb contrib/science optional arch=all
+ astrometry-data-2mass-01 deb contrib/science optional arch=all
+ astrometry-data-2mass-02 deb contrib/science optional arch=all
+ astrometry-data-2mass-03 deb contrib/science optional arch=all
+ astrometry-data-2mass-04 deb contrib/science optional arch=all
+ astrometry-data-2mass-05 deb contrib/science optional arch=all
+ astrometry-data-2mass-06 deb contrib/science optional arch=all
+ astrometry-data-2mass-07 deb contrib/science optional arch=all
+ astrometry-data-2mass-08-19 deb contrib/science optional arch=all
+Directory: pool/contrib/a/astrometry-data-2mass
+Priority: extra
+Section: contrib/misc
+
+Package: atari800
+Binary: atari800
+Version: 3.1.0-2
+Maintainer: Antonin Kral <A.Kral@sh.cvut.cz>
+Build-Depends: libsdl1.2-dev, zlib1g-dev, libreadline-dev, libgl1-mesa-dev, libpng-dev, autotools-dev, dpkg-dev (>= 1.16.1~)
+Architecture: any
+Standards-Version: 3.9.7
+Format: 3.0 (quilt)
+Files:
+ ca197efd696551206236716a734c2500 1863 atari800_3.1.0-2.dsc
+ 88d42ab05d4ef18ebab5839065fd1db1 1490767 atari800_3.1.0.orig.tar.gz
+ ab80634042cf02cb22020ab3bd70a664 6320 atari800_3.1.0-2.debian.tar.xz
+Vcs-Browser: https://github.com/bobek/aranym800-debian
+Vcs-Git: git://github.com/bobek/aranym800-debian.git
+Checksums-Sha256:
+ 533953bc4f44eaaab85d1432555d679580724e0d9091e1e069e6c55d5789109f 1863 atari800_3.1.0-2.dsc
+ 16b2d7cf4ba37d86f35213969ead9fcd815eb3ff69908b4f5be15468fc71c35e 1490767 atari800_3.1.0.orig.tar.gz
+ f4afcf51463ce15afd4f263e4613b12ab02a3fed1350e2015bef3d90b4408eff 6320 atari800_3.1.0-2.debian.tar.xz
+Package-List: 
+ atari800 deb contrib/otherosfs optional arch=any
+Directory: pool/contrib/a/atari800
+Priority: source
+Section: contrib/otherosfs
+
+Package: b43-fwcutter
+Binary: b43-fwcutter, firmware-b43-installer, firmware-b43legacy-installer
+Version: 1:019-3
+Maintainer: Daniel Echeverry <epsilon77@gmail.com>
+Build-Depends: debhelper (>= 9), po-debconf, debconf
+Architecture: any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ dab0e2eff171696b85763ba515d7e424 2098 b43-fwcutter_019-3.dsc
+ 19d1f4226a625756726bdf7ed5dc2a0a 46769 b43-fwcutter_019.orig.tar.bz2
+ 2ed2a4cbd2b39b8d0dd9151ae0a6dbe4 22200 b43-fwcutter_019-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/b43-fwcutter.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/b43-fwcutter.git
+Checksums-Sha256:
+ 8cdc9ccc18667a06e35be1fc1e44aa43c16caeccf39d87cbf7c65f6c852b03ed 2098 b43-fwcutter_019-3.dsc
+ d6ea85310df6ae08e7f7e46d8b975e17fc867145ee249307413cfbe15d7121ce 46769 b43-fwcutter_019.orig.tar.bz2
+ 8b377469546955f94eff3f8f226d366872f10c5883c07949da82ac5ef9cbc21c 22200 b43-fwcutter_019-3.debian.tar.xz
+Homepage: http://wireless.kernel.org/en/users/Drivers/b43
+Package-List: 
+ b43-fwcutter deb contrib/utils optional arch=any
+ firmware-b43-installer deb contrib/kernel optional arch=all
+ firmware-b43legacy-installer deb contrib/kernel optional arch=all
+Directory: pool/contrib/b/b43-fwcutter
+Priority: source
+Section: contrib/utils
+
+Package: basilisk2
+Binary: basilisk2
+Version: 0.9.20120331-4
+Maintainer: Jonas Smedegaard <dr@jones.dk>
+Uploaders: Giulio Paci <giuliopaci@gmail.com>, Jérémy Lal <kapouer@melix.org>, Stephen Kitt <skitt@debian.org>
+Build-Depends: cdbs, autotools-dev, devscripts, automake1.11, autoconf, debhelper, dh-buildinfo, libgtk2.0-dev, libesd0-dev, libsdl-dev, libxxf86dga-dev, libxxf86vm-dev
+Architecture: any
+Standards-Version: 3.9.3
+Format: 3.0 (quilt)
+Files:
+ be265aa108a7f0e0abd620ce154fbb28 2145 basilisk2_0.9.20120331-4.dsc
+ 9453d5e3ef1f865fbd8223ba53f2fc96 1138385 basilisk2_0.9.20120331.orig.tar.gz
+ 9c9b76e9ec0edaa07de86807364e7e1a 83816 basilisk2_0.9.20120331-4.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/basilisk2.git
+Vcs-Git: git://git.debian.org/git/collab-maint/basilisk2.git
+Checksums-Sha256:
+ f36cb1d147f1935cdc3d3c787709696bd11de6f8ab91f2d5a9984ecdcfca5708 2145 basilisk2_0.9.20120331-4.dsc
+ 5349089ecf2e9ab04bf21f8319396f9cb88a07436d245410265a9f7b9a3a0e09 1138385 basilisk2_0.9.20120331.orig.tar.gz
+ 48c683e0714fdf8624a69df38a7eb8c120439e741432ecbe171072485d02cf39 83816 basilisk2_0.9.20120331-4.debian.tar.xz
+Homepage: http://basilisk.cebix.net/
+Package-List: 
+ basilisk2 deb contrib/otherosfs optional arch=any
+Directory: pool/contrib/b/basilisk2
+Priority: source
+Section: contrib/otherosfs
+
+Package: bgoffice-dict-downloader
+Binary: bgoffice-dict-downloader
+Version: 0.09
+Maintainer: Debian Add-ons Bulgaria Project <debian-addons-bg-maintainers@openfmi.net>
+Uploaders: Damyan Ivanov <dmn@debian.org>
+Build-Depends: debhelper (>= 7.0.50~)
+Build-Depends-Indep: po-debconf, perl, liburi-perl, libwww-mechanize-perl
+Architecture: all
+Standards-Version: 3.9.2
+Format: 1.0
+Files:
+ 32e9a74dbabeb36edbe57811ac706377 1837 bgoffice-dict-downloader_0.09.dsc
+ 65d3b6b648e9822d9f9e490c6f1bdd89 13552 bgoffice-dict-downloader_0.09.tar.gz
+Vcs-Browser: http://openfmi.net/plugins/scmsvn/cgi-bin/viewcvs.cgi/bgoffice-dict-downloader/?root=debian-addons-bg
+Vcs-Svn: https://svn.openfmi.net/debian-addons-bg/bgoffice-dict-downloader/trunk
+Checksums-Sha256:
+ 4e8923f08ee94b7cda007c9bec9d2777240d276ebed9b0bd7c31bbe6a1d234e4 1837 bgoffice-dict-downloader_0.09.dsc
+ d4e221774143d7349ef15085a361d57120f58a8e9fa8d0346119db46afbe659f 13552 bgoffice-dict-downloader_0.09.tar.gz
+Package-List: 
+ bgoffice-dict-downloader deb contrib/text extra
+Directory: pool/contrib/b/bgoffice-dict-downloader
+Priority: source
+Section: contrib/text
+
+Package: biomaj-watcher
+Binary: biomaj-watcher
+Version: 1.2.2-4
+Maintainer: Debian Med Packaging Team <debian-med-packaging@lists.alioth.debian.org>
+Uploaders: Olivier Sallou <osallou@debian.org>
+Build-Depends: debhelper (>= 8), ant (>= 1.7), zip, unzip
+Build-Depends-Indep: default-jdk, debconf, po-debconf, liblog4j1.2-java, libcommons-lang-java, libcommons-logging-java, libjsch-java, libjdom1-java, libquartz-java (>= 1.6), libmail-java, libxerces2-java, javahelper (>= 0.25), biomaj (>= 1.2.1)
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ b5dd4200268dd3f07ad5966a7f5f565c 2273 biomaj-watcher_1.2.2-4.dsc
+ de9f439ea0169d4980ba69352617558d 95073453 biomaj-watcher_1.2.2.orig.tar.gz
+ 2a14b5bd431b2abc02abd093b7decf8f 35324 biomaj-watcher_1.2.2-4.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/viewvc/debian-med/trunk/packages/biomaj-watcher/trunk/
+Vcs-Svn: svn://anonscm.debian.org/debian-med/trunk/packages/biomaj-watcher/trunk/
+Checksums-Sha256:
+ 16516a6662fcd9558b5f75f3e58188ea8654f951259de3e077c1bf93f99ff117 2273 biomaj-watcher_1.2.2-4.dsc
+ 9936e817f0699ac9081d28f3d9ca383a0c93f55bb3aab70405eb4378c61ca624 95073453 biomaj-watcher_1.2.2.orig.tar.gz
+ 1ccdb24a824acc7e7547400fe0ee486941fd19a35a1179e8c956fa54d19e5a76 35324 biomaj-watcher_1.2.2-4.debian.tar.xz
+Homepage: http://biomaj.genouest.org
+Package-List: 
+ biomaj-watcher deb contrib/science optional arch=all
+Directory: pool/contrib/b/biomaj-watcher
+Priority: source
+Section: contrib/science
+
+Package: caffe-contrib
+Binary: caffe-cuda, caffe-tools-cuda, libcaffe-cuda1, libcaffe-cuda-dev, python3-caffe-cuda
+Version: 1.0.0~rc4-1
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Zhou Mo <cdluminate@gmail.com>
+Build-Depends: bc, cmake, bash-completion, debhelper (>= 10), dh-python, git, libboost-dev, libboost-filesystem-dev, libboost-system-dev, libboost-thread-dev, libboost-python-dev, libgflags-dev, libgoogle-glog-dev, libhdf5-dev, libleveldb-dev, liblmdb-dev, libblas-dev | libblas.so, libopencv-dev (>= 2.4), libprotobuf-dev, libprotoc-dev, libsnappy-dev, protobuf-compiler, python3-dev, python3-numpy, cython3, ipython3, python3, python3-skimage, python3-protobuf, python3-dateutil, python3-gflags, python3-h5py, python3-leveldb, python3-matplotlib, python3-networkx, python3-nose, python3-pandas, python3-pil, python3-scipy, python3-six, python3-yaml, nvidia-cuda-toolkit (>= 7.5.18) [amd64 ppc64el], clang-3.8
+Architecture: amd64 ppc64el
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 31703e7b7422fd2bc9e46a94f00332af 3106 caffe-contrib_1.0.0~rc4-1.dsc
+ 9705ada2e21069710ad9515b9784aaf8 8505257 caffe-contrib_1.0.0~rc4.orig.tar.gz
+ 400c55428b6173dcf9ef6a1d07edf971 14076 caffe-contrib_1.0.0~rc4-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/debian-science/packages/caffe-contrib.git
+Vcs-Git: https://anonscm.debian.org/git/debian-science/packages/caffe-contrib.git
+Checksums-Sha256:
+ f492eef3815bb470f6bd6f7ec5189c0f8d2d45feb5a1bdc586294aea9ba1a975 3106 caffe-contrib_1.0.0~rc4-1.dsc
+ a1e16fcec4e38bb929f01afe31a591ac6b2bb3786151eaa60e2b693bd1636eea 8505257 caffe-contrib_1.0.0~rc4.orig.tar.gz
+ f7387826c3b188a97c467dc35d95d5e633e5021b9a34f6aad7ad39b69b31eedc 14076 caffe-contrib_1.0.0~rc4-1.debian.tar.xz
+Homepage: http://caffe.berkeleyvision.org
+Package-List: 
+ caffe-cuda deb contrib/metapackages optional arch=amd64,ppc64el
+ caffe-tools-cuda deb contrib/science optional arch=amd64,ppc64el
+ libcaffe-cuda-dev deb contrib/libdevel optional arch=amd64,ppc64el
+ libcaffe-cuda1 deb contrib/libs optional arch=amd64,ppc64el
+ python3-caffe-cuda deb contrib/python optional arch=amd64,ppc64el
+Testsuite: autopkgtest
+Directory: pool/contrib/c/caffe-contrib
+Priority: extra
+Section: contrib/misc
+
+Package: cbedic
+Binary: cbedic
+Version: 4.0-4
+Maintainer: Anton Zinoviev <zinoviev@debian.org>
+Build-Depends: debhelper (>> 9.0.0)
+Architecture: any
+Standards-Version: 3.6.0
+Format: 1.0
+Files:
+ 4d6ddf6aab1cb905b01e01221a439f54 1604 cbedic_4.0-4.dsc
+ c86086ddf2de483cd19a4a89e63003ec 115297 cbedic_4.0.orig.tar.gz
+ 3cee5ffc70902a94df7167d28c6ac98e 2830 cbedic_4.0-4.diff.gz
+Checksums-Sha256:
+ 46fe9dd09f25c4de88b09eefc1f71439aad263ed3882508117cef7a6a5c6e5dd 1604 cbedic_4.0-4.dsc
+ fd2d5f2de0a5b29f315ad72d9a974787b205f7b67622722af9da99604c47a937 115297 cbedic_4.0.orig.tar.gz
+ cd681674f593a905f29ec15f3bac155d08a0343134799372722ce382d476909f 2830 cbedic_4.0-4.diff.gz
+Package-List: 
+ cbedic deb contrib/text optional arch=any
+Directory: pool/contrib/c/cbedic
+Priority: source
+Section: contrib/text
+
+Package: chargebee-python
+Binary: python-chargebee, python3-chargebee
+Version: 1.6.3-1
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Scott Kitterman <scott@kitterman.com>
+Build-Depends: debhelper (>= 9~), dh-python, python-all, python-setuptools, python3-all, python3-setuptools
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 1e7392ebae143c5841a33dc14ee34c76 2217 chargebee-python_1.6.3-1.dsc
+ 2083cb8d031a01328248488cc0ec93ab 128443 chargebee-python_1.6.3.orig.tar.gz
+ 9be69169dcabead9ad4825490ef126a3 3332 chargebee-python_1.6.3-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/chargebee-python.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/chargebee-python.git
+Checksums-Sha256:
+ 8db64a1e0b5764c7b8ca695d933e049271375abb8b6b09be4e1437940135cfb5 2217 chargebee-python_1.6.3-1.dsc
+ 21de523a5babda86f2e37fb69ebe1ce02d034d2e64e1533be69ed2be7423a02f 128443 chargebee-python_1.6.3.orig.tar.gz
+ 02928bd0749edb0fbadcaa3ff10013ac560853b62586f3984d63cd4e29726ac5 3332 chargebee-python_1.6.3-1.debian.tar.xz
+Homepage: https://github.com/chargebee/chargebee-python/tree/chargebee-v1
+Package-List: 
+ python-chargebee deb contrib/python optional arch=all
+ python3-chargebee deb contrib/python optional arch=all
+Directory: pool/contrib/c/chargebee-python
+Priority: extra
+Section: contrib/misc
+
+Package: chargebee2-python
+Binary: python-chargebee2, python3-chargebee2
+Version: 2.2.3-1
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Scott Kitterman <scott@kitterman.com>
+Build-Depends: debhelper (>= 9~), dh-python, python-all, python-setuptools, python3-all, python3-setuptools
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 1e7fc83781123b0b1f79b2b0f05344ef 2213 chargebee2-python_2.2.3-1.dsc
+ 099871955ae4d81c48da69b624c1faf5 142372 chargebee2-python_2.2.3.orig.tar.gz
+ 725b60067e21fc0bef457b3b8c937aae 2928 chargebee2-python_2.2.3-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/chargebee2-python.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/chargebee2-python.git
+Checksums-Sha256:
+ a6fe6a342ad49a31116323c0e0f940ab8344e95d256088a25b9bbf50a98a2981 2213 chargebee2-python_2.2.3-1.dsc
+ 384ec19ce6561cf4a5579e84b488e4bc2772db46193ac23fd64deba27381505e 142372 chargebee2-python_2.2.3.orig.tar.gz
+ 9f1b417d863387b7b59522417a146c7fdd821b0af8516924e10de641c244c38f 2928 chargebee2-python_2.2.3-1.debian.tar.xz
+Homepage: https://github.com/chargebee/chargebee-python/
+Package-List: 
+ python-chargebee2 deb contrib/python optional arch=all
+ python3-chargebee2 deb contrib/python optional arch=all
+Directory: pool/contrib/c/chargebee2-python
+Priority: extra
+Section: contrib/misc
+
+Package: cicero
+Binary: cicero
+Version: 0.7.2-3
+Maintainer: Debian Accessibility Team <debian-accessibility@lists.debian.org>
+Uploaders: Samuel Thibault <sthibault@debian.org>
+Build-Depends: debhelper (>= 7)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ d5dac83eb9cfc9bb52a15eb618b4670a 1864 cicero_0.7.2-3.dsc
+ 4353dede07c5728319ba7f5595a7230a 96527 cicero_0.7.2.orig.tar.gz
+ a93661b6a48db48d59ba7d26796fc9ce 3964 cicero_0.7.2-3.diff.gz
+Vcs-Browser: http://git.debian.org/?p=pkg-a11y/cicero.git;a=summary
+Vcs-Git: git://git.debian.org/git/pkg-a11y/cicero.git
+Checksums-Sha256:
+ 35b7f1048010c67adfd8d70e4961aefd8800eb9a83a4d1cc68088da0009d9a03 1864 cicero_0.7.2-3.dsc
+ 63f40f2436ea9f67b44e2d4bd669dbabe90e2635a204526c20e0b3c8ee957786 96527 cicero_0.7.2.orig.tar.gz
+ f039c9642fe15c75bed5254315e2a29f9f2700da0e29d9b0729b3ffc46c8971c 3964 cicero_0.7.2-3.diff.gz
+Homepage: http://pages.infinit.net/fluxnic/cicero/
+Package-List: 
+ cicero deb contrib/sound optional arch=all
+Directory: pool/contrib/c/cicero
+Priority: source
+Section: contrib/sound
+
+Package: cl-umlisp
+Binary: cl-umlisp
+Version: 1:2007ac.2-6
+Maintainer: Kevin M. Rosenberg <kmr@debian.org>
+Build-Depends: debhelper (>= 7.0.0)
+Build-Depends-Indep: dh-lisp
+Architecture: all
+Standards-Version: 3.9.1.0
+Format: 3.0 (quilt)
+Files:
+ 86149f15ab104297cf4b486f0e048bea 1161 cl-umlisp_2007ac.2-6.dsc
+ 9d90f125106badf9bd6f8e18714dc0d4 42589 cl-umlisp_2007ac.2.orig.tar.gz
+ cb05ebe85fe63d363eb884641c88b9ab 2916 cl-umlisp_2007ac.2-6.debian.tar.gz
+Vcs-Browser: http://git.b9.com/?p=umlisp.git
+Vcs-Git: git://git.b9.com/umlisp.git
+Checksums-Sha256:
+ d5222a2da80f0ac3f2b3ed98d892de911e56039f669902e5d00412d3c0d80ec1 1161 cl-umlisp_2007ac.2-6.dsc
+ 73351a7d39ed2ddedcee9e6fa062821b155f0422902f7466d3544d7a2af42ce4 42589 cl-umlisp_2007ac.2.orig.tar.gz
+ 0d5632ff2beb6b5f4549696bf77a49ba5beec12024242e37c63029d01dbbd025 2916 cl-umlisp_2007ac.2-6.debian.tar.gz
+Homepage: http://files.b9.com/umlisp/
+Directory: pool/contrib/c/cl-umlisp
+Priority: source
+Section: contrib/lisp
+
+Package: cl-umlisp-orf
+Binary: cl-umlisp-orf
+Version: 3.3.2-3
+Maintainer: Kevin M. Rosenberg <kmr@debian.org>
+Build-Depends: debhelper (>= 7.0.0)
+Build-Depends-Indep: dh-lisp
+Architecture: all
+Standards-Version: 3.9.1.0
+Format: 3.0 (quilt)
+Files:
+ 4cf135f69fb4d31a2f00766613c3c932 1182 cl-umlisp-orf_3.3.2-3.dsc
+ 1cde78a4bc9f193466db90fec6b711e8 28665 cl-umlisp-orf_3.3.2.orig.tar.gz
+ ffe726119f85cc5bdbbbedc0baae4ec3 2820 cl-umlisp-orf_3.3.2-3.debian.tar.gz
+Vcs-Browser: http://git.b9.com/?p=umlisp-orf.git
+Vcs-Git: git://git.b9.com/umlisp-orf.git
+Checksums-Sha256:
+ 3c0f37e642806542cca9c76a6961701a315f239cbed8ca05efaa6583cac28b1d 1182 cl-umlisp-orf_3.3.2-3.dsc
+ b6714a1468e62053f12602787297a19b0e90aa0932fc95b575ab18109aa13323 28665 cl-umlisp-orf_3.3.2.orig.tar.gz
+ 473a4f1b062ddca85df377bca98debf30cdfc278f0392f8c548969cbed0ae905 2820 cl-umlisp-orf_3.3.2-3.debian.tar.gz
+Homepage: http://files.b9.com/umlisp-orf/
+Directory: pool/contrib/c/cl-umlisp-orf
+Priority: source
+Section: contrib/lisp
+
+Package: corsix-th
+Binary: corsix-th, corsix-th-data
+Version: 0.60-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Alexandre Detiste <alexandre.detiste@gmail.com>, Phil Morrell <debian@emorrp1.name>,
+Build-Depends: cmake, debhelper (>= 10), imagemagick, libavdevice-dev (>= 7:2.8), libfreetype6-dev, liblua5.2-dev, libsdl2-dev, libsdl2-mixer-dev, lua-busted, lua5.2
+Architecture: any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 568d7a3ce0b50feeac358f97761b80e2 2153 corsix-th_0.60-2.dsc
+ 67f05922c47d8db7b6cb00f340ae3d7e 4138307 corsix-th_0.60.orig.tar.gz
+ b18c9e46132f49426d9c420bac1b52b9 8112 corsix-th_0.60-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/corsix-th.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/corsix-th.git
+Checksums-Sha256:
+ ce5c339713836fd319ec8d99ea8efe5a1f2ac2136163eb2cabf224460e64d0db 2153 corsix-th_0.60-2.dsc
+ fa51d72775a0276f7795f4ec3f4ea8ae7119b9b1ea5a945a9cc675e68cc8f56a 4138307 corsix-th_0.60.orig.tar.gz
+ 29294f1e61755eab4b8315d34390ac29a5ccc72d0ece374e014d89cd5e35f653 8112 corsix-th_0.60-2.debian.tar.xz
+Homepage: http://corsixth.com
+Package-List: 
+ corsix-th deb contrib/games optional arch=any
+ corsix-th-data deb contrib/games optional arch=all
+Directory: pool/contrib/c/corsix-th
+Priority: extra
+Section: contrib/misc
+
+Package: crafty-bitmaps
+Binary: crafty-bitmaps
+Version: 1.0-1
+Maintainer: Oliver Korff <ok@xynyx.de>
+Build-Depends: imagemagick, debhelper (>= 7.0.50~)
+Architecture: all
+Standards-Version: 3.9.1
+Format: 3.0 (quilt)
+Files:
+ 685de4e21afa9a8eef0d3ce7f9a1d883 1016 crafty-bitmaps_1.0-1.dsc
+ 3be0253c68e2016fc1baa55d74ac2563 6181 crafty-bitmaps_1.0.orig.tar.gz
+ 9c62b6bbc5605c5efde1dd1a6b5f4522 2526 crafty-bitmaps_1.0-1.debian.tar.gz
+Checksums-Sha256:
+ ae4d05a2f360e2fe54d9020a507e574d8acce0baf29d412f09ab007367cfa9d6 1016 crafty-bitmaps_1.0-1.dsc
+ b82fdec6e5506054bd2a3eff6754c9ba29182585afa40bacf9deb2fe2c1dc8e8 6181 crafty-bitmaps_1.0.orig.tar.gz
+ 060ac8e51ab4f16befed98c2309dba89241ebbac8a0263d70deb2291d7409cbe 2526 crafty-bitmaps_1.0-1.debian.tar.gz
+Directory: pool/contrib/c/crafty-bitmaps
+Priority: source
+Section: contrib/games
+
+Package: crafty-books-medium
+Binary: crafty-books-medium
+Version: 1.0.debian1-2
+Maintainer: Oliver Korff <ok@xynyx.de>
+Build-Depends: crafty (>= 23.1), debhelper (>> 5.0.0)
+Architecture: all
+Standards-Version: 3.8.3
+Format: 1.0
+Files:
+ 2586e1993276b49f6bb744d8aff5eae3 1101 crafty-books-medium_1.0.debian1-2.dsc
+ ce7d64c114aa863a62e064df3b1c11d5 9105993 crafty-books-medium_1.0.debian1.orig.tar.gz
+ c8fb942e6b97059979d0afb0033c5c24 11233 crafty-books-medium_1.0.debian1-2.diff.gz
+Checksums-Sha256:
+ 720629219ebaa1c89d96ac21724efdc22ac26d9654eac97c8bc34a630eebde40 1101 crafty-books-medium_1.0.debian1-2.dsc
+ 0bb2cbb3c9fd0640c3517f94d8ed75dbbeff24948a7eb78e8fb59a5705813d2f 9105993 crafty-books-medium_1.0.debian1.orig.tar.gz
+ dd4b549f055d60daa5dd57a5f0f0022dc8078a66562ef673a7552e946e79ebf3 11233 crafty-books-medium_1.0.debian1-2.diff.gz
+Directory: pool/contrib/c/crafty-books-medium
+Priority: source
+Section: contrib/games
+
+Package: crafty-books-medtosmall
+Binary: crafty-books-medtosmall
+Version: 1.0.debian1-2
+Maintainer: Oliver Korff <ok@xynyx.de>
+Build-Depends: crafty (>= 23.1), debhelper (>> 5.0.0)
+Architecture: all
+Standards-Version: 3.8.3
+Format: 1.0
+Files:
+ b2b1057841096edd33d39cb6b1f3a1ca 1133 crafty-books-medtosmall_1.0.debian1-2.dsc
+ 8fe6d0d803fb72cbfa6ea9c37f0563c1 1366064 crafty-books-medtosmall_1.0.debian1.orig.tar.gz
+ 64f31e13fda9f7cbca6b803aa65ebb62 11232 crafty-books-medtosmall_1.0.debian1-2.diff.gz
+Checksums-Sha256:
+ 46ac0594f38ed1e61cc3d7c24b73097c3af5e13209ea7e489009fbf3e508aac3 1133 crafty-books-medtosmall_1.0.debian1-2.dsc
+ bd3174ba11d306bf482a71c40430196e4a9929d0da2b719590ff3b19874077ca 1366064 crafty-books-medtosmall_1.0.debian1.orig.tar.gz
+ 62f519a64a8175a72c27e762f3453defcaa7a75b69f31c613f10a479286bd8a8 11232 crafty-books-medtosmall_1.0.debian1-2.diff.gz
+Directory: pool/contrib/c/crafty-books-medtosmall
+Priority: source
+Section: contrib/games
+
+Package: crafty-books-small
+Binary: crafty-books-small
+Version: 1.0.debian1-2
+Maintainer: Oliver Korff <ok@xynyx.de>
+Build-Depends: crafty (>= 23.1), debhelper (>> 5.0.0)
+Architecture: all
+Standards-Version: 3.8.3
+Format: 1.0
+Files:
+ 7e7e2a3f8986b8c7a8a6645836c0e22b 1090 crafty-books-small_1.0.debian1-2.dsc
+ 65b3f2ef63c9401a5f2713b67ea4f511 552217 crafty-books-small_1.0.debian1.orig.tar.gz
+ 460a8ce74e6d0b5ead84333f36ac4abd 11303 crafty-books-small_1.0.debian1-2.diff.gz
+Checksums-Sha256:
+ 795119baec50f3e3ef2fafca55b96063ad9d97e5ff7a1cebc7e0824738191891 1090 crafty-books-small_1.0.debian1-2.dsc
+ 1df0f0146a1d47a90992b1f27d9ddecb5aed78efce700e8cc82474c19d7391b8 552217 crafty-books-small_1.0.debian1.orig.tar.gz
+ 209d20550baac806083ea7fb201be3e0da91f4b8b52f404d2ae6bf06b53623a8 11303 crafty-books-small_1.0.debian1-2.diff.gz
+Directory: pool/contrib/c/crafty-books-small
+Priority: source
+Section: contrib/games
+
+Package: cytadela
+Binary: cytadela, cytadela-dbg, cytadela-data
+Version: 1.1.0-4
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Sylvain Beucler <beuc@debian.org>
+Build-Depends: debhelper (>= 9), libsdl1.2-dev, libsdl-mixer1.2-dev, mesa-common-dev, libglu1-mesa-dev, libvlc-dev (>= 2.0)
+Architecture: any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 05a4d44ebd6633910478eaf822368dd4 1791 cytadela_1.1.0-4.dsc
+ 2929f667639f7b6beadc6c822a1fde03 36404683 cytadela_1.1.0.orig.tar.bz2
+ 7874988dbc6e53cdd4a309246f3f7720 5780 cytadela_1.1.0-4.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/cytadela.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/cytadela.git
+Checksums-Sha256:
+ 0e68da4404f051f2051c2304c210cc2ff3c98cd84f191db2dde3aae6a230b3c0 1791 cytadela_1.1.0-4.dsc
+ 90497fe473639ff2fefc68ab44d22936ea5b335e05595b966454cb53f1f42fbe 36404683 cytadela_1.1.0.orig.tar.bz2
+ 9c53afc2490fab35db3a8245db091af06162dd698df015ca1722007787c47b34 5780 cytadela_1.1.0-4.debian.tar.xz
+Homepage: http://cytadela.sf.net/
+Package-List: 
+ cytadela deb contrib/games optional arch=any
+ cytadela-data deb contrib/games optional arch=all
+ cytadela-dbg deb contrib/debug extra arch=any
+Directory: pool/contrib/c/cytadela
+Priority: source
+Section: contrib/games
+
+Package: dhewm3
+Binary: dhewm3-doom3, dhewm3-d3xp, dhewm3
+Version: 1.4.1+dfsg-1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Tobias Frost <tobi@debian.org>
+Build-Depends: cmake, debhelper (>= 9), libcurl4-gnutls-dev, libjpeg-dev, libogg-dev, libopenal-dev, libsdl2-dev, libvorbis-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ de81b7fcc3aeee992b18c709567bf534 2138 dhewm3_1.4.1+dfsg-1.dsc
+ 9daeccd220bd559a5822ba4292478f1d 3800702 dhewm3_1.4.1+dfsg.orig.tar.gz
+ f4871d6b3988552bee3afb316f4d7c5f 10480 dhewm3_1.4.1+dfsg-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/dhewm3.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/dhewm3.git
+Checksums-Sha256:
+ e76b4f9e284ad667e5467b4604a3bf950cbdf4eb9015b4167887d42cb98050a4 2138 dhewm3_1.4.1+dfsg-1.dsc
+ 8919fa009d8ff4c9d5d69f376c480d0a137c95e5cd7dbf19f149e400eecdf449 3800702 dhewm3_1.4.1+dfsg.orig.tar.gz
+ b739afb82e57ba9e749127a6b9249a5477e7b309669dda920bf81ad00b3d21c5 10480 dhewm3_1.4.1+dfsg-1.debian.tar.xz
+Homepage: https://github.com/dhewm/dhewm3
+Package-List: 
+ dhewm3 deb contrib/games optional arch=any
+ dhewm3-d3xp deb contrib/games optional arch=any
+ dhewm3-doom3 deb contrib/games optional arch=any
+Directory: pool/contrib/d/dhewm3
+Priority: extra
+Section: contrib/misc
+
+Package: django-anymail
+Binary: python-django-anymail, python3-django-anymail
+Version: 0.8-2
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Scott Kitterman <scott@kitterman.com>
+Build-Depends: debhelper (>= 9~), dh-python, python-all, python-setuptools, python3-all, python3-setuptools
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 17e0719f6248e9727f288d2608c6df51 2180 django-anymail_0.8-2.dsc
+ adaf3b352d5a90f909560a0ed2b2d3c5 41671 django-anymail_0.8.orig.tar.gz
+ 3efe1f151d269a17ae2d2379bc441d1a 3660 django-anymail_0.8-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/django-anymail.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/django-anymail.git
+Checksums-Sha256:
+ 201d10516b7a3791d8467fee461c5d1e0b5facc9b597e4f3ec90c941c803fd2c 2180 django-anymail_0.8-2.dsc
+ 64b5ae56823925de69b09615bb737001b2604a80ba1fcf2cb43b00d91fec0b32 41671 django-anymail_0.8.orig.tar.gz
+ 57c7ba4e90a8003f9b2098fb1f4dce9b193513b4b5f264c7e88cccf9d4813c9b 3660 django-anymail_0.8-2.debian.tar.xz
+Homepage: https://github.com/anymail/django-anymail
+Package-List: 
+ python-django-anymail deb contrib/python optional arch=all
+ python3-django-anymail deb contrib/python optional arch=all
+Directory: pool/contrib/d/django-anymail
+Priority: extra
+Section: contrib/misc
+
+Package: doris
+Binary: doris
+Version: 4.06~beta2+dfsg-3
+Maintainer: Debian GIS Project <pkg-grass-devel@lists.alioth.debian.org>
+Uploaders: Antonio Valentino <antonio.valentino@tiscali.it>
+Build-Depends: debhelper (>= 9.0.0), csh | c-shell, libfftw3-dev, liblapack-dev, libtriangle-dev, libepr-api2-dev, python-all
+Architecture: any
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ 6eb8e43a0f442eac1f239680bf5d91d8 1397 doris_4.06~beta2+dfsg-3.dsc
+ 3396647da734f15dba9a9f8a985070ea 591943 doris_4.06~beta2+dfsg.orig.tar.gz
+ 2151d245e4361a9adc38f4669c01ee6f 12280 doris_4.06~beta2+dfsg-3.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-grass/doris.git
+Vcs-Git: git://anonscm.debian.org/pkg-grass/doris.git
+Checksums-Sha256:
+ 141c3e0cbd4cd3a52b6cd5222cc901cc9e69050f58c6c6fb606f4f158b3d1d62 1397 doris_4.06~beta2+dfsg-3.dsc
+ 8c068042860c86ff514b824767ac39e6897450f283ba9e81334c78fab546e16c 591943 doris_4.06~beta2+dfsg.orig.tar.gz
+ 13f6da47ac3ebd65d97186bc6412c699f846a857cf1a85e6c6444c81784347e7 12280 doris_4.06~beta2+dfsg-3.debian.tar.xz
+Homepage: http://doris.tudelft.nl
+Package-List: 
+ doris deb contrib/science optional
+Directory: pool/contrib/d/doris
+Priority: extra
+Section: contrib/misc
+
+Package: dosemu
+Binary: dosemu
+Version: 1.4.0.7+20130105+b028d3f-2
+Maintainer: Kees Cook <kees@debian.org>
+Build-Depends: autoconf, bin86, bison, bsdmainutils, debhelper (>= 9~), flex, libx11-dev, libxext-dev, libxxf86vm-dev, libice-dev, libslang2-dev, xfonts-utils, libxt-dev, autotools-dev, imagemagick, libgpm-dev, libasound2-dev, libsndfile1-dev, libsdl1.2-dev
+Architecture: i386 amd64
+Standards-Version: 3.9.3
+Format: 3.0 (quilt)
+Files:
+ f7d0c98ec836d9d6c00a0917a3b01686 2414 dosemu_1.4.0.7+20130105+b028d3f-2.dsc
+ c5f0895fbcd57b1682ee623694d74eba 4471840 dosemu_1.4.0.7+20130105+b028d3f.orig-freedos.tar.bz2
+ fbf187f0a8f149135a4b9f4727ad01d2 1976473 dosemu_1.4.0.7+20130105+b028d3f.orig.tar.bz2
+ c010b250e0df0ff6a823f8fa2a6d2ce5 20032 dosemu_1.4.0.7+20130105+b028d3f-2.debian.tar.xz
+Checksums-Sha256:
+ f38836f91821e46bd62040907faf54e81ade455b28fe6376b0f6eefde3781773 2414 dosemu_1.4.0.7+20130105+b028d3f-2.dsc
+ 1a5ffdd7f061bf4641e078c96ab9d1b388efe7ddcbe0f050e82e75d53f72cee7 4471840 dosemu_1.4.0.7+20130105+b028d3f.orig-freedos.tar.bz2
+ 30dec5ae8aa601de604027b035b0441c7262d1bddd9bfd046566743b058923dd 1976473 dosemu_1.4.0.7+20130105+b028d3f.orig.tar.bz2
+ e08140e1772eee494760afa73a851d86d2a21f024f117d532914e769b7065d08 20032 dosemu_1.4.0.7+20130105+b028d3f-2.debian.tar.xz
+Homepage: http://www.dosemu.org/
+Package-List: 
+ dosemu deb contrib/otherosfs optional arch=i386,amd64
+Directory: pool/contrib/d/dosemu
+Priority: source
+Section: contrib/otherosfs
+
+Package: dynagen
+Binary: dynagen
+Version: 0.11.0-7
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: python-all, debhelper (>= 9), dh-python
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 7b6db2b3623adc4bd82a5921f0612876 1844 dynagen_0.11.0-7.dsc
+ 3f88b3449b17096dca84d007f0b91b3f 1418846 dynagen_0.11.0.orig.tar.gz
+ 45149c564d7c8282bce9fc5b440e1de8 7508 dynagen_0.11.0-7.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/dynagen.git
+Vcs-Git: git://anonscm.debian.org/collab-maint/dynagen.git
+Checksums-Sha256:
+ 1be9c6244eec15e0d33a2205424567e70ffe845091ff78c70af98823613af0dd 1844 dynagen_0.11.0-7.dsc
+ 53523fe13e151c0476596315aa724d50c6523ab72bb64d0ffc8d3ea8ad4e9628 1418846 dynagen_0.11.0.orig.tar.gz
+ 17f3b777e97a9177a361f40314cc5badaea64da596f9a688051502c043407965 7508 dynagen_0.11.0-7.debian.tar.xz
+Homepage: http://dynagen.org/
+Package-List: 
+ dynagen deb contrib/net optional arch=all
+Directory: pool/contrib/d/dynagen
+Priority: source
+Section: contrib/net
+
+Package: easyspice
+Binary: easyspice
+Version: 0.6.8-2.1
+Maintainer: Gudjon I. Gudjonsson <gudjon@gudjon.org>
+Build-Depends: debhelper (>= 5), autotools-dev, libgtk2.0-dev, quilt
+Architecture: any
+Standards-Version: 3.7.3
+Format: 1.0
+Files:
+ e0f94b2052f39308fe3fef3bfd9d25cb 1745 easyspice_0.6.8-2.1.dsc
+ 6ffaab8c2dcdfc30ecdca52f3c8bcded 201627 easyspice_0.6.8.orig.tar.gz
+ 3ef7db90c939021946ea62cf43842f97 3095 easyspice_0.6.8-2.1.diff.gz
+Checksums-Sha256:
+ 2baec47093d3face0e24f944dc7a173280b9282f4a1d9718122fd4f1f72515f8 1745 easyspice_0.6.8-2.1.dsc
+ 55158436e05e372d48e03e59edc2dc2b49fbf366629a2943b265eb4562f1e975 201627 easyspice_0.6.8.orig.tar.gz
+ fdad55668c1ea0f45705ff0c8d9d49c1f78cce534a750a5af3d002728dd2e54b 3095 easyspice_0.6.8-2.1.diff.gz
+Homepage: http://easy-spice.sourceforge.net
+Package-List: 
+ easyspice deb contrib/electronics optional arch=any
+Directory: pool/contrib/e/easyspice
+Priority: source
+Section: contrib/electronics
+
+Package: esix
+Binary: esix
+Version: 1-3
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.5.6.0
+Format: 3.0 (quilt)
+Files:
+ aa3d9bf49207c34fb3c7a2e5ba906b5d 1602 esix_1-3.dsc
+ c0699f90d3d64263d61036ee5ce52edd 42271 esix_1.orig.tar.gz
+ a55914697bc00ab977b66e89df7190c3 3244 esix_1-3.debian.tar.xz
+Checksums-Sha256:
+ 69c6b03015ff50d6caf37cbfa7570e349cad216d7dfd1bb741f4efb6f2e5b08a 1602 esix_1-3.dsc
+ 7e060bad429c7ed1a4b2ec679845d58d882b10641c5b26c9a69a59c8ea64ad6c 42271 esix_1.orig.tar.gz
+ dc84c14d2f3063d67dbfe606372fb3b9d65305d15fad9f0b6ef26d5599cbeaaa 3244 esix_1-3.debian.tar.xz
+Package-List: 
+ esix deb contrib/otherosfs optional arch=all
+Directory: pool/contrib/e/esix
+Priority: source
+Section: contrib/otherosfs
+
+Package: exult
+Binary: exult, exult-studio
+Version: 1.2-16.2
+Maintainer: Jordà Polo <jorda@ettin.org>
+Uploaders: Michael Banck <mbanck@debian.org>
+Build-Depends: debhelper (>= 9), quilt (>= 0.40), flex, bison, libsdl1.2-dev (>= 1.2.7+1.2.8cvs20041007-5.1), libsdl-mixer1.2-dev, libx11-dev, libgimp2.0-dev (>= 2.2.8-11), libglade2-dev, zlib1g-dev, libpng-dev, autoconf (>= 2.58), automake1.11, libtool, libfreetype6-dev
+Architecture: any
+Standards-Version: 3.9.5
+Format: 1.0
+Files:
+ 4003c9fdc138445fd1f7ddb53e008860 2135 exult_1.2-16.2.dsc
+ 0fc88dee74a91724d25373ba0a8670ba 1722259 exult_1.2.orig.tar.gz
+ d62736b5bd1f937fdfbf00175d8a71b9 34632 exult_1.2-16.2.diff.gz
+Vcs-Browser: https://anonscm.debian.org/cgit/users/jorda-guest/pkg/exult.git
+Vcs-Git: git://anonscm.debian.org/users/jorda-guest/pkg/exult.git
+Checksums-Sha256:
+ 05a734739a51d00e2f69a29f108ee9d1700451099b901afafdcfa6345c962fb2 2135 exult_1.2-16.2.dsc
+ a6dd9d4e399281ed2db691ede21dbb79818ee11b08ef717e3eac255e290cf21a 1722259 exult_1.2.orig.tar.gz
+ 009d6d2f1b2822908d06311311d397a6adbd7b4403f297fb687b3ec2b77eaf31 34632 exult_1.2-16.2.diff.gz
+Homepage: http://exult.sourceforge.net/
+Package-List: 
+ exult deb contrib/games extra arch=any
+ exult-studio deb contrib/games extra arch=any
+Directory: pool/contrib/e/exult
+Priority: source
+Section: contrib/games
+
+Package: eztrace-contrib
+Binary: libeztrace0-contrib
+Version: 1.1-5-5
+Maintainer: Samuel Thibault <sthibault@debian.org>
+Build-Depends: debhelper (>= 9~), dh-autoreconf, pkg-config, gfortran, libiberty-dev, binutils-dev (>= 2.25.51.20151113-1~), zlib1g-dev, nvidia-cuda-toolkit, clang-3.8, libcupti-dev, python, mesa-common-dev, fxt-tools, libgtg-dev, libpomp2-dev, liblitl-dev (>= 0.1.3~), litl-tools, libstarpu-dev, libpapi-dev [amd64 arm64 armel armhf i386 mips mipsel powerpc ppc64el mips64el ppc64 x32], libmpich-dev, mpi-default-dev, mpi-default-bin
+Build-Conflicts: libeztrace0
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 09634b4453a9f29d2de68ec2cc45e67c 2353 eztrace-contrib_1.1-5-5.dsc
+ 65e913d048f514d992bc947de22e5559 951743 eztrace-contrib_1.1-5.orig.tar.gz
+ db5dfff9cdeaba23e8eeb2877c0d7a7c 11380 eztrace-contrib_1.1-5-5.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/git/collab-maint/eztrace.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/eztrace.git
+Checksums-Sha256:
+ 4ee66686da573308b28d3e1ab469aa52ee542501917e9590ddd0ec9eadb37807 2353 eztrace-contrib_1.1-5-5.dsc
+ f5657f8023d38de96f33f62478388ebba194c0f63d35c43dcda34df45a9d18e9 951743 eztrace-contrib_1.1-5.orig.tar.gz
+ 0f6304f8c903a7c637ab3ede6ac742e5447badc24a09bd1c7637cd175e018e90 11380 eztrace-contrib_1.1-5-5.debian.tar.xz
+Homepage: http://eztrace.gforge.inria.fr/
+Package-List: 
+ libeztrace0-contrib deb contrib/libs extra arch=any
+Directory: pool/contrib/e/eztrace-contrib
+Priority: extra
+Section: contrib/misc
+
+Package: fbzx
+Binary: fbzx
+Version: 3.1.0-1
+Maintainer: Santiago Vila <sanvila@debian.org>
+Build-Depends: debhelper (>= 9), libsdl1.2-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 5f17e243ca78bc3056e3d2b23cb6d53a 1447 fbzx_3.1.0-1.dsc
+ 60be6d8b0bdb10729737fe2af2f96fa6 188572 fbzx_3.1.0.orig.tar.xz
+ b5536081d9718c8a9d3a2ebfec47d4da 2460 fbzx_3.1.0-1.debian.tar.xz
+Vcs-Browser: https://github.com/rastersoft/fbzx
+Vcs-Git: https://github.com/rastersoft/fbzx
+Checksums-Sha256:
+ e267e69845790e20ec71da132931ccf9a341dd786fd25d80723881f5363ed4fb 1447 fbzx_3.1.0-1.dsc
+ 8277cd10b38dcbe965f8fe8d91cd0f72253abc41976e7bb6d6690bbe25993c3f 188572 fbzx_3.1.0.orig.tar.xz
+ 3de3f1ad1ddc1f39aba14b5f6cc998f91ad1dd1ce33a88fa44f4d6373f63a9bb 2460 fbzx_3.1.0-1.debian.tar.xz
+Homepage: http://www.rastersoft.com/fbzx.html
+Package-List: 
+ fbzx deb contrib/otherosfs optional arch=any
+Directory: pool/contrib/f/fbzx
+Priority: extra
+Section: contrib/misc
+
+Package: fdkaac
+Binary: fdkaac
+Version: 0.6.3-1
+Maintainer: Marius Gavrilescu <marius@ieval.ro>
+Build-Depends: debhelper (>= 9), dh-autoreconf, libfdk-aac-dev, pandoc
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 46f73816b5a1530ae05fdfb5d60f8905 1825 fdkaac_0.6.3-1.dsc
+ 20cdcfcf1e3ea4060f021b6eefa9b75b 82884 fdkaac_0.6.3.orig.tar.gz
+ 9cc044285e59f8288d390e480e492d03 3216 fdkaac_0.6.3-1.debian.tar.xz
+Vcs-Browser: https://git.ieval.ro/?p=fdkaac.git
+Vcs-Git: https://git.ieval.ro/git/fdkaac.git
+Checksums-Sha256:
+ 123e4a40ea0776678a6c73d84076b369d0d24624f2f62461791c533a3ed09252 1825 fdkaac_0.6.3-1.dsc
+ 16ad555403743b0d288fd113b6d8451a4e787112d4edbfd2da36280a062290c6 82884 fdkaac_0.6.3.orig.tar.gz
+ 2d4ca7bf843e224a7beb9d841827e5c7c4b2fe4455c809fd05ad3d56ffa4dd49 3216 fdkaac_0.6.3-1.debian.tar.xz
+Homepage: https://github.com/nu774/fdkaac
+Package-List: 
+ fdkaac deb contrib/sound optional arch=any
+Directory: pool/contrib/f/fdkaac
+Priority: extra
+Section: contrib/misc
+
+Package: festvox-don
+Binary: festvox-don
+Version: 1.4.0-5
+Maintainer: Debian TTS team <tts-project@lists.alioth.debian.org>
+Uploaders: Paul Gevers <elbrus@debian.org>
+Build-Depends-Indep: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ 6f26718dab9b90e96abf439a22e25b0f 1534 festvox-don_1.4.0-5.dsc
+ 90442079e34a3a694077f8715d15fbdf 645583 festvox-don_1.4.0.orig.tar.gz
+ 5c27b7abdd52d92e835daffa7548b7e2 2595 festvox-don_1.4.0-5.diff.gz
+Vcs-Browser: https://browse.dgit.debian.org/festvox-don.git/
+Vcs-Git: https://git.dgit.debian.org/festvox-don
+Checksums-Sha256:
+ ab831e7b6776b1b19ac4f2893e6099ed0263a208b4ae75f1729f8b21ee22c5a3 1534 festvox-don_1.4.0-5.dsc
+ 762d26fa476ca7beea8ae0bf0fcf3a8d9324fa65735175fd54eb34e60932e4ff 645583 festvox-don_1.4.0.orig.tar.gz
+ 44a03b4e5fa7236c55eb3b0eabea7a8fd3978425b7ff0cf1ff885d939f5fccbd 2595 festvox-don_1.4.0-5.diff.gz
+Dgit: bf995a12c4d2a435c8c1e045982ab5777c946dd1
+Package-List: 
+ festvox-don deb contrib/sound extra arch=all
+Directory: pool/contrib/f/festvox-don
+Priority: source
+Section: contrib/sound
+
+Package: festvox-mbrola
+Binary: festvox-en1, festvox-us1, festvox-us2, festvox-us3
+Version: 1.95-1
+Maintainer: Debian Accessibility Team <debian-accessibility@lists.debian.org>
+Uploaders: Samuel Thibault <sthibault@debian.org>
+Build-Depends: debhelper (>= 7)
+Architecture: all
+Standards-Version: 3.9.1
+Format: 3.0 (quilt)
+Files:
+ fb8583c9c807efd27436814c5cfb63aa 2452 festvox-mbrola_1.95-1.dsc
+ 66e3bc07751d7e31826185649c5ada5a 3323 festvox-mbrola_1.95.orig-en1.tar.gz
+ d0c3e727003e715a65daf01003101813 11040 festvox-mbrola_1.95.orig-us1.tar.gz
+ fbcc8baacbff3aa2aaaf5a93701bb5e0 11037 festvox-mbrola_1.95.orig-us2.tar.gz
+ 06dbfe2edaab6ffa31deeaf522e0c33e 11220 festvox-mbrola_1.95.orig-us3.tar.gz
+ 41e3c76740ee9d5323bbedf9cf97ce54 287 festvox-mbrola_1.95.orig.tar.gz
+ 8356727dd403e278baa9e0488bc6847d 2621 festvox-mbrola_1.95-1.debian.tar.gz
+Vcs-Browser: http://git.debian.org/?p=pkg-a11y/festvox-mbrola.git;a=summary
+Vcs-Git: git://git.debian.org/git/pkg-a11y/festvox-mbrola.git
+Checksums-Sha256:
+ 8ae13e3449aaa724023625262b68f23ffe5a79caba9202ce228d995045ed2084 2452 festvox-mbrola_1.95-1.dsc
+ a4bb55d39eaef31eb6ad8b915035c31108b2427108512e1c301941fbf8f6ffb9 3323 festvox-mbrola_1.95.orig-en1.tar.gz
+ 23b332513867d6e9c340dc888a7ce67843e5a3c03db328cd36975985057c8b8e 11040 festvox-mbrola_1.95.orig-us1.tar.gz
+ d27ad26213144d956815e804c06e5473191ac12afb44f6a1029b3842e3a3007c 11037 festvox-mbrola_1.95.orig-us2.tar.gz
+ af9ca4d1832e1971aa6e52f6a3ff8f729bf970c7bee1de7e8ac0611ca01871b8 11220 festvox-mbrola_1.95.orig-us3.tar.gz
+ 3c0f3f1dffb098d62cbd77c524b4c609ed48677c565c7b3f0e4facafd45ed169 287 festvox-mbrola_1.95.orig.tar.gz
+ 6097e20e5f4eca075d06763a5b8b707f6b4cbc9f7179d57feb6cca0550928c29 2621 festvox-mbrola_1.95-1.debian.tar.gz
+Homepage: http://www.cstr.ed.ac.uk/downloads/festival/1.95/festival-1.95-beta.tar.gz
+Directory: pool/contrib/f/festvox-mbrola
+Priority: source
+Section: contrib/sound
+
+Package: festvox-rablpc16k
+Binary: festvox-rablpc16k
+Version: 1.4.0-3
+Maintainer: Debian TTS team <tts-project@lists.alioth.debian.org>
+Uploaders: Paul Gevers <elbrus@debian.org>
+Build-Depends-Indep: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ 8f616f9ca7cf529c07a8bd9ec6414fd6 1603 festvox-rablpc16k_1.4.0-3.dsc
+ cefcdda6cd48027da36d78f2f711451b 5369001 festvox-rablpc16k_1.4.0.orig.tar.gz
+ cf9673f9a905f461791471badb234ad3 2857 festvox-rablpc16k_1.4.0-3.diff.gz
+Vcs-Browser: https://browse.dgit.debian.org/festvox-rablpc16k.git/
+Vcs-Git: https://git.dgit.debian.org/festvox-rablpc16k
+Checksums-Sha256:
+ 864035ec347fa3452cc2494c4d3e7a695e3476705e35f4d2e1643fac3ef7ae6b 1603 festvox-rablpc16k_1.4.0-3.dsc
+ 54835837ca734e62c0210c0f9dd27380d2ad89819ae91ec6e8cfab4e515b7bdc 5369001 festvox-rablpc16k_1.4.0.orig.tar.gz
+ f2a4262a4ff5db5b087842273a245c5da3d6c241d8b7906fb6072951c17aba27 2857 festvox-rablpc16k_1.4.0-3.diff.gz
+Dgit: 8938e29daeb10d24c40aee31645a0d6ce9af1aa7
+Package-List: 
+ festvox-rablpc16k deb contrib/sound extra arch=all
+Directory: pool/contrib/f/festvox-rablpc16k
+Priority: source
+Section: contrib/sound
+
+Package: festvox-rablpc8k
+Binary: festvox-rablpc8k
+Version: 1.4.0-3
+Maintainer: Debian TTS team <tts-project@lists.alioth.debian.org>
+Uploaders: Paul Gevers <elbrus@debian.org>
+Build-Depends-Indep: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ 55002ff083a214a3eff02f34840ed110 1594 festvox-rablpc8k_1.4.0-3.dsc
+ a3b863f437a3bc5be90cbeb224bdc5d9 3117763 festvox-rablpc8k_1.4.0.orig.tar.gz
+ da7d20a1ae31e65613ee57188fcb153b 2792 festvox-rablpc8k_1.4.0-3.diff.gz
+Vcs-Browser: https://browse.dgit.debian.org/festvox-rablpc16k.git/
+Vcs-Git: https://git.dgit.debian.org/festvox-rablpc16k
+Checksums-Sha256:
+ 75d0fc2febb99ceca96aadba72e634f5b644f830e3806db716e0c7aef29df22f 1594 festvox-rablpc8k_1.4.0-3.dsc
+ 59faabe31673158ce9601972596535b9a4ac1b8027b00d7d47e94872443698cd 3117763 festvox-rablpc8k_1.4.0.orig.tar.gz
+ 67fcf1eb204367c4053abe176525766962567504b5ee8bd396a3ec196d5d1153 2792 festvox-rablpc8k_1.4.0-3.diff.gz
+Dgit: 8f11e281a4530253c107c5138b227fb08974bfcf
+Package-List: 
+ festvox-rablpc8k deb contrib/sound extra arch=all
+Directory: pool/contrib/f/festvox-rablpc8k
+Priority: source
+Section: contrib/sound
+
+Package: fheroes2-pkg
+Binary: fheroes2-pkg
+Version: 0+svn20150122r3274-2-2
+Maintainer: Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ ecc98f726d52f90f0a216aa7233cdbf3 1941 fheroes2-pkg_0+svn20150122r3274-2-2.dsc
+ 9aaa8bf3acc801d8dcfd45dc78422a04 7788 fheroes2-pkg_0+svn20150122r3274-2.orig.tar.xz
+ 998e814a0a3a865a52cdbce786a1c8ee 17900 fheroes2-pkg_0+svn20150122r3274-2-2.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=users/onlyjob/fheroes2-pkg.git
+Vcs-Git: git://anonscm.debian.org/users/onlyjob/fheroes2-pkg.git
+Checksums-Sha256:
+ d92ae6ae2dbf1af9eac5f64c2598b475506236a0d040ee4ac57fdb99ebd988da 1941 fheroes2-pkg_0+svn20150122r3274-2-2.dsc
+ 271007080a247482505b09790c8fe18d245a706c4e0720342391815036d62e1e 7788 fheroes2-pkg_0+svn20150122r3274-2.orig.tar.xz
+ 9865ea20fc6825fd980c3695180718ad31da2294e63374d1fe91d25759a2b305 17900 fheroes2-pkg_0+svn20150122r3274-2-2.debian.tar.xz
+Package-List: 
+ fheroes2-pkg deb contrib/games optional arch=all
+Directory: pool/contrib/f/fheroes2-pkg
+Priority: extra
+Section: contrib/misc
+
+Package: fonts-firacode
+Binary: fonts-firacode
+Version: 1.204-2
+Maintainer: Debian Fonts Task Force <pkg-fonts-devel@lists.alioth.debian.org>
+Uploaders: Rodolphe PELLOUX-PRAYER <rodolphe@damsy.net>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ e400443f039eb56ae9a4e72569ea431d 2026 fonts-firacode_1.204-2.dsc
+ 6796ffb137b08e5b5ff9716d0271315a 4753886 fonts-firacode_1.204.orig.tar.gz
+ e301a7343ac21210d638794dccc2f05d 3420 fonts-firacode_1.204-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-fonts/fonts-firacode.git/
+Vcs-Git: https://anonscm.debian.org/git/pkg-fonts/fonts-firacode/
+Checksums-Sha256:
+ 1315cd90ef876e94d912c57889095867debc2a15e42a433c7563f2f2d24a01eb 2026 fonts-firacode_1.204-2.dsc
+ 18747eed28dcc65cc4fa4bfe9a61358dd96f148d2cbc50d61b4f7172aeb13312 4753886 fonts-firacode_1.204.orig.tar.gz
+ 6c03e5897195dfedc87bcb20efcac6be1520fc24d48ebd4f74cb8427cf8af174 3420 fonts-firacode_1.204-2.debian.tar.xz
+Homepage: https://github.com/tonsky/FiraCode
+Package-List: 
+ fonts-firacode deb contrib/fonts optional arch=all
+Directory: pool/contrib/f/fonts-firacode
+Priority: extra
+Section: contrib/misc
+
+Package: fonts-mononoki
+Binary: fonts-mononoki
+Version: 1.2-1
+Maintainer: Debian Fonts Task Force <pkg-fonts-devel@lists.alioth.debian.org>
+Uploaders: Vasudev Kamath <vasudev@copyninja.info>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ c94c29ce55e1055dd95787605b2450c8 1982 fonts-mononoki_1.2-1.dsc
+ b55d01f9b25bab985240984d06262422 656381 fonts-mononoki_1.2.orig.tar.gz
+ 294579ea7862b788e6895a4a7a3cdd1b 3220 fonts-mononoki_1.2-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-fonts/fonts-mononoki.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-fonts/fonts-mononoki.git
+Checksums-Sha256:
+ e4e4cd4eb2819a3915da2710b2d89f4ebad52d68a28b7cab8dba8b61a2f4ab0e 1982 fonts-mononoki_1.2-1.dsc
+ 476dc69ddcffe997c32d7ba0099d04ade87396cc2b0204e754d561bbb6088c99 656381 fonts-mononoki_1.2.orig.tar.gz
+ 5e030c7e2fa9b9508c56e15e446d386b26d6c28f7c52d4933370a585ae4ec4c6 3220 fonts-mononoki_1.2-1.debian.tar.xz
+Homepage: http://madmalik.github.io/mononoki/
+Package-List: 
+ fonts-mononoki deb contrib/fonts optional arch=all
+Directory: pool/contrib/f/fonts-mononoki
+Priority: extra
+Section: contrib/misc
+
+Package: freespace2-launcher-wxlauncher
+Binary: freespace2-launcher-wxlauncher
+Version: 0.11.0+dfsg-1
+Maintainer: Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper (>= 9), imagemagick, cmake, libopenal-dev, libsdl2-dev, libwxgtk3.0-dev, python3, python3-markdown
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ d4f7ded252f0b8509f10220ffdf1ad94 2228 freespace2-launcher-wxlauncher_0.11.0+dfsg-1.dsc
+ 6563b7bd280903098f677489e5e92d2e 790616 freespace2-launcher-wxlauncher_0.11.0+dfsg.orig.tar.xz
+ 8d750cd3c9a71f021ec69cf71eebe644 10412 freespace2-launcher-wxlauncher_0.11.0+dfsg-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/users/onlyjob/freespace2-launcher-wxlauncher.git
+Vcs-Git: https://anonscm.debian.org/git/users/onlyjob/freespace2-launcher-wxlauncher.git
+Checksums-Sha256:
+ d0186334315e3d8b3b600bb4826bb6f45c4ac30bf8c4b71e9039920348ac1e70 2228 freespace2-launcher-wxlauncher_0.11.0+dfsg-1.dsc
+ ebb2fa9de9871f19b4327dbc289154b5aaf753b99cd86072490fd668683b6f82 790616 freespace2-launcher-wxlauncher_0.11.0+dfsg.orig.tar.xz
+ da3a1d8460526022ced2d790d4abac5420c6bc440f04e20476b2ca2aff8d84e7 10412 freespace2-launcher-wxlauncher_0.11.0+dfsg-1.debian.tar.xz
+Homepage: https://github.com/wxLauncher/wxlauncher/
+Package-List: 
+ freespace2-launcher-wxlauncher deb contrib/games optional arch=any
+Directory: pool/contrib/f/freespace2-launcher-wxlauncher
+Priority: extra
+Section: contrib/misc
+
+Package: freshplayerplugin
+Binary: browser-plugin-freshplayer-pepperflash, browser-plugin-freshplayer-libpdf, browser-plugin-freshplayer-nacl
+Version: 0.3.5-1
+Maintainer: Vincent Danjean <vdanjean@debian.org>
+Build-Depends: debhelper (>= 9), cmake, pkg-config, libglib2.0-dev, libasound2-dev, libx11-dev, libgl1-mesa-dev, liburiparser-dev, libcairo2-dev, libpango1.0-dev, libpangocairo-1.0-0, libpangoft2-1.0-0, libfreetype6-dev, libgtk2.0-dev, libxinerama-dev, libconfig-dev, libevent-dev, libegl1-mesa-dev, libgles2-mesa-dev, ragel, libssl-dev, libv4l-dev, libpulse-dev, libavcodec-dev, libavutil-dev, libva-dev, libvdpau-dev
+Architecture: any
+Standards-Version: 3.9.7
+Format: 3.0 (quilt)
+Files:
+ 5f16873d14187c69a3cf3b33234601eb 2590 freshplayerplugin_0.3.5-1.dsc
+ a1dfa71caba60c13c54ff5c743ef50bc 781003 freshplayerplugin_0.3.5.orig.tar.gz
+ 5ffefb6305c7500d6483222ad7760904 9520 freshplayerplugin_0.3.5-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/freshplayerplugin.git
+Vcs-Git: https://anonscm.debian.org/collab-maint/freshplayerplugin.git
+Checksums-Sha256:
+ 248c112d8a13b790ff132f8b19859afd739088c8e54d4d6e9c747f2789fdfd9c 2590 freshplayerplugin_0.3.5-1.dsc
+ b08f7c6690de13b1e358fef4cab41cb303b9e80b3504678e94c9646f44dd7104 781003 freshplayerplugin_0.3.5.orig.tar.gz
+ f792f8f87c76ecd08ec5f55499779a29f16b0d4d4af68d713b0dc903749ea895 9520 freshplayerplugin_0.3.5-1.debian.tar.xz
+Homepage: https://github.com/i-rinat/freshplayerplugin
+Autobuild: yes
+Package-List: 
+ browser-plugin-freshplayer-libpdf deb contrib/web optional arch=any
+ browser-plugin-freshplayer-nacl deb contrib/web optional arch=any
+ browser-plugin-freshplayer-pepperflash deb contrib/web optional arch=any
+Directory: pool/contrib/f/freshplayerplugin
+Priority: extra
+Section: contrib/misc
+
+Package: frogatto
+Binary: frogatto
+Version: 1.3.1+dfsg-3
+Maintainer: Dmitry E. Oboukhov <unera@debian.org>
+Uploaders: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>, Vincent Cheng <vcheng@debian.org>, Martin Quinson <mquinson@debian.org>
+Build-Depends: cdbs, debhelper (>= 9), libz-dev, libpng-dev, libsdl1.2-dev (>= 1.2.7), libboost-dev (>= 1.35), libglew-dev, libsdl-ttf2.0-dev (>= 2.0.8), libsdl-mixer1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.7), libboost-regex-dev (>= 1.35), libboost-system-dev (>= 1.35)
+Architecture: any
+Standards-Version: 3.9.8.0
+Format: 3.0 (quilt)
+Files:
+ ea68734af4d0b4cba8c7012d2483426f 2258 frogatto_1.3.1+dfsg-3.dsc
+ 7d9098e8e18afbbecb1786e04420405d 635624 frogatto_1.3.1+dfsg.orig.tar.gz
+ 4388e04d70d2634cfdbcae07d0a8466c 9492 frogatto_1.3.1+dfsg-3.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/frogatto.git;a=summary
+Vcs-Git: git://anonscm.debian.org/pkg-games/frogatto.git
+Checksums-Sha256:
+ a3280dd25d9e1a5801a1ea2007fad70cb8f5b528707c321d65e530e4b04be50f 2258 frogatto_1.3.1+dfsg-3.dsc
+ baba1b381673b480d703477591b825bc3abb737870f89144409a793d45cab247 635624 frogatto_1.3.1+dfsg.orig.tar.gz
+ e8a94a6c3dfa35c5dcc686a85794405e70c39a42edc9df6c2a69bc8c525d09dc 9492 frogatto_1.3.1+dfsg-3.debian.tar.xz
+Homepage: http://www.frogatto.com/
+Package-List: 
+ frogatto deb contrib/games extra arch=any
+Directory: pool/contrib/f/frogatto
+Priority: source
+Section: contrib/games
+
+Package: game-data-packager
+Binary: game-data-packager, etqw, etqw-server, game-data-packager-runtime, quake, quake-server, quake2, quake2-server, quake3, quake3-server, quake4, quake4-server
+Version: 49.1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Alexandre Detiste <alexandre.detiste@gmail.com>, David Banks <amoebae@gmail.com>, Jack Coulter <jscinoz@gmail.com>, Jonathan Dowland <jmtd@debian.org>, Simon McVittie <smcv@debian.org>,
+Build-Depends: bash-completion, debhelper (>= 10~), dh-apparmor, dh-python, imagemagick, inkscape, pyflakes3 | pyflakes (<< 1.1.0), python3, python3-debian, python3-yaml, xcftools, xmlstarlet, zip
+Architecture: all i386
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ bc0729c77a689d6eb2596dd751ad5bca 2739 game-data-packager_49.1.dsc
+ f6913abe6e20c6a759191e0455bb29ad 3339668 game-data-packager_49.1.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/game-data-packager.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/game-data-packager.git
+Checksums-Sha256:
+ a0704f482d632b3c0326ed4b5e7d4e901ab96ff940343c7d257bb482dd6c6ed8 2739 game-data-packager_49.1.dsc
+ b585e825c0bb75288afc1efa9d1b051db298c41e6cf14a22dcc3c0ea515557d2 3339668 game-data-packager_49.1.tar.xz
+Homepage: https://wiki.debian.org/Games/GameDataPackager
+Package-List: 
+ etqw deb contrib/games optional arch=i386
+ etqw-server deb contrib/games optional arch=i386
+ game-data-packager deb contrib/games optional arch=all
+ game-data-packager-runtime deb contrib/games optional arch=all
+ quake deb contrib/games optional arch=all
+ quake-server deb contrib/games optional arch=all
+ quake2 deb contrib/games optional arch=all
+ quake2-server deb contrib/games optional arch=all
+ quake3 deb contrib/games optional arch=all
+ quake3-server deb contrib/games optional arch=all
+ quake4 deb contrib/games optional arch=i386
+ quake4-server deb contrib/games optional arch=i386
+Directory: pool/contrib/g/game-data-packager
+Priority: source
+Section: contrib/games
+
+Package: gcc-doc-defaults
+Binary: gcc-doc, cpp-doc, gfortran-doc, gnat-doc, gcj-doc, gccgo-doc, gcc-doc-base
+Version: 5:15
+Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Uploaders: Guo Yixuan (郭溢譞) <culu.gyx@gmail.com>
+Build-Depends: debhelper (>= 9), dpkg-dev (>= 1.16.1), cpp, gfortran, gnat, gcj-jdk, gccgo [amd64 arm64 armel armhf i386 ia64 mips mips64 mips64el mipsel powerpc ppc64 ppc64el s390 s390x x32], texinfo
+Architecture: any all
+Standards-Version: 3.9.6
+Format: 3.0 (native)
+Files:
+ 1588188f7a9f57750d576367e1628718 2261 gcc-doc-defaults_15.dsc
+ 1c3466bd420ed69074fe302004b0165f 30200 gcc-doc-defaults_15.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=users/yixuan-guest/gcc-doc-defaults.git
+Vcs-Git: git://anonscm.debian.org/users/yixuan-guest/gcc-doc-defaults.git
+Checksums-Sha256:
+ 3e5f33477575cf78c1e2b7e0a5d0cefef49fcdeddd9de27eeddc85ac4c49a174 2261 gcc-doc-defaults_15.dsc
+ b9cbb045c0c030f46e9cdb496595e9bfa649ce8669d841d6f88032eb3a1ea5ed 30200 gcc-doc-defaults_15.tar.xz
+Homepage: http://gcc.gnu.org/
+Package-List: 
+ cpp-doc deb contrib/doc optional arch=any
+ gcc-doc deb contrib/doc optional arch=any
+ gcc-doc-base deb contrib/doc optional arch=all
+ gccgo-doc deb contrib/doc optional arch=amd64,arm64,armel,armhf,i386,ia64,mips,mips64,mips64el,mipsel,powerpc,ppc64,ppc64el,s390,s390x,x32
+ gcj-doc deb contrib/doc optional arch=any
+ gfortran-doc deb contrib/doc optional arch=any
+ gnat-doc deb contrib/doc optional arch=any
+Directory: pool/contrib/g/gcc-doc-defaults
+Priority: source
+Section: contrib/doc
+
+Package: gemrb
+Binary: gemrb, libgemrb, gemrb-doc, gemrb-data, gemrb-baldurs-gate-data, gemrb-baldurs-gate, gemrb-baldurs-gate-2-data, gemrb-baldurs-gate-2, gemrb-icewind-dale-data, gemrb-icewind-dale, gemrb-icewind-dale-2-data, gemrb-icewind-dale-2, gemrb-planescape-torment-data, gemrb-planescape-torment
+Version: 0.8.4-1
+Maintainer: Beren Minor <beren.minor+debian@gmail.com>
+Build-Depends: debhelper (>= 9), cmake, python-dev, libsdl1.2-dev, libsdl-mixer1.2-dev, libz-dev, libopenal-dev, libpng-dev, libogg-dev, libvorbis-dev, libvlc-dev, libglew-dev, libfreetype6-dev, dh-python
+Architecture: any all
+Standards-Version: 3.9.7
+Format: 3.0 (quilt)
+Files:
+ b62dbb470fc007b8edd0845fd4e09ebe 3008 gemrb_0.8.4-1.dsc
+ e916f0acf6ce887c87fc1b9d00940515 12373930 gemrb_0.8.4.orig.tar.gz
+ a1690ad7bbd121cf1c5f10f10af48432 13648 gemrb_0.8.4-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-games/gemrb.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/gemrb.git
+Checksums-Sha256:
+ bc63b7c833daddb37c15d55702b2135f5396d63f15733665249b81ac24e9052b 3008 gemrb_0.8.4-1.dsc
+ 73da3460c2f70d709fb8cfb330a6d80619f9b10d33cbe4cfed434647e49aa5ab 12373930 gemrb_0.8.4.orig.tar.gz
+ 9b353075b8efad379eda39464ac053e2c7f680d340b412161eb6b70297334105 13648 gemrb_0.8.4-1.debian.tar.xz
+Homepage: http://www.gemrb.org/
+Package-List: 
+ gemrb deb contrib/games optional arch=any
+ gemrb-baldurs-gate deb contrib/games optional arch=any
+ gemrb-baldurs-gate-2 deb contrib/games optional arch=any
+ gemrb-baldurs-gate-2-data deb contrib/games optional arch=all
+ gemrb-baldurs-gate-data deb contrib/games optional arch=all
+ gemrb-data deb contrib/games optional arch=all
+ gemrb-doc deb contrib/doc optional arch=all
+ gemrb-icewind-dale deb contrib/games optional arch=any
+ gemrb-icewind-dale-2 deb contrib/games optional arch=any
+ gemrb-icewind-dale-2-data deb contrib/games optional arch=all
+ gemrb-icewind-dale-data deb contrib/games optional arch=all
+ gemrb-planescape-torment deb contrib/games optional arch=any
+ gemrb-planescape-torment-data deb contrib/games optional arch=all
+ libgemrb deb contrib/games optional arch=any
+Directory: pool/contrib/g/gemrb
+Priority: extra
+Section: contrib/misc
+
+Package: geoip-database-contrib
+Binary: geoip-database-contrib
+Version: 1.19
+Maintainer: Patrick Matthäi <pmatthaei@debian.org>
+Uploaders: Ludovico Cavedon <cavedon@debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ b69b401019ab285085544c315df7606b 1753 geoip-database-contrib_1.19.dsc
+ 0bc3f8123e9150fdbf4b1c1d1770a4ee 11924 geoip-database-contrib_1.19.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/geoip-database-contrib.git
+Vcs-Git: https://anonscm.debian.org/collab-maint/geoip-database-contrib.git
+Checksums-Sha256:
+ 5e81a8fba5f8325142a791418768264aaefa6000a4f3c548230efe6f82642ef2 1753 geoip-database-contrib_1.19.dsc
+ d72056e0ad0d2d4907eead13cf1171b4d35b113d7f1a1f837132119ecb944f28 11924 geoip-database-contrib_1.19.tar.xz
+Homepage: https://www.maxmind.com/en/geoip2-services-and-databases
+Package-List: 
+ geoip-database-contrib deb contrib/net optional arch=all
+Directory: pool/contrib/g/geoip-database-contrib
+Priority: source
+Section: contrib/net
+
+Package: geoipupdate
+Binary: geoipupdate
+Version: 2.3.1-1
+Maintainer: Faidon Liambotis <paravoid@debian.org>
+Build-Depends: debhelper (>= 10), zlib1g-dev, libcurl4-gnutls-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ f936a462a183e2ca9beb3387a0a1f225 1929 geoipupdate_2.3.1-1.dsc
+ 94de6553bc213703ae07542089c280bc 362497 geoipupdate_2.3.1.orig.tar.gz
+ a731f49c77bfdda379958ced42fec63b 2608 geoipupdate_2.3.1-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/geoipupdate.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/geoipupdate.git
+Checksums-Sha256:
+ 0cc4b40069d98f6996db25d7f8f479e8655f948e2e6ff98f086301ced8b88311 1929 geoipupdate_2.3.1-1.dsc
+ 4f71e911774c4fd32e217889c242d2c311fa5ffd3df56be48a2d1aedfe2e671c 362497 geoipupdate_2.3.1.orig.tar.gz
+ ac016943bd7af0732b5a6f599fcaa49e73f48c7769d8a5c81c84ce15859cc1a9 2608 geoipupdate_2.3.1-1.debian.tar.xz
+Homepage: http://dev.maxmind.com/geoip/geoipupdate/
+Package-List: 
+ geoipupdate deb contrib/net optional arch=any
+Directory: pool/contrib/g/geoipupdate
+Priority: extra
+Section: contrib/misc
+
+Package: glx-alternatives
+Binary: update-glx, glx-diversions, glx-alternative-mesa, glx-alternative-nvidia
+Version: 0.7.4
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Russ Allbery <rra@debian.org>, Andreas Beckmann <anbe@debian.org>,
+Build-Depends: debhelper (>= 9)
+Architecture: i386 amd64 armhf
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ f6cd4f922372af6f46edc693b27eff9d 1978 glx-alternatives_0.7.4.dsc
+ c4a0fcee88be9c1e866bebf9aa0274a9 12496 glx-alternatives_0.7.4.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/glx-alternatives.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/glx-alternatives.git
+Checksums-Sha256:
+ ccf82c1c50aa66cb983bdc4d6844f73374cb8e26896ee1996387f58b008979b9 1978 glx-alternatives_0.7.4.dsc
+ 1ee0983a7d4ae723148915ea629a4834670f4c439007d7a1fd9cb81f827413f7 12496 glx-alternatives_0.7.4.tar.xz
+Package-List: 
+ glx-alternative-mesa deb contrib/libs optional arch=i386,amd64,armhf
+ glx-alternative-nvidia deb contrib/libs optional arch=i386,amd64,armhf
+ glx-diversions deb contrib/libs optional arch=i386,amd64,armhf
+ update-glx deb contrib/x11 optional arch=i386,amd64,armhf
+Directory: pool/contrib/g/glx-alternatives
+Priority: source
+Section: contrib/libs
+
+Package: gns3
+Binary: gns3
+Version: 0.8.7-2
+Maintainer: Daniel Lintott <daniel@serverb.co.uk>
+Build-Depends: debhelper (>= 9), dh-python, libqt4-dev, python
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ c38ba79387a670daf91e27436245034f 1799 gns3_0.8.7-2.dsc
+ a9e817b663521303b329bdf6e1001d66 6408939 gns3_0.8.7.orig.tar.gz
+ 7d295be3bb32d4ed0aacecce947aab0e 15124 gns3_0.8.7-2.debian.tar.xz
+Vcs-Browser: https://github.com/dlintott/gns3
+Vcs-Git: https://github.com/dlintott/gns3.git
+Checksums-Sha256:
+ 6d3695507b2c708a9b58da5ba2eed120b576035a32461f84aa019c083043a465 1799 gns3_0.8.7-2.dsc
+ b05d2c6f60b359c51c07554e9c21f06e728cf8f136d682244571f08e19467381 6408939 gns3_0.8.7.orig.tar.gz
+ 1b62e67fe7b03f431d05711d58e83a2524c0b80992748f906b3cf48003ff8b32 15124 gns3_0.8.7-2.debian.tar.xz
+Homepage: http://www.gns3.net/
+Package-List: 
+ gns3 deb contrib/net optional arch=all
+Directory: pool/contrib/g/gns3
+Priority: source
+Section: contrib/net
+
+Package: gnuboy
+Binary: gnuboy-sdl, gnuboy-x
+Version: 1.0.3-7
+Maintainer: Davide Puricelli (evo) <evo@debian.org>
+Build-Depends: debhelper (>> 5), libx11-dev, libxext-dev, libxt-dev, x11proto-xext-dev, libsdl1.2-dev, libaudiofile-dev, libaa1-dev, libesd0-dev, libncurses5-dev
+Architecture: any
+Standards-Version: 3.8.3.0
+Format: 1.0
+Files:
+ 68d1f890ee919c5bde9953a1d190aa91 1177 gnuboy_1.0.3-7.dsc
+ 1dd3fe9bd49737aa2634c24044bebbf9 186505 gnuboy_1.0.3.orig.tar.gz
+ 57bdde9603d00f345cfc3bd02c6100e1 2871 gnuboy_1.0.3-7.diff.gz
+Checksums-Sha256:
+ c40e35b1afed981998ac33dd46608f7d9a1b716876fc196a81845e370d815871 1177 gnuboy_1.0.3-7.dsc
+ 48a3a3175a0e0be9fc788bcd8db04349bcf4e8397441c1d06d2dd3791cafdd69 186505 gnuboy_1.0.3.orig.tar.gz
+ 7849150e05252c9cce0e7edb06ce1edbc4ecb35ad5819661ea0d91a857b74620 2871 gnuboy_1.0.3-7.diff.gz
+Package-List: 
+ gnuboy-sdl deb contrib/games optional
+ gnuboy-x deb contrib/games optional
+Directory: pool/contrib/g/gnuboy
+Priority: source
+Section: contrib/games
+
+Package: gobi-loader
+Binary: gobi-loader
+Version: 0.6-1
+Maintainer: Mark Hymers <mhy@debian.org>
+Build-Depends: debhelper (>= 7.0.50~)
+Architecture: any
+Standards-Version: 3.8.4
+Format: 1.0
+Files:
+ ac222cb2fe4b6e94db80d663d2808a76 1138 gobi-loader_0.6-1.dsc
+ c8941d92f64f13243dafbc70a6e62b72 5059 gobi-loader_0.6.orig.tar.gz
+ 61d1027c56c2abc46a5af797b1a98a71 1885 gobi-loader_0.6-1.diff.gz
+Vcs-Browser: http://git.debian.org/?p=users/mhy/ia32-utils.git;a=summary
+Vcs-Git: git://git.debian.org/users/mhy/gobi-loader.git
+Checksums-Sha256:
+ bcd0c5ec237a0387f7546f98869370c11221f3f91c7165299ae59f9ac4a6ae75 1138 gobi-loader_0.6-1.dsc
+ 5a2931267f97f3e4d57852da539e6b087e6add060327c9e61946caf8bfd87c7f 5059 gobi-loader_0.6.orig.tar.gz
+ 601086d731b109aff494b5960e70e63e40517931f87974a9c11db1db073b47b5 1885 gobi-loader_0.6-1.diff.gz
+Homepage: http://www.codon.org.uk/~mjg59/gobi_loader/
+Directory: pool/contrib/g/gobi-loader
+Priority: source
+Section: contrib/admin
+
+Package: google-android-build-tools-installer
+Binary: google-android-build-tools-installer
+Version: 23.0.3
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>, Mouaad Aallam <Mouaad@Aallam.com>
+Build-Depends: debhelper (>= 9)
+Architecture: i386
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ 05acbdf4cce53a3d5d3cc19e60081175 1658 google-android-build-tools-installer_23.0.3.dsc
+ 8f8ea48b8741eb0c511910baa98b971c 5148 google-android-build-tools-installer_23.0.3.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/google-android-build-tools-installer.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/google-android-build-tools-installer.git
+Checksums-Sha256:
+ 1909e0fe9d69720d93d865f4d2665898ca061468eada6515814b99504b23be82 1658 google-android-build-tools-installer_23.0.3.dsc
+ 7f9436ba5304f540ec1135d5c02332b12fbb5a4131bb5a94d47330eddf480778 5148 google-android-build-tools-installer_23.0.3.tar.xz
+Homepage: https://developer.android.com/sdk/index.html
+Package-List: 
+ google-android-build-tools-installer deb contrib/devel optional arch=i386
+Directory: pool/contrib/g/google-android-build-tools-installer
+Priority: extra
+Section: contrib/misc
+
+Package: google-android-installers
+Binary: google-android-platform-24-installer, google-android-platform-23-installer, google-android-platform-22-installer, google-android-platform-21-installer, google-android-platform-20-installer, google-android-platform-19-installer, google-android-platform-18-installer, google-android-platform-17-installer, google-android-platform-16-installer, google-android-platform-15-installer, google-android-platform-14-installer, google-android-platform-13-installer, google-android-platform-12-installer, google-android-platform-11-installer, google-android-platform-10-installer, google-android-platform-9-installer, google-android-platform-8-installer, google-android-platform-7-installer, google-android-platform-6-installer, google-android-platform-5-installer, google-android-platform-4-installer, google-android-platform-3-installer, google-android-platform-2-installer, google-android-ndk-installer, google-android-build-tools-24-installer, google-android-build-tools-23-installer,
+ google-android-build-tools-22-installer, google-android-build-tools-21-installer, google-android-build-tools-20-installer, google-android-build-tools-19-installer, google-android-build-tools-18-installer,
+ google-android-build-tools-17-installer
+Version: 1472023576
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Mouaad Aallam <Mouaad@Aallam.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all amd64 i386
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ 324b57d9bb1a4dda458beeb732c9165f 5131 google-android-installers_1472023576.dsc
+ 754da2fa0195594910abcda604359717 17156 google-android-installers_1472023576.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/google-android-installers.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/google-android-installers.git
+Checksums-Sha256:
+ e724f4191cd0fc043a3fd287fa0acfdde27ed136a0a03aadc106f261e00a2c08 5131 google-android-installers_1472023576.dsc
+ e753bf26352a8c3dde5fe08ac018d8ad5664d3c7817db4286293c15bd67d992d 17156 google-android-installers_1472023576.tar.xz
+Homepage: https://developer.android.com/about/index.html
+Package-List: 
+ google-android-build-tools-17-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-18-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-19-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-20-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-21-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-22-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-23-installer deb contrib/devel optional arch=i386,amd64
+ google-android-build-tools-24-installer deb contrib/devel optional arch=i386,amd64
+ google-android-ndk-installer deb contrib/devel optional arch=amd64
+ google-android-platform-10-installer deb contrib/devel optional arch=all
+ google-android-platform-11-installer deb contrib/devel optional arch=all
+ google-android-platform-12-installer deb contrib/devel optional arch=all
+ google-android-platform-13-installer deb contrib/devel optional arch=all
+ google-android-platform-14-installer deb contrib/devel optional arch=all
+ google-android-platform-15-installer deb contrib/devel optional arch=all
+ google-android-platform-16-installer deb contrib/devel optional arch=all
+ google-android-platform-17-installer deb contrib/devel optional arch=all
+ google-android-platform-18-installer deb contrib/devel optional arch=all
+ google-android-platform-19-installer deb contrib/devel optional arch=all
+ google-android-platform-2-installer deb contrib/devel optional arch=all
+ google-android-platform-20-installer deb contrib/devel optional arch=all
+ google-android-platform-21-installer deb contrib/devel optional arch=all
+ google-android-platform-22-installer deb contrib/devel optional arch=all
+ google-android-platform-23-installer deb contrib/devel optional arch=all
+ google-android-platform-24-installer deb contrib/devel optional arch=all
+ google-android-platform-3-installer deb contrib/devel optional arch=all
+ google-android-platform-4-installer deb contrib/devel optional arch=all
+ google-android-platform-5-installer deb contrib/devel optional arch=all
+ google-android-platform-6-installer deb contrib/devel optional arch=all
+ google-android-platform-7-installer deb contrib/devel optional arch=all
+ google-android-platform-8-installer deb contrib/devel optional arch=all
+ google-android-platform-9-installer deb contrib/devel optional arch=all
+Directory: pool/contrib/g/google-android-installers
+Priority: extra
+Section: contrib/misc
+
+Package: google-android-m2repository-installer
+Binary: google-android-m2repository-installer
+Version: 41
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Mouaad Aallam <Mouaad@Aallam.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ 0ccfbc1ee8308f074467d8144264cf2c 1637 google-android-m2repository-installer_41.dsc
+ ba4ef8b2f07b4096ef934cbcb4717d94 5208 google-android-m2repository-installer_41.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/google-android-m2repository-installer.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/google-android-m2repository-installer.git
+Checksums-Sha256:
+ f536cc8a76ca0514bcfa3b357819842a88f35f107df5e9e947620a161e9428b2 1637 google-android-m2repository-installer_41.dsc
+ 3eaeb8587a67ebc30b00519bb87df59128567241c3beb7c0df1154e025394857 5208 google-android-m2repository-installer_41.tar.xz
+Homepage: https://developer.android.com/topic/libraries/support-library/index.html
+Package-List: 
+ google-android-m2repository-installer deb contrib/devel optional arch=all
+Directory: pool/contrib/g/google-android-m2repository-installer
+Priority: extra
+Section: contrib/misc
+
+Package: google-android-sdk-docs-installer
+Binary: google-android-sdk-docs-installer
+Version: 24r1
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Mouaad Aallam <Mouaad@Aallam.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ c317472f60781a3a400e1bc811b1f632 1571 google-android-sdk-docs-installer_24r1.dsc
+ 780f66eae9f20ca7abb67fbc09575092 6720 google-android-sdk-docs-installer_24r1.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/google-android-installers.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/google-android-installers.git
+Checksums-Sha256:
+ 27e684dd75245c6bdb6b7b49a985aca84a0f9ecb1ace7fa30796cd28f63cca17 1571 google-android-sdk-docs-installer_24r1.dsc
+ 1fdbb935d72fbe3b2c6a1f262b11b7e2fe8ee78b3a38c41cf2999908b3ff5b2a 6720 google-android-sdk-docs-installer_24r1.tar.xz
+Homepage: https://developer.android.com/about/index.html
+Package-List: 
+ google-android-sdk-docs-installer deb contrib/devel optional arch=all
+Directory: pool/contrib/g/google-android-sdk-docs-installer
+Priority: extra
+Section: contrib/misc
+
+Package: googleearth-package
+Binary: googleearth-package
+Version: 1.2.2
+Maintainer: Adnan Hodzic <adnan@hodzic.org>
+Build-Depends: debhelper (>= 9), install-info
+Build-Depends-Indep: asciidoc, docbook2x
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (native)
+Files:
+ ab9a5f7d4a03182f4d5534dda1c797c8 1696 googleearth-package_1.2.2.dsc
+ 059be77c4ea46db3f170fbe901645d31 23256 googleearth-package_1.2.2.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/googleearth-package.git
+Vcs-Git: git://anonscm.debian.org/collab-maint/googleearth-package.git
+Checksums-Sha256:
+ 2992e7f5325320af435f9ae66e0dc389f44d1780c2986221464ba6f4f344145f 1696 googleearth-package_1.2.2.dsc
+ 2e14b3fbcf840057a31edb6e25a481f62356b4d8b531e12632147438d1281d90 23256 googleearth-package_1.2.2.tar.xz
+Homepage: http://earth.google.com
+Package-List: 
+ googleearth-package deb contrib/misc optional arch=all
+Directory: pool/contrib/g/googleearth-package
+Priority: source
+Section: contrib/misc
+
+Package: hannah-foo2zjs
+Binary: hannah-foo2zjs
+Version: 1:2
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 7), libqt4-dev
+Architecture: any
+Standards-Version: 3.8.2
+Format: 1.0
+Files:
+ d8fe89256e724bc24ebc033723f2698e 1259 hannah-foo2zjs_2.dsc
+ 379d7e9db6534eb9315b24d99b48b314 26961 hannah-foo2zjs_2.tar.gz
+Checksums-Sha256:
+ 47cde0e499cdecbd52723e96a07a2b7f0a6da2ca5168d7a1e613d5479fd94dc1 1259 hannah-foo2zjs_2.dsc
+ 65e06064534a35c3c0f073f8fd531b8c187ace19e1fa454ec277dad321815e49 26961 hannah-foo2zjs_2.tar.gz
+Package-List: 
+ hannah-foo2zjs deb contrib/text optional
+Directory: pool/contrib/h/hannah-foo2zjs
+Priority: source
+Section: contrib/text
+
+Package: horae
+Binary: horae
+Version: 071~svn537-2.1
+Maintainer: Carlo Segre <segre@debian.org>
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl (>= 5.6.0-16), libchemistry-elements-perl, perl-tk (>= 804), libifeffit-perl, libpod-latex-perl, libmodule-build-perl
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ bc917d6e54bf31c8f86a3e41cd21c957 1886 horae_071~svn537-2.1.dsc
+ a65404f66505835275d9cbf050451875 5481124 horae_071~svn537.orig.tar.gz
+ 03233748a06ca40005e724718bcd2f9c 16984 horae_071~svn537-2.1.debian.tar.xz
+Checksums-Sha256:
+ 65bc821abaa2b7cd7c93a16605b3f6449e544bf89e31215b6fb5ed9264a29cdc 1886 horae_071~svn537-2.1.dsc
+ 4d825e24ace53a5d0dbdb06a8d57c6126783e11b4cdb75d33252383d954df675 5481124 horae_071~svn537.orig.tar.gz
+ 6674802c41aceb1dc3d9fa837ece417ac1962de9a8f0ebbe1a1e786eb2210c10 16984 horae_071~svn537-2.1.debian.tar.xz
+Homepage: http://cars9.uchicago.edu/~ravel/software/Welcome.html
+Package-List: 
+ horae deb contrib/science optional arch=all
+Directory: pool/contrib/h/horae
+Priority: source
+Section: contrib/science
+
+Package: horst
+Binary: horst
+Version: 4.2-1
+Maintainer: Antoine Beaupré <anarcat@debian.org>
+Build-Depends: debhelper (>= 8.0.0), dpkg-dev (>= 1.16.1~), libncurses5-dev, sparse
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ e49f4b8dabadfff903226f6bec12bcad 1847 horst_4.2-1.dsc
+ a20b5115f1b6fac0700001a6eb1f309b 97976 horst_4.2.orig.tar.gz
+ daa013fd1a813c47f1af4ed9e57ba534 6164 horst_4.2-1.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/horst.git;a=summary
+Vcs-Git: git://anonscm.debian.org/collab-maint/horst.git
+Checksums-Sha256:
+ 6629d3f1ecfa137afea197bc057f9195722050c0ec7fbd34cfd350c827d863d1 1847 horst_4.2-1.dsc
+ eab46330998a4c6d5abc9bfdad739b62b57c65049ac6f160e58ee3edd3260057 97976 horst_4.2.orig.tar.gz
+ a6709289eed9cdd44cac8fa988e7b3c267f82ea0eb856ed2c628175e575a05fb 6164 horst_4.2-1.debian.tar.xz
+Homepage: http://br1.einfach.org/tech/horst/
+Package-List: 
+ horst deb contrib/net extra arch=any
+Directory: pool/contrib/h/horst
+Priority: extra
+Section: contrib/misc
+
+Package: hts-voice-nitech-jp-atr503-m001
+Binary: hts-voice-nitech-jp-atr503-m001
+Version: 1.05-1
+Maintainer: Koichi Akabe <vbkaisetsu@gmail.com>
+Build-Depends: debhelper (>= 9.0.0)
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ 0a440c1f60972c070d5158ab19e36bfc 1915 hts-voice-nitech-jp-atr503-m001_1.05-1.dsc
+ c92b7fe7229e95c4601c22be9b90ce5e 818909 hts-voice-nitech-jp-atr503-m001_1.05.orig.tar.gz
+ bb0588c0658676a310f57d615865bbb9 2615 hts-voice-nitech-jp-atr503-m001_1.05-1.debian.tar.gz
+Checksums-Sha256:
+ 4d4921079af69558e6078b7e0bc85b9cae93586dc2ec9abebf080484e6364dcb 1915 hts-voice-nitech-jp-atr503-m001_1.05-1.dsc
+ 2e555c88482267b2931c7dbc7ecc0e3df140d6f68fc913aa4822f336c9e0adfc 818909 hts-voice-nitech-jp-atr503-m001_1.05.orig.tar.gz
+ cf055a18f6b7b53013cef04ceb240a5306d06fe83c7b751c6459202c6b6903ed 2615 hts-voice-nitech-jp-atr503-m001_1.05-1.debian.tar.gz
+Homepage: http://open-jtalk.sourceforge.net
+Package-List: 
+ hts-voice-nitech-jp-atr503-m001 deb contrib/sound extra
+Directory: pool/contrib/h/hts-voice-nitech-jp-atr503-m001
+Priority: source
+Section: contrib/sound
+
+Package: hwloc-contrib
+Binary: libhwloc-contrib-plugins
+Version: 1.11.5-1
+Maintainer: Samuel Thibault <sthibault@debian.org>
+Build-Depends: debhelper (>= 9), libltdl-dev, valgrind [amd64 arm64 armhf i386 mips mipsel powerpc ppc64el s390x mips64el ppc64], libx11-dev, libxext-dev, nvidia-cuda-dev, libxnvctrl-dev, libpciaccess-dev, pkg-config, libibverbs-dev [linux-any], ocl-icd-opencl-dev [!hurd-i386] | opencl-dev, opencl-headers, autoconf (>= 2.63), dh-autoreconf, dpkg-dev (>= 1.16)
+Build-Conflicts: autoconf2.13
+Architecture: amd64
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 39767956a8dae276b32413f788063841 2275 hwloc-contrib_1.11.5-1.dsc
+ 96c34136ff416d2b13a7821c27477bed 4135369 hwloc-contrib_1.11.5.orig.tar.bz2
+ a2743f99feb0954822cecd817879caab 6284 hwloc-contrib_1.11.5-1.debian.tar.bz2
+Vcs-Browser: http://github.com/open-mpi/hwloc-debian
+Vcs-Git: http://github.com/open-mpi/hwloc-debian.git
+Checksums-Sha256:
+ 934536774c58a9ac100043c3f7a46abfd06fde1b95b099491bfd49776dd6e82f 2275 hwloc-contrib_1.11.5-1.dsc
+ 95d80286dfe658a3f79e2ac90698782bb36e5504f4bac1bba2394ba14dbbad24 4135369 hwloc-contrib_1.11.5.orig.tar.bz2
+ 3c97419bc49787057113aa9c4125b844bd8a4d3baba0ec36c6d84bc8cfdd5508 6284 hwloc-contrib_1.11.5-1.debian.tar.bz2
+Homepage: http://www.open-mpi.org/projects/hwloc/
+Package-List: 
+ libhwloc-contrib-plugins deb contrib/admin extra arch=amd64
+Directory: pool/contrib/h/hwloc-contrib
+Priority: extra
+Section: contrib/misc
+
+Package: hyperspec
+Binary: hyperspec
+Version: 1.30+nmu2
+Maintainer: Debian Common Lisp Team <pkg-common-lisp-devel@lists.alioth.debian.org>
+Uploaders: Peter Van Eynde <pvaneynd@debian.org>
+Build-Depends: debhelper (>= 7), po-debconf
+Architecture: all
+Standards-Version: 3.8.3
+Format: 1.0
+Files:
+ eb39b77987afce952608766fb18428f3 1564 hyperspec_1.30+nmu2.dsc
+ e352098453bf866115d76dc825d64cf9 12901 hyperspec_1.30+nmu2.tar.gz
+Vcs-Git: http://git.debian.org/git/pkg-common-lisp/hyperspec.git
+Checksums-Sha256:
+ a751c7a8ddbf23d40cf087e7468554a99a1b4f6bafa3c03652765f0f8d27aa93 1564 hyperspec_1.30+nmu2.dsc
+ a4b2f92ee807d27c7d16ff9ffe97f6432e90d886131c81d1547ee14cddd6ed5e 12901 hyperspec_1.30+nmu2.tar.gz
+Package-List: 
+ hyperspec deb contrib/doc optional
+Directory: pool/contrib/h/hyperspec
+Priority: source
+Section: contrib/doc
+
+Package: ifeffit
+Binary: ifeffit, ifeffit-doc, python-ifeffit, libifeffit-perl
+Version: 2:1.2.11d-10.1
+Maintainer: Carlo Segre <segre@debian.org>
+Build-Depends: debhelper (>= 9), binutils, gfortran, ghostscript, libreadline-dev, libncurses5-dev, libpng-dev, libx11-dev, pgplot5 (>= 5.2.2-11), latex2html, texlive-base, texlive-latex-base, python-all-dev (>= 2.6.6-3~), chrpath
+Architecture: any all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ f7b68a5b489b7af647ec94616ba7c35a 2144 ifeffit_1.2.11d-10.1.dsc
+ 735029c272554e5c7cc884339b301550 3309009 ifeffit_1.2.11d.orig.tar.gz
+ d8fd07b7ed0022c33ada8a21b20dbcef 289340 ifeffit_1.2.11d-10.1.debian.tar.xz
+Checksums-Sha256:
+ ed44a5f8c23273dce2f43f57766ae15e301b5b504b3ffd6904ff1a42b29d7f3e 2144 ifeffit_1.2.11d-10.1.dsc
+ 76797e14a922cae4e76c92cfb6fddef545d2e3ffb6af4f53bf12ef6cf3b461a8 3309009 ifeffit_1.2.11d.orig.tar.gz
+ c4a4d27f9749e8853c457cf0ae36f847d838e8e3d309dee65608dc495f6efde9 289340 ifeffit_1.2.11d-10.1.debian.tar.xz
+Homepage: http://cars9.uchicago.edu/ifeffit/
+Autobuild: yes
+Package-List: 
+ ifeffit deb contrib/science optional arch=any
+ ifeffit-doc deb contrib/doc optional arch=all
+ libifeffit-perl deb contrib/perl optional arch=any
+ python-ifeffit deb contrib/python optional arch=any
+Directory: pool/contrib/i/ifeffit
+Priority: source
+Section: contrib/science
+
+Package: iortcw
+Binary: rtcw, rtcw-common, rtcw-server
+Version: 1.50a+dfsg1-3+deb9u1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Simon McVittie <smcv@debian.org>,
+Build-Depends: debhelper (>= 10), dh-apparmor [linux-any], dpkg-dev (>= 1.16.1), libcurl4-gnutls-dev, libfreetype6-dev, libjpeg-dev, libopenal-dev, libopus-dev, libopusfile-dev, libsdl2-dev (>= 2.0.0), libvorbis-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 9543eddbbf8a2a38acf429ec0446fe6c 2275 iortcw_1.50a+dfsg1-3+deb9u1.dsc
+ 4990631c91ce3174ddb98746383046f1 3310804 iortcw_1.50a+dfsg1.orig.tar.xz
+ 193d64c9f800ed9e7a246620baf34d01 34628 iortcw_1.50a+dfsg1-3+deb9u1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/iortcw.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/iortcw.git
+Checksums-Sha256:
+ e961c6fcc11039429c6c08b9aa48ea37fc244830427cfbb2f3b85169db227d5a 2275 iortcw_1.50a+dfsg1-3+deb9u1.dsc
+ 3ce3b0c2b8c1f312074fbc0e13999e3fa6f0adb4446c30eb648ca0b8558af8f7 3310804 iortcw_1.50a+dfsg1.orig.tar.xz
+ eb3759edd69ba452b32da6d459750eee5a17340116fdf9801a12bd284612f333 34628 iortcw_1.50a+dfsg1-3+deb9u1.debian.tar.xz
+Homepage: https://github.com/iortcw/iortcw/
+Package-List: 
+ rtcw deb contrib/games optional arch=any
+ rtcw-common deb contrib/games optional arch=any
+ rtcw-server deb contrib/games optional arch=any
+Directory: pool/contrib/i/iortcw
+Priority: extra
+Section: contrib/misc
+
+Package: isdnactivecards
+Binary: isdnactivecards
+Version: 1:3.12.2007-11-27-1
+Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Build-Depends: debhelper (>= 10~), libncurses5-dev | libncurses-dev
+Architecture: linux-any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 8e1ba1d61e9fd7e70e4c7ee992006bdf 1894 isdnactivecards_3.12.2007-11-27-1.dsc
+ 1948fb6c97cbfc3ef94ae4d87c1e4d94 204519 isdnactivecards_3.12.2007-11-27.orig.tar.bz2
+ bfbcc52d1e5c59a0ded723c80e991a46 33000 isdnactivecards_3.12.2007-11-27-1.debian.tar.xz
+Checksums-Sha256:
+ 92585685564a8b1c992d9b56e2231b02748f72f6ec9f2b8b8060400d9f08f211 1894 isdnactivecards_3.12.2007-11-27-1.dsc
+ e3e15d51938530e3a72e95082448b8010515035aa03588dad12b86e797864136 204519 isdnactivecards_3.12.2007-11-27.orig.tar.bz2
+ ea69b26652e64f033da31ca7d7c0696bb3643c004ee2ca3d62699d761ba14148 33000 isdnactivecards_3.12.2007-11-27-1.debian.tar.xz
+Homepage: https://www.isdn4linux.de/
+Package-List: 
+ isdnactivecards deb contrib/utils extra arch=linux-any
+Directory: pool/contrib/i/isdnactivecards
+Priority: source
+Section: contrib/utils
+
+Package: isight-firmware-tools
+Binary: isight-firmware-tools
+Version: 1.6-2
+Maintainer: Debian Mactel <pkg-mactel-devel@lists.alioth.debian.org>
+Uploaders: Nobuhiro Iwamatsu <iwamatsu@debian.org>
+Build-Depends: debhelper (>= 9), autotools-dev, cdbs, po-debconf, intltool, libglib2.0-dev, libgcrypt11-dev, libusb-dev
+Architecture: i386 amd64
+Standards-Version: 3.9.4
+Format: 3.0 (quilt)
+Files:
+ 85cb842959848d4780b7ecc861cdc3dd 2165 isight-firmware-tools_1.6-2.dsc
+ d2823c083dc0ef8a589ba3f84b8e9167 229122 isight-firmware-tools_1.6.orig.tar.gz
+ 10f490bcdd3e1f558f2a2cd929ca4bd6 16779 isight-firmware-tools_1.6-2.debian.tar.gz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-mactel/isight-firmware-tools.git;a=summary
+Vcs-Git: git://anonscm.debian.org/pkg-mactel/isight-firmware-tools.git
+Checksums-Sha256:
+ f94e278e48df64035d36acd509ffca2149e66aee2acf002a90db2acde4fe7dbc 2165 isight-firmware-tools_1.6-2.dsc
+ 3181973db8a1cadd68785cd81959c8e1e9dc8110342ec1639a50db53d82a367e 229122 isight-firmware-tools_1.6.orig.tar.gz
+ 30ce8d24a04042a8a968c4487b7092cbd378dfc051676f7278bb878be7b4b5e1 16779 isight-firmware-tools_1.6-2.debian.tar.gz
+Homepage: https://launchpad.net/isight-firmware-tools/
+Package-List: 
+ isight-firmware-tools deb contrib/graphics extra
+Directory: pool/contrib/i/isight-firmware-tools
+Priority: source
+Section: contrib/graphics
+
+Package: iucode-tool
+Binary: iucode-tool
+Version: 2.1.1-1
+Maintainer: Henrique de Moraes Holschuh <hmh@debian.org>
+Build-Depends: debhelper (>= 9), autotools-dev, automake (>= 1:1.11), autoconf (>= 2.69)
+Architecture: i386 amd64 x32
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ bf65e31276c79c0dd9e60e5b0bc69ba0 1962 iucode-tool_2.1.1-1.dsc
+ 306d20b43da847812af4bf973f46045d 143204 iucode-tool_2.1.1.orig.tar.xz
+ 3668cfdc506d44884074b63edb28627e 8504 iucode-tool_2.1.1-1.debian.tar.xz
+Vcs-Browser: https://gitlab.com/iucode-tool/iucode-tool/tree/debian/master
+Vcs-Git: https://gitlab.com/iucode-tool/iucode-tool.git -b debian/master
+Checksums-Sha256:
+ 5bb64093322d9d491ffce5a22dcd754141e06c4dd6bbcab5cfe251c68b48cca9 1962 iucode-tool_2.1.1-1.dsc
+ 8f94ec73f5d4d1a6801aaa894fa1c6544d9b27aec16e1a00e18e8241c7e0f6ba 143204 iucode-tool_2.1.1.orig.tar.xz
+ b68a68a10d2985afa5ec8c6463627883e82a147f3cbcc22a3197d3a31ef2bb01 8504 iucode-tool_2.1.1-1.debian.tar.xz
+Homepage: https://gitlab.com/iucode-tool
+Package-List: 
+ iucode-tool deb contrib/utils optional arch=i386,amd64,x32
+Directory: pool/contrib/i/iucode-tool
+Priority: source
+Section: contrib/utils
+
+Package: ivtv-utils
+Binary: ivtv-utils
+Version: 1.4.1-2
+Maintainer: Debian MythTV Team <pkg-mythtv-maintainers@lists.alioth.debian.org>
+Uploaders: Ian Campbell <ijc@hellion.org.uk>, Mark Purcell <msp@debian.org>
+Build-Depends: debhelper (>> 5), bzip2, dpatch
+Architecture: any
+Standards-Version: 3.9.2.0
+Format: 1.0
+Files:
+ 45fed3775775edb688694327e7594bb5 1241 ivtv-utils_1.4.1-2.dsc
+ 3a4219d698262ca2b28e41f0f547b0a2 189918 ivtv-utils_1.4.1.orig.tar.gz
+ f7419e9c2dae2e54ad712d82075ee381 9443 ivtv-utils_1.4.1-2.diff.gz
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-mythtv/ivtv/trunk/
+Vcs-Svn: svn://svn.debian.org/pkg-mythtv/ivtv/trunk/
+Checksums-Sha256:
+ 0e23259d490e139a737845f5669af41b58dd46c3ffb325a84daa2875a996a755 1241 ivtv-utils_1.4.1-2.dsc
+ 8eebe8bda62f348779c24522f78fb3c0231e33d303b6381185eeb795fe761ef6 189918 ivtv-utils_1.4.1.orig.tar.gz
+ 920e7ee8f99f8afb4d70856c8ad73e1f5db9a5e46049f6b5512a2a07b6485d69 9443 ivtv-utils_1.4.1-2.diff.gz
+Homepage: http://ivtvdriver.org
+Directory: pool/contrib/i/ivtv-utils
+Priority: source
+Section: contrib/x11
+
+Package: java-package
+Binary: java-package
+Version: 0.62
+Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Uploaders: Cédric Pineau <cedric.pineau@gmail.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ 695befe1a9e56300cb1bb6634b885513 1632 java-package_0.62.dsc
+ 258817a535793ac594f5fdb0be153f76 20276 java-package_0.62.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-java/java-package.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-java/java-package.git
+Checksums-Sha256:
+ 9ecf3a92538e7375c30cc7df9f4118bfb95d0364a3859942a6dcfa6224916bae 1632 java-package_0.62.dsc
+ 221f73377d6d3093b04963b18843abe5410f41767b5b4ba432edca9528ddd766 20276 java-package_0.62.tar.xz
+Package-List: 
+ java-package deb contrib/misc optional arch=all
+Directory: pool/contrib/j/java-package
+Priority: source
+Section: contrib/misc
+
+Package: kcemu
+Binary: kcemu, kcemu-common
+Version: 0.5.1+git20141014+dfsg-2
+Maintainer: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Build-Depends: debhelper (>= 9), libz80ex-dev, libsdl1.2-dev, libsndfile-dev, libvncserver-dev, libtheora-dev, libgtk2.0-dev, automake, autoconf, libxmu-dev, libncurses5-dev, netpbm, imagemagick, dh-autoreconf
+Architecture: any all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 9e1b8c96dcb70ab24c69d28a9166eb54 2156 kcemu_0.5.1+git20141014+dfsg-2.dsc
+ bd99fc196208845647cc44eee9de877b 3337371 kcemu_0.5.1+git20141014+dfsg.orig.tar.gz
+ 69bad8a5586482ef66d252e4a40f38ef 4544 kcemu_0.5.1+git20141014+dfsg-2.debian.tar.xz
+Vcs-Browser: https://github.com/glaubitz/kcemu-debian
+Vcs-Git: git://github.com/glaubitz/kcemu-debian.git
+Checksums-Sha256:
+ 9311b78a302af54185182865b0384294e1a7408567922f03d7c29669a74346d0 2156 kcemu_0.5.1+git20141014+dfsg-2.dsc
+ 75648c749ddf2b25eedc10f885305d6a5223ceec40d2c1aaa4219cb29733b175 3337371 kcemu_0.5.1+git20141014+dfsg.orig.tar.gz
+ 7d4b4c6985e760a1dae2074b0e98e9b2bc358815473f6a6e327e17982ccd517e 4544 kcemu_0.5.1+git20141014+dfsg-2.debian.tar.xz
+Homepage: http://kcemu.sourceforge.net/
+Package-List: 
+ kcemu deb contrib/otherosfs optional arch=any
+ kcemu-common deb contrib/otherosfs optional arch=all
+Directory: pool/contrib/k/kcemu
+Priority: source
+Section: contrib/otherosfs
+
+Package: kinect-audio-setup
+Binary: kinect-audio-setup
+Version: 0.5-1
+Maintainer: Antonio Ospite <ao2@ao2.it>
+Build-Depends: debhelper (>= 9), po-debconf, libusb-1.0-0-dev, pkg-config
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ a9daf47b9e6d92f51b620c8aff08d0a3 2072 kinect-audio-setup_0.5-1.dsc
+ 9180e89d9e003fc994ed199ea0b06134 7920 kinect-audio-setup_0.5.orig.tar.gz
+ 649ed11629aeb5171367297e89b86121 11184 kinect-audio-setup_0.5-1.debian.tar.xz
+Vcs-Browser: http://git.ao2.it/kinect-audio-setup.git/
+Vcs-Git: git://git.ao2.it/kinect-audio-setup.git -b debian
+Checksums-Sha256:
+ 0e8b638cfbee5c57f3bd079fcd3ac4ec03674120bbe83bf0abbfd4c5656220ca 2072 kinect-audio-setup_0.5-1.dsc
+ d748cd60b41512ce65b057156577af0d5d70542e86ea4273c11b32bdc27d1862 7920 kinect-audio-setup_0.5.orig.tar.gz
+ 92e2ba62e20bf1a8c407b1d0316bae05293f2a8008ca53cf7261b4956abd16a9 11184 kinect-audio-setup_0.5-1.debian.tar.xz
+Homepage: http://git.ao2.it/kinect-audio-setup.git/
+Autobuild: no
+Package-List: 
+ kinect-audio-setup deb contrib/sound extra arch=any
+Directory: pool/contrib/k/kinect-audio-setup
+Priority: extra
+Section: contrib/misc
+
+Package: libdbd-oracle-perl
+Binary: libdbd-oracle-perl
+Version: 1.74-3
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Julián Moreno Patiño <darkjunix@gmail.com>, Alex Muntada <alexm@alexm.org>
+Build-Depends: debhelper (>= 9.20120312), libdbi-perl, oracle-instantclient12.1-basic, oracle-instantclient12.1-devel, perl
+Architecture: any
+Standards-Version: 3.9.7
+Format: 3.0 (quilt)
+Files:
+ 96324e645f7008d905e1b4e40e733410 2169 libdbd-oracle-perl_1.74-3.dsc
+ b89d40036bf98cbc665ed3c6b1436323 448855 libdbd-oracle-perl_1.74.orig.tar.gz
+ dbbcc17334a3ad2ca594a97b412650d0 5508 libdbd-oracle-perl_1.74-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-perl/packages/libdbd-oracle-perl.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-perl/packages/libdbd-oracle-perl.git
+Checksums-Sha256:
+ 1f52fd2aabfbada1ae75145d6b1e1f20640f1a5e53820e3f425fc3ab10fd18bc 2169 libdbd-oracle-perl_1.74-3.dsc
+ 4a676ff28193303ea92f4660cd4889063480837a2c2a59a43744ac1e74b795d4 448855 libdbd-oracle-perl_1.74.orig.tar.gz
+ 831574538b92494c81f8da4d17c428fa794064f4ae63741a0cca8b9a461088a6 5508 libdbd-oracle-perl_1.74-3.debian.tar.xz
+Homepage: https://metacpan.org/release/DBD-Oracle
+Package-List: 
+ libdbd-oracle-perl deb contrib/perl extra arch=any
+Directory: pool/contrib/libd/libdbd-oracle-perl
+Priority: source
+Section: contrib/perl
+
+Package: libdvd-pkg
+Binary: libdvd-pkg
+Version: 1.4.0-1-2
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Uploaders: Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 3067f10dd94cd268109a4300f1301a4d 1920 libdvd-pkg_1.4.0-1-2.dsc
+ b63fa9aefac9ffd124b600a7025ae649 3840 libdvd-pkg_1.4.0-1.orig.tar.xz
+ 5ec2ed5e75c4eec702841f15136886b2 13848 libdvd-pkg_1.4.0-1-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-multimedia/libdvd-pkg.git
+Vcs-Git: git://anonscm.debian.org/pkg-multimedia/libdvd-pkg.git
+Checksums-Sha256:
+ a060576b690e8fb011168a29c648e025c66073d2205e53ef9681d22518c24286 1920 libdvd-pkg_1.4.0-1-2.dsc
+ 6156f582c6e3557e14990020f7e3316a4931c26dc701812cb684363ba561d6eb 3840 libdvd-pkg_1.4.0-1.orig.tar.xz
+ 61565c3b735d63b320fe37d09ce80f7edd4c487dcef6087c62faf12f9e40d315 13848 libdvd-pkg_1.4.0-1-2.debian.tar.xz
+Package-List: 
+ libdvd-pkg deb contrib/utils optional arch=all
+Directory: pool/contrib/libd/libdvd-pkg
+Priority: extra
+Section: contrib/misc
+
+Package: libpgplot-perl
+Binary: libpgplot-perl
+Version: 1:2.21-6
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Carlo Segre <segre@debian.org>, gregor herrmann <gregoa@debian.org>
+Build-Depends: chrpath, debhelper (>= 9.20120312~), gfortran, libextutils-f77-perl, libpng-dev, libx11-dev, perl, pgplot5, x11proto-core-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ e405a2f96884ab0df0b9c031ba8c1720 2270 libpgplot-perl_2.21-6.dsc
+ 836d8eb09bfcadd5d4edf668a551f17a 53431 libpgplot-perl_2.21.orig.tar.gz
+ f2edc7ebd96c50c42508354a5299b87e 5220 libpgplot-perl_2.21-6.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-perl/packages/libpgplot-perl.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-perl/packages/libpgplot-perl.git
+Checksums-Sha256:
+ 33a22a8359a7618058978e94d17879b393c22ae38325fa21c25cd7086934b3f1 2270 libpgplot-perl_2.21-6.dsc
+ 1b81775a1769139ba615864c564b3f916973d162ee549cec42400345c528565d 53431 libpgplot-perl_2.21.orig.tar.gz
+ 6b04ecf499ed1133ddba0fdba4264fa49b767a51525f074fb4d7c1941641b16c 5220 libpgplot-perl_2.21-6.debian.tar.xz
+Homepage: https://metacpan.org/release/PGPLOT
+Autobuild: yes
+Package-List: 
+ libpgplot-perl deb contrib/perl optional arch=any
+Directory: pool/contrib/libp/libpgplot-perl
+Priority: extra
+Section: contrib/misc
+
+Package: libydpdict
+Binary: libydpdict2, libydpdict2-dev
+Version: 1.0.4-3
+Maintainer: Marcin Owsiany <porridge@debian.org>
+Build-Depends: debhelper (>= 9~), dpkg-dev (>= 1.16.1~), dh-autoreconf, autoconf, automake, libtool, pkg-config
+Build-Conflicts: autoconf2.13, automake1.4
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 047900bd7228dcaf0369893ac3079fb9 2030 libydpdict_1.0.4-3.dsc
+ 47664f2b57c9712ab296645fd11d7b87 20156 libydpdict_1.0.4.orig.tar.gz
+ 7847e85097c82653fda39135cbec19d2 3656 libydpdict_1.0.4-3.debian.tar.xz
+Vcs-Browser: https://github.com/porridge/libydpdict
+Vcs-Git: https://github.com/porridge/libydpdict.git -b debian-master
+Checksums-Sha256:
+ 19afc4896c37088cac887e97d87ef6bebfe02dde2878ba4c6715f1737bf8b6cb 2030 libydpdict_1.0.4-3.dsc
+ 8821155e0c6c2b5a281001ed3af3b16c4aa9ac4258ccbc9070c9d2ee2a8b35dc 20156 libydpdict_1.0.4.orig.tar.gz
+ 895ab9338ae37aeceb4ca35c2fe1b257a84c5e05538dfd68737ff6e285bafd32 3656 libydpdict_1.0.4-3.debian.tar.xz
+Homepage: http://toxygen.net/ydpdict/
+Package-List: 
+ libydpdict2 deb contrib/libs optional arch=any
+ libydpdict2-dev deb contrib/libdevel optional arch=any
+Directory: pool/contrib/liby/libydpdict
+Priority: source
+Section: contrib/libs
+
+Package: mathematica-fonts
+Binary: fonts-mathematica, mathematica-fonts
+Version: 20
+Maintainer: Debian Fonts Task Force <pkg-fonts-devel@lists.alioth.debian.org>
+Uploaders: Adam Borowski <kilobyte@angband.pl>
+Build-Depends: debhelper (>= 9), po-debconf
+Architecture: all
+Standards-Version: 3.9.7
+Format: 3.0 (native)
+Files:
+ 5c6cb8a8f3aeaa9aa4e3f9a16bd56ccb 1391 mathematica-fonts_20.dsc
+ a6e9b9604d5a04d14a5398f8d4b58b01 18488 mathematica-fonts_20.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-fonts/fonts-mathematica.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-fonts/fonts-mathematica.git
+Checksums-Sha256:
+ 33b1bc86591afb5b1babc4f9cbfd576c4143ac9fb2639e34e2e3ba811b0edee3 1391 mathematica-fonts_20.dsc
+ 6b76db971c60622061e453766ca00e816d586bbbbb445dd3c8691a7c9bb6e0dc 18488 mathematica-fonts_20.tar.xz
+Package-List: 
+ fonts-mathematica deb contrib/fonts extra arch=all
+ mathematica-fonts deb contrib/fonts extra arch=all
+Directory: pool/contrib/m/mathematica-fonts
+Priority: source
+Section: contrib/fonts
+
+Package: mess-desktop-entries
+Binary: mess-desktop-entries
+Version: 0.2-2
+Maintainer: Jordi Mallach <jordi@debian.org>
+Uploaders: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Build-Depends: cdbs, debhelper (>= 8), gnome-pkg-tools, intltool, pkg-config, shared-mime-info
+Architecture: all
+Standards-Version: 3.9.2
+Format: 3.0 (quilt)
+Files:
+ 7953f10945da3de10b4a9e0d4835d03f 1377 mess-desktop-entries_0.2-2.dsc
+ f31cd87d43814591f3c52b1fa130b86f 82218 mess-desktop-entries_0.2.orig.tar.bz2
+ 7d5a4311c1652cedffe7954c61418a50 2079 mess-desktop-entries_0.2-2.debian.tar.bz2
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-gnome/packages/unstable/mess-desktop-entries/
+Vcs-Svn: svn://svn.debian.org/pkg-gnome/packages/unstable/mess-desktop-entries/
+Checksums-Sha256:
+ 260dd68b1903b6b66e54e4feb8b92f2b3c8cc1ee9814ce9bfb4a501b769aa0ec 1377 mess-desktop-entries_0.2-2.dsc
+ ea2783b037086d1e5c9d929bba878eb7c0e870d3423d38284367079a75e7176f 82218 mess-desktop-entries_0.2.orig.tar.bz2
+ a71d847029fab7cbf6e5bd29a1c140609a22c727c78058e076c52e0d43b98d80 2079 mess-desktop-entries_0.2-2.debian.tar.bz2
+Directory: pool/contrib/m/mess-desktop-entries
+Priority: source
+Section: contrib/gnome
+
+Package: microcode.ctl
+Binary: microcode.ctl
+Version: 1.18~0+nmu2
+Maintainer: Giacomo Catenazzi <cate@debian.org>
+Build-Depends: debhelper (>= 7.0.50)
+Architecture: i386 amd64
+Standards-Version: 3.9.3
+Format: 3.0 (native)
+Files:
+ 282417759ff78bdcc7feac2bf5af197f 1117 microcode.ctl_1.18~0+nmu2.dsc
+ 81641ddd2f1caedf07fd0b20c6446113 8062 microcode.ctl_1.18~0+nmu2.tar.gz
+Checksums-Sha256:
+ b62faf32175f04c32958810b4c428a9e7afe5147fd05a3aa7ef3e8f51a5f1532 1117 microcode.ctl_1.18~0+nmu2.dsc
+ cdcb8424af6f6219bc066a36de3cf7575d14d33904abe2e48c9eacea9df1ddf2 8062 microcode.ctl_1.18~0+nmu2.tar.gz
+Package-List: 
+ microcode.ctl deb contrib/oldlibs extra
+Directory: pool/contrib/m/microcode.ctl
+Priority: source
+Section: contrib/oldlibs
+
+Package: msttcorefonts
+Binary: ttf-mscorefonts-installer
+Version: 3.6
+Maintainer: Thijs Kinkhorst <thijs@debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ ead720076956eea5c81a32de7f84f79a 1213 msttcorefonts_3.6.dsc
+ 2ae4a78471ab4f6684847a02fa072c17 47926 msttcorefonts_3.6.tar.gz
+Vcs-Browser: https://aphrodite.kinkhorst.nl/wsvn/debian/msttcorefonts/
+Vcs-Svn: https://svn.kinkhorst.nl/svn/debian/msttcorefonts/trunk
+Checksums-Sha256:
+ 71b2d7e5b8c584c68a0b0f690214246033afa53e3efdcde03b1e31bb8e244ccf 1213 msttcorefonts_3.6.dsc
+ c23a2c519acad44fb65dfdd5b6f7de7b351ec15394df52cc744e3c6deb51d42f 47926 msttcorefonts_3.6.tar.gz
+Package-List: 
+ ttf-mscorefonts-installer deb contrib/fonts optional arch=all
+Directory: pool/contrib/m/msttcorefonts
+Priority: source
+Section: contrib/x11
+
+Package: nvidia-modprobe
+Binary: nvidia-modprobe
+Version: 375.26-1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Andreas Beckmann <anbe@debian.org>, Vincent Cheng <vcheng@debian.org>
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.17.0), m4
+Architecture: i386 amd64 armhf ppc64el
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 6a769f72b503f68581064bfa63dd00a2 2111 nvidia-modprobe_375.26-1.dsc
+ 1283efd13fe23498b3e9bb47048f9b59 34473 nvidia-modprobe_375.26.orig.tar.bz2
+ a159311cdf2a94ce4cddfbb31656b229 2896 nvidia-modprobe_375.26-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-modprobe.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-modprobe.git
+Checksums-Sha256:
+ 6850204fe96d6a701f7e6c12cb3b4fa5e1714d3b8448f592d624141c98ab5306 2111 nvidia-modprobe_375.26-1.dsc
+ 571f79b4c021a5293560efd045658cccf85b521effe7ede5738555fbdf9fb0af 34473 nvidia-modprobe_375.26.orig.tar.bz2
+ 6395d84b1533538d98c7fe12815477c62f453003bb93ec493d9a5ed0c5da90df 2896 nvidia-modprobe_375.26-1.debian.tar.xz
+Homepage: https://github.com/NVIDIA/nvidia-modprobe
+Package-List: 
+ nvidia-modprobe deb contrib/utils optional arch=i386,amd64,armhf,ppc64el
+Directory: pool/contrib/n/nvidia-modprobe
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-persistenced
+Binary: nvidia-persistenced
+Version: 375.26-2
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Andreas Beckmann <anbe@debian.org>,
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.17.0), m4
+Architecture: i386 amd64 armhf
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ d9436d9791eba3b253831b4aa3f7955b 2109 nvidia-persistenced_375.26-2.dsc
+ 846fed040276803b7651feec3d750bad 43562 nvidia-persistenced_375.26.orig.tar.bz2
+ 69942c9017fc6c9d823d47c8fbd884a2 3020 nvidia-persistenced_375.26-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-persistenced.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-persistenced.git
+Checksums-Sha256:
+ 5db2631a50fc6a5318d9219aee9da3dffc3bc0577fee54eedd26c0eef25b0a27 2109 nvidia-persistenced_375.26-2.dsc
+ 7e3e0ea4a5807bc9db487b6a65d17d70c9c33e0012693cefc4ca93e9ffca2697 43562 nvidia-persistenced_375.26.orig.tar.bz2
+ b4aac0092d67c95214d82ffdcc8b4f2957778b897ad8c6da9b2fc551aff9828b 3020 nvidia-persistenced_375.26-2.debian.tar.xz
+Homepage: https://github.com/NVIDIA/nvidia-persistenced
+Package-List: 
+ nvidia-persistenced deb contrib/utils optional arch=i386,amd64,armhf
+Directory: pool/contrib/n/nvidia-persistenced
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-settings-legacy-304xx
+Binary: nvidia-settings-legacy-304xx
+Version: 304.134-1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Fathi Boudra <fabo@debian.org>, Andreas Beckmann <anbe@debian.org>, Russ Allbery <rra@debian.org>, Vincent Cheng <vcheng@debian.org>, Luca Boccassi <luca.boccassi@gmail.com>,
+Build-Depends: debhelper (>= 10), m4, libgl1-mesa-dev | libgl-dev, libgtk2.0-dev, libxext-dev, libxv-dev, libxxf86vm-dev, pkg-config, dh-exec (>= 0.3)
+Build-Conflicts: libxnvctrl-dev
+Architecture: i386 amd64
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ c3dff2303f89bd9a63d0572f3d346916 2468 nvidia-settings-legacy-304xx_304.134-1.dsc
+ 2569a4a7183aa33904bb6beefa5e381c 1480967 nvidia-settings-legacy-304xx_304.134.orig.tar.bz2
+ 49c14b36ebff9d97f50b1cbd9d21fa34 17480 nvidia-settings-legacy-304xx_304.134-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-settings.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-settings.git -b 304xx/master
+Checksums-Sha256:
+ 8cef900149ff0e992113de162903285daf2bd8b80247820839130fc4deb20a0e 2468 nvidia-settings-legacy-304xx_304.134-1.dsc
+ 8e562823fe9a7b1d33775db5605040488c064ab59ede20e1b2e5a6ec08ef2261 1480967 nvidia-settings-legacy-304xx_304.134.orig.tar.bz2
+ d0a43a3dd64d2aba908469c7828ba5cbe8c5eac8ce82c63011d3706df715087e 17480 nvidia-settings-legacy-304xx_304.134-1.debian.tar.xz
+Homepage: ftp://download.nvidia.com/XFree86/nvidia-settings/
+Package-List: 
+ nvidia-settings-legacy-304xx deb contrib/x11 optional arch=i386,amd64
+Directory: pool/contrib/n/nvidia-settings-legacy-304xx
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-settings-legacy-340xx
+Binary: nvidia-settings-legacy-340xx
+Version: 340.101-1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Fathi Boudra <fabo@debian.org>, Andreas Beckmann <anbe@debian.org>, Russ Allbery <rra@debian.org>, Vincent Cheng <vcheng@debian.org>, Luca Boccassi <luca.boccassi@gmail.com>,
+Build-Depends: debhelper (>= 10), m4, libgl1-mesa-dev | libgl-dev, libgtk2.0-dev (>= 2.4), libjansson-dev (>= 2.2), libvdpau-dev, libxext-dev, libxv-dev, libxxf86vm-dev, pkg-config, dh-exec (>= 0.3)
+Build-Conflicts: libxnvctrl-dev
+Architecture: i386 amd64 armhf
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 51be1a380f483b367c9c22f5cf6520f9 2528 nvidia-settings-legacy-340xx_340.101-1.dsc
+ 8de36f2301bab7b2fff4bf923ef20a24 1550221 nvidia-settings-legacy-340xx_340.101.orig.tar.bz2
+ 9f697a1fe41889a3efa675da7679f8b1 16656 nvidia-settings-legacy-340xx_340.101-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-settings.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-settings.git -b 340xx/master
+Checksums-Sha256:
+ d79dbab2ae22d33c071a346c4c209b2e76fc094e69eb571860d248ed5ec21646 2528 nvidia-settings-legacy-340xx_340.101-1.dsc
+ e98d2816f30182826aebb4315d4069d212709d28c129528295c012e11c5c5bd5 1550221 nvidia-settings-legacy-340xx_340.101.orig.tar.bz2
+ bc21a835b8cbd4ce4218246a784dc96b2f97d256f0ae2420189b5afb0b59c009 16656 nvidia-settings-legacy-340xx_340.101-1.debian.tar.xz
+Homepage: ftp://download.nvidia.com/XFree86/nvidia-settings/
+Package-List: 
+ nvidia-settings-legacy-340xx deb contrib/x11 optional arch=i386,amd64,armhf
+Directory: pool/contrib/n/nvidia-settings-legacy-340xx
+Priority: extra
+Section: contrib/misc
+
+Package: nvidia-support
+Binary: nvidia-support, nvidia-installer-cleanup, nvidia-kernel-common
+Version: 20151021+4
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Russ Allbery <rra@debian.org>, Andreas Beckmann <anbe@debian.org>,
+Build-Depends: debhelper (>= 9), po-debconf
+Architecture: amd64 i386 armhf ppc64el
+Standards-Version: 3.9.7
+Format: 3.0 (native)
+Files:
+ 8b1814781aca50a55b9b71c67f11cef8 1957 nvidia-support_20151021+4.dsc
+ 156ea5a0cf139bff4c761bb2bbf4330f 33564 nvidia-support_20151021+4.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-support.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-support.git
+Checksums-Sha256:
+ bb260602dfd5eb065b3daa2b04de37d4d2c3ac497321e462e8ddcd317bbbe062 1957 nvidia-support_20151021+4.dsc
+ 774f8e2baedd16737b47613a97f1620ab06840550606d6d4853f6e1cbe2203d7 33564 nvidia-support_20151021+4.tar.xz
+Package-List: 
+ nvidia-installer-cleanup deb contrib/misc optional arch=amd64,i386,armhf,ppc64el
+ nvidia-kernel-common deb contrib/kernel optional arch=amd64,i386,armhf
+ nvidia-support deb contrib/misc optional arch=amd64,i386,armhf,ppc64el
+Directory: pool/contrib/n/nvidia-support
+Priority: source
+Section: contrib/misc
+
+Package: nvidia-xconfig
+Binary: nvidia-xconfig
+Version: 375.26-1
+Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Uploaders: Russ Allbery <rra@debian.org>, Andreas Beckmann <anbe@debian.org>, Vincent Cheng <vcheng@debian.org>
+Build-Depends: debhelper (>= 10), m4, pkg-config, xserver-xorg-dev
+Architecture: i386 amd64 armhf
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 4de6ac361e65b942bcfb301878f1b469 2128 nvidia-xconfig_375.26-1.dsc
+ f324b65f00b61f274d32862698de368f 106752 nvidia-xconfig_375.26.orig.tar.bz2
+ 753447597620d57bc1d222b413d1c83d 7836 nvidia-xconfig_375.26-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-nvidia/nvidia-xconfig.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-nvidia/nvidia-xconfig.git
+Checksums-Sha256:
+ 5b405b24e7d2dd550041f907deeb27633c566230fed45d5d3ea12279cfba2a0a 2128 nvidia-xconfig_375.26-1.dsc
+ ca14efd40b124b3699b0996cece06d2c8ef7d7e2b0997bc5c758a53da899dd18 106752 nvidia-xconfig_375.26.orig.tar.bz2
+ 19c257c64cd3c7c50509d633b6030db8470b69f2ee59fd4d12a74fee5cb7e4c3 7836 nvidia-xconfig_375.26-1.debian.tar.xz
+Homepage: ftp://download.nvidia.com/XFree86/nvidia-xconfig/
+Package-List: 
+ nvidia-xconfig deb contrib/x11 extra arch=i386,amd64,armhf
+Directory: pool/contrib/n/nvidia-xconfig
+Priority: source
+Section: contrib/x11
+
+Package: nvpy
+Binary: nvpy
+Version: 0.9.7-1
+Maintainer: Stefan van der Walt <stefan@sun.ac.za>
+Uploaders: Yaroslav Halchenko <debian@onerussian.com>
+Build-Depends: debhelper (>= 8.1), python, python-setuptools, python-tk
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ be3524885482e1c60ab6fbdf093a3659 1812 nvpy_0.9.7-1.dsc
+ fa0857730e137eb2c210cfbb6f6737fb 492368 nvpy_0.9.7.orig.tar.gz
+ 1df6c72991699c4479ae0b7c6adb2993 9740 nvpy_0.9.7-1.debian.tar.xz
+Vcs-Git: https://github.com/stefanv/nvpy -b debian
+Checksums-Sha256:
+ 3c816c0937e060341e30a76f9d5403262f532d8a3a9f63e5eae5649ad47afa1a 1812 nvpy_0.9.7-1.dsc
+ b8d71e528bf2d5d80a8389da33ec3b4ef762216295d2a88a57b297eee6507ea7 492368 nvpy_0.9.7.orig.tar.gz
+ 84027a883ef244782b93fccc6f5581379019cd0a77ba322dab188883b3a22fa6 9740 nvpy_0.9.7-1.debian.tar.xz
+Homepage: https://github.com/cpbotha/nvpy
+Package-List: 
+ nvpy deb contrib/utils optional arch=all
+Directory: pool/contrib/n/nvpy
+Priority: extra
+Section: contrib/misc
+
+Package: ocaml-fdkaac
+Binary: libfdkaac-ocaml, libfdkaac-ocaml-dynlink, libfdkaac-ocaml-dev
+Version: 0.2.0-1
+Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
+Uploaders: Samuel Mimram <smimram@debian.org>, Romain Beauxis <toots@rastageeks.org>
+Build-Depends: debhelper (>= 9), dh-buildinfo, ocaml-nox, dh-ocaml (>= 0.9), libfdk-aac-dev (>= 0.1.1), ocaml-findlib (>= 1.2.4), pkg-config
+Architecture: any
+Standards-Version: 3.9.4
+Format: 3.0 (quilt)
+Files:
+ 4adeddc2aa44689a3c2bce538e536195 1922 ocaml-fdkaac_0.2.0-1.dsc
+ f14d493a837bfc32844e114395e04121 95685 ocaml-fdkaac_0.2.0.orig.tar.gz
+ 9558a2203ae65219d9207196fefa0472 2571 ocaml-fdkaac_0.2.0-1.debian.tar.gz
+Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/ocaml-fdkaac.git
+Vcs-Git: git://git.debian.org/pkg-ocaml-maint/packages/ocaml-fdkaac.git
+Checksums-Sha256:
+ 5b82fb6e2fca754ceae0887a0cbef49462d99fd5c9b06cb39eabf1372c1c9f67 1922 ocaml-fdkaac_0.2.0-1.dsc
+ 309ffd1dbbfa03ec9e074e926809ab01f6812a55b10ff7b0611b45844b96d064 95685 ocaml-fdkaac_0.2.0.orig.tar.gz
+ 507306fb36319ae606099f51a2b909073e3e516aa1ed7bbf76d04b12c74fce40 2571 ocaml-fdkaac_0.2.0-1.debian.tar.gz
+Homepage: http://savonet.sourceforge.net/
+Package-List: 
+ libfdkaac-ocaml deb contrib/ocaml optional
+ libfdkaac-ocaml-dev deb contrib/ocaml optional
+ libfdkaac-ocaml-dynlink deb contrib/ocaml optional
+Directory: pool/contrib/o/ocaml-fdkaac
+Priority: extra
+Section: contrib/misc
+
+Package: ooniprobe
+Binary: ooniprobe
+Version: 2.1.0-4
+Maintainer: Internet Measurement Packaging Team <pkg-netmeasure-discuss@lists.alioth.debian.org>
+Uploaders: Iain R. Learmonth <irl@debian.org>
+Build-Depends: debhelper (>= 9), dh-python, dh-systemd, python-all, python-docutils (>= 0.9.1), python-geoip, python-ipaddr, python-mock, python-openssl, python-scapy, python-setuptools, python-twisted (>= 12.2.0), python-txsocksx, python-txtorcon (>= 0.14.2), python-yaml, python-zope.interface, python-klein, python-certifi, tor
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ f857ade941b791a4be394a59629346d8 1935 ooniprobe_2.1.0-4.dsc
+ eb659ac738925e9cc9fb28f2d97389de 2308408 ooniprobe_2.1.0.orig.tar.gz
+ 677f3aaf0a5e30cdca5c3c156fb52312 469024 ooniprobe_2.1.0-4.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/ooniprobe.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/ooniprobe.git
+Checksums-Sha256:
+ 118d054f024e65ebc9faf9b5019b0a5bd5c8a83cc7f11531748c4a43171a4c1e 1935 ooniprobe_2.1.0-4.dsc
+ a5422bc4acf577164122c3ea2ece899f7f6465095f4b047ed91a2b715b44c7cd 2308408 ooniprobe_2.1.0.orig.tar.gz
+ 9ba42a56d2de8efe28472ab9ab45a5bf842e642e5c2ad24a3d3f3c46eb267c13 469024 ooniprobe_2.1.0-4.debian.tar.xz
+Homepage: https://ooni.torproject.org/
+Package-List: 
+ ooniprobe deb contrib/net extra arch=all
+Testsuite: autopkgtest
+Directory: pool/contrib/o/ooniprobe
+Priority: extra
+Section: contrib/misc
+
+Package: opendict-lingvosoft
+Binary: opendict-plugins-lingvosoft
+Version: 0.8-2.1
+Maintainer: Kęstutis Biliūnas <kebil@kaunas.init.lt>
+Build-Depends: debhelper (>= 5.0.38)
+Build-Depends-Indep: python-all-dev (>= 2.3.5-11), dh-python
+Architecture: all
+Standards-Version: 3.7.2
+Format: 3.0 (quilt)
+Files:
+ 89427a394126a2606597104f27c58ffe 1836 opendict-lingvosoft_0.8-2.1.dsc
+ 840d9da294ad0cd4f5ade4099c4254a3 11150 opendict-lingvosoft_0.8.orig.tar.gz
+ 5299aa6f2e6f7d1d9d090127f80843aa 2864 opendict-lingvosoft_0.8-2.1.debian.tar.xz
+Checksums-Sha256:
+ a42fc034ee1ba16a11f6b1797246c1d3b37fa6e48f8117e7f68384430a6e91b7 1836 opendict-lingvosoft_0.8-2.1.dsc
+ 27b8461ca199b9b5b1e414d627bffc832076a4df50f9fe78e7d438ec67f724ba 11150 opendict-lingvosoft_0.8.orig.tar.gz
+ b738022574b046ff8a612c6c7b5f68c14e979804556ac3a45ffcb10ceae1e32a 2864 opendict-lingvosoft_0.8-2.1.debian.tar.xz
+Package-List: 
+ opendict-plugins-lingvosoft deb contrib/text optional arch=all
+Directory: pool/contrib/o/opendict-lingvosoft
+Priority: source
+Section: contrib/text
+
+Package: openlugaru
+Binary: openlugaru
+Version: 0~20110520.1+hge4354+dfsg-5
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Martin Erik Werner <martinerikwerner@gmail.com>
+Build-Depends: cmake, debhelper (>= 9), freeglut3-dev, imagemagick, libglew-dev, libglu1-mesa-dev | libglu-dev, libjpeg-dev, libogg-dev, libopenal-dev, libpng-dev, libsdl1.2-dev | libsdl-dev, libvorbis-dev, libx11-dev, mesa-common-dev, x11proto-core-dev, zlib1g-dev | libz-dev
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 6d41cb3f3f1196c9720106c73d80eaab 2479 openlugaru_0~20110520.1+hge4354+dfsg-5.dsc
+ b42f4c9ef3e8ec2bd330bf50a12813dd 517238 openlugaru_0~20110520.1+hge4354+dfsg.orig.tar.gz
+ 33d6714002503decb5c35ecb2233270f 7900 openlugaru_0~20110520.1+hge4354+dfsg-5.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/openlugaru.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/openlugaru.git -b debian_source
+Checksums-Sha256:
+ 80da7f3a23d222a7750f95bd342672e5829b8df072c8f1609e431d64bb6033a8 2479 openlugaru_0~20110520.1+hge4354+dfsg-5.dsc
+ cd186bdf0be4865161477654f97c2042d13c9c2563398cba3bb58dfa2193341b 517238 openlugaru_0~20110520.1+hge4354+dfsg.orig.tar.gz
+ bd8c282b06e7c62bca17c312e6b424ec99cb58ffe69514a8e74227bc2c6cd059 7900 openlugaru_0~20110520.1+hge4354+dfsg-5.debian.tar.xz
+Homepage: https://bitbucket.org/osslugaru/lugaru/wiki/Home
+Package-List: 
+ openlugaru deb contrib/games optional arch=any
+Directory: pool/contrib/o/openlugaru
+Priority: extra
+Section: contrib/misc
+
+Package: opentyrian
+Binary: opentyrian
+Version: 2.1.20130907+dfsg-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Etienne Millon <me@emillon.org>, Alexandre Detiste <alexandre.detiste@gmail.com>,
+Build-Depends: debhelper (>= 9), libsdl-net1.2-dev
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 37c5aada0bad9fb4069ed8d62d6c748e 2101 opentyrian_2.1.20130907+dfsg-2.dsc
+ abcc258bfc12ba5a26c451593ca94778 288370 opentyrian_2.1.20130907+dfsg.orig.tar.gz
+ e0a21f41f8db5efadf026d8bb916c5fd 6176 opentyrian_2.1.20130907+dfsg-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/opentyrian.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/opentyrian.git
+Checksums-Sha256:
+ d990df01f7ec8557b925acc10786dc01a2b4757ce16a6e6c4a4a504306f1c04b 2101 opentyrian_2.1.20130907+dfsg-2.dsc
+ e02c61106460b042a4f5f9c38ae584aaa55ab9c042d91d2228043738c943040c 288370 opentyrian_2.1.20130907+dfsg.orig.tar.gz
+ 87cb2df59ec45fcba2b5ee7e7ca58dcd9918c4dcc5bbe5daac7681d32f5464d8 6176 opentyrian_2.1.20130907+dfsg-2.debian.tar.xz
+Homepage: https://bitbucket.org/opentyrian/opentyrian/
+Package-List: 
+ opentyrian deb contrib/games optional arch=any
+Directory: pool/contrib/o/opentyrian
+Priority: extra
+Section: contrib/misc
+
+Package: ora2pg
+Binary: ora2pg
+Version: 17.6-1
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 10)
+Build-Depends-Indep: perl
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ bf2801a441b9fc1dd87c5fd3338e8a86 1876 ora2pg_17.6-1.dsc
+ 220c728142647ea6b9eccb8718dd627a 219264 ora2pg_17.6.orig.tar.xz
+ afe40a23f022e609014e0bc977797f0d 14524 ora2pg_17.6-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/ora2pg.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/ora2pg.git
+Checksums-Sha256:
+ 82afd636c776317106b91db0cb9ebaf8647f100564de7eba5a71e311959a4e4d 1876 ora2pg_17.6-1.dsc
+ 76a5b3b4e0eefdd4c28281d4b74f04686cab53187a2ad2e4e37bf70d4a3296b7 219264 ora2pg_17.6.orig.tar.xz
+ af1b2da2c3c6c6cfb219e96b56a4390261c27d47e26eb6091636ba250dd6874b 14524 ora2pg_17.6-1.debian.tar.xz
+Homepage: http://ora2pg.darold.net/
+Package-List: 
+ ora2pg deb contrib/database extra arch=all
+Directory: pool/contrib/o/ora2pg
+Priority: source
+Section: contrib/misc
+
+Package: pidgin-skype
+Binary: pidgin-skype-common, pidgin-skype, empathy-skype, pidgin-skype-dbg
+Version: 20140930+svn665+dfsg-1
+Maintainer: Gabriele Giacone <1o5g4r8o@gmail.com>
+Build-Depends: debhelper (>= 9), libglib2.0-dev, libpurple-dev (>= 2.1.1), libx11-dev, librsvg2-bin, libdbus-1-dev, pkg-config
+Architecture: i386 amd64
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ 708298dd419024a8f0e8abd9e3c27a68 1679 pidgin-skype_20140930+svn665+dfsg-1.dsc
+ 92f685c4ff2294595d25fab35edb64de 114540 pidgin-skype_20140930+svn665+dfsg.orig.tar.xz
+ 679b9a4855bfa84b470bdce92f2ac384 10428 pidgin-skype_20140930+svn665+dfsg-1.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/pidgin-skype.git
+Vcs-Git: git://anonscm.debian.org/collab-maint/pidgin-skype.git
+Checksums-Sha256:
+ 5e245d9dfca6e0e1678fc5fc7b38f368aafd312b5d4af5c8447309250dd21f7f 1679 pidgin-skype_20140930+svn665+dfsg-1.dsc
+ dfd34903b9098f64fbc042af9195bc446e86b4624e441768a433a656c9f95da2 114540 pidgin-skype_20140930+svn665+dfsg.orig.tar.xz
+ d3178bdba1bda90acb656b412cc473b0dc8ecb2370b3ad79f263ae077d3552dd 10428 pidgin-skype_20140930+svn665+dfsg-1.debian.tar.xz
+Homepage: http://eion.robbmob.com/
+Package-List: 
+ empathy-skype deb contrib/net optional arch=i386,amd64
+ pidgin-skype deb contrib/net optional arch=i386,amd64
+ pidgin-skype-common deb contrib/net optional arch=i386,amd64
+ pidgin-skype-dbg deb contrib/debug extra arch=i386,amd64
+Directory: pool/contrib/p/pidgin-skype
+Priority: source
+Section: contrib/net
+
+Package: playonlinux
+Binary: playonlinux
+Version: 4.2.10-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Bertrand Marc <beberking@gmail.com>
+Build-Depends: debhelper (>= 9), dh-python, python, imagemagick
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ a2f83686950122e0931972e808816059 1997 playonlinux_4.2.10-2.dsc
+ 9869697c13010e88cf68607cea334dbd 3202085 playonlinux_4.2.10.orig.tar.gz
+ 574c1e0ecf3c9627f8a92ddc04ea3ebe 6900 playonlinux_4.2.10-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/viewvc/pkg-games/packages/trunk/playonlinux/
+Vcs-Svn: svn://anonscm.debian.org/pkg-games/packages/trunk/playonlinux/
+Checksums-Sha256:
+ 7130536f47f859ccfdf1ba057cd1778f74f65b75388809a23560f1540e11e871 1997 playonlinux_4.2.10-2.dsc
+ f524905912ae2b17c8544968a8554d635f8fc4cd3b220c0ae15c49d51f244973 3202085 playonlinux_4.2.10.orig.tar.gz
+ 10e6dd5451cb4c867a257f1c9a1bde9350eeae8aedae4c27772bd5a02489b33b 6900 playonlinux_4.2.10-2.debian.tar.xz
+Homepage: http://www.playonlinux.com/
+Package-List: 
+ playonlinux deb contrib/otherosfs optional arch=all
+Directory: pool/contrib/p/playonlinux
+Priority: source
+Section: contrib/otherosfs
+
+Package: premail
+Binary: premail
+Version: 0.46-10
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ 75f49c89ae05ba88d6e8c8ed5f005c68 1624 premail_0.46-10.dsc
+ 1b48789ec4d191e5bf403d798c0bae34 80339 premail_0.46.orig.tar.gz
+ bd45362057f43da575f74beddad710f4 62652 premail_0.46-10.diff.gz
+Checksums-Sha256:
+ eff9809a56004d37703edc441085c41ac9e355fa4f16704e198e8861c4165b0f 1624 premail_0.46-10.dsc
+ 4669f2761f338735c19bab58282053e2ead3133bbf664950285d65e20e7cbdc9 80339 premail_0.46.orig.tar.gz
+ 3dd91e4f7bb4cd0bccf71f31166c7e71415db9249f3b02c5248ba5e0b482a7f1 62652 premail_0.46-10.diff.gz
+Package-List: 
+ premail deb contrib/mail optional arch=all
+Directory: pool/contrib/p/premail
+Priority: source
+Section: contrib/mail
+
+Package: publicfile-installer
+Binary: publicfile-installer
+Version: 0.12-1
+Maintainer: Joost van Baal-Ilić <joostvb@debian.org>
+Build-Depends: debhelper (>= 9), po-debconf
+Architecture: all
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 0ec7dfd00c3ebccfd2432e60f1dd0466 1926 publicfile-installer_0.12-1.dsc
+ e01dfb24124d09b2ad3e90316a4dedfe 19062 publicfile-installer_0.12.orig.tar.gz
+ e2446bb76172acfe8ddbf8d47799a828 8256 publicfile-installer_0.12-1.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/publicfile-installer.git
+Vcs-Git: git://anonscm.debian.org/collab-maint/publicfile-installer.git
+Checksums-Sha256:
+ 8a816af123a18b72cccc217535ed859ef6a02424a83420da17ac00984ab40f31 1926 publicfile-installer_0.12-1.dsc
+ 6bdbbd16f2222b96078bdb64de8a92054b42cd0407a62f61e2b65cc86d3031b9 19062 publicfile-installer_0.12.orig.tar.gz
+ afc80a35fa1a22f9611f41789e4992b8a78a78b88178d9c04e188f9373a9d4de 8256 publicfile-installer_0.12-1.debian.tar.xz
+Package-List: 
+ publicfile-installer deb contrib/net extra arch=all
+Directory: pool/contrib/p/publicfile-installer
+Priority: extra
+Section: contrib/misc
+
+Package: pvpgn
+Binary: pvpgn
+Version: 1.8.5-2.1
+Maintainer: Radu Spineanu <radu@debian.org>
+Uploaders: Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper (>= 9), dh-autoreconf, autotools-dev, libcdb-dev, default-libmysqlclient-dev, libpq-dev, libsqlite3-dev, zlib1g-dev
+Architecture: any
+Standards-Version: 3.9.4
+Format: 3.0 (quilt)
+Files:
+ 5924566faec5b219c66d074af9606488 1961 pvpgn_1.8.5-2.1.dsc
+ 97ee5bc5bfed6a7e5eb73a71583ae030 1157489 pvpgn_1.8.5.orig.tar.gz
+ c6c4809a1104ee1139597ceaecff63d6 14784 pvpgn_1.8.5-2.1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/pvpgn.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/pvpgn.git
+Checksums-Sha256:
+ 6b54ba0c4e228b24f3998d764dab169908b48c29eda7094f7c56f62f1a1f3247 1961 pvpgn_1.8.5-2.1.dsc
+ 0d2ebc2daaa5698f414b69e2283de8f6a6f823d45116b5f22a10300cf51834f6 1157489 pvpgn_1.8.5.orig.tar.gz
+ 9a97cf718219ec8b5aa2fd9fb76f74a734b1995a7bbd1e03d964b7a94cf90061 14784 pvpgn_1.8.5-2.1.debian.tar.xz
+Homepage: http://pvpgn.berlios.de/
+Package-List: 
+ pvpgn deb contrib/net optional arch=any
+Directory: pool/contrib/p/pvpgn
+Priority: source
+Section: contrib/net
+
+Package: pycuda
+Binary: python-pycuda, python-pycuda-dbg, python3-pycuda, python3-pycuda-dbg, python-pycuda-doc
+Version: 2016.1.2+git20161024-1
+Maintainer: Tomasz Rybak <tomasz.rybak@post.pl>
+Build-Depends: debhelper (>= 10), dh-python, python-all-dev, python-all-dbg, python3-all-dev, python3-all-dbg, python-setuptools, python3-setuptools, nvidia-cuda-toolkit, libboost-python-dev, libboost-thread-dev, mesa-common-dev, python-numpy (>= 1:1.4.1-4~), python3-numpy, python-sphinx (>= 1.0.7+dfsg), python3-sphinx (>= 1.0.7+dfsg), python-pytools (>= 2011.5), python3-pytools
+Architecture: amd64 all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 24e019cdf8bcdfcb80d7201ba838f86c 2594 pycuda_2016.1.2+git20161024-1.dsc
+ 34549fb80ec7e876248990094d41b670 179936 pycuda_2016.1.2+git20161024.orig.tar.xz
+ b03d827ed4f7c398e77ea09cc70fae51 9516 pycuda_2016.1.2+git20161024-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/python-pycuda.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/python-pycuda.git
+Checksums-Sha256:
+ 2e1df55db94436d6509b6767af644b6ed2d4ff408c174a545f36d53b8aed27d3 2594 pycuda_2016.1.2+git20161024-1.dsc
+ 13bb6eafd299582df98e67ea45efdad894df138a5fd493aa4e68af850082697e 179936 pycuda_2016.1.2+git20161024.orig.tar.xz
+ ddd0f6a8f387070f541fdbdf3953bb423464bb0697f0e67c9451d9c8984c0b91 9516 pycuda_2016.1.2+git20161024-1.debian.tar.xz
+Homepage: http://mathema.tician.de/software/pycuda
+Package-List: 
+ python-pycuda deb contrib/python optional arch=amd64
+ python-pycuda-dbg deb contrib/debug extra arch=amd64
+ python-pycuda-doc deb contrib/doc optional arch=all
+ python3-pycuda deb contrib/python optional arch=amd64
+ python3-pycuda-dbg deb contrib/debug extra arch=amd64
+Directory: pool/contrib/p/pycuda
+Priority: source
+Section: contrib/python
+
+Package: python-sparkpost
+Binary: python-sparkpost, python3-sparkpost
+Version: 1.3.3-1
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Scott Kitterman <scott@kitterman.com>
+Build-Depends: debhelper (>= 9~), dh-python, python-all, python-setuptools, python3-all, python3-setuptools
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ e913679a2e0fc553bf6747dce660c32f 2196 python-sparkpost_1.3.3-1.dsc
+ 53a39591f121f5f25a9b3c739be732bd 40317 python-sparkpost_1.3.3.orig.tar.gz
+ 18bb48eac565da55223545daa7089e87 1968 python-sparkpost_1.3.3-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/python-sparkpost.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/python-sparkpost.git
+Checksums-Sha256:
+ 8b06b3ac4f5712a46772c146b71fbef5d066671ea62b0bd6836a2edfa2f0ba3e 2196 python-sparkpost_1.3.3-1.dsc
+ 41814fb2f0aca05420205a0ec5ee2b89c4e94cf044a480eb480bdac3a0100da2 40317 python-sparkpost_1.3.3.orig.tar.gz
+ c4a6408bc499ea66106f63abb9fdb65ff08588171c9f86eb1b8767633ddceeda 1968 python-sparkpost_1.3.3-1.debian.tar.xz
+Homepage: https://github.com/SparkPost/python-sparkpost
+Package-List: 
+ python-sparkpost deb contrib/python optional arch=all
+ python3-sparkpost deb contrib/python optional arch=all
+Directory: pool/contrib/p/python-sparkpost
+Priority: extra
+Section: contrib/misc
+
+Package: python-vertica
+Binary: python-vertica, python3-vertica
+Version: 0.6.8-2
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Jean Baptiste Favre <debian@jbfavre.org>
+Build-Depends: python-setuptools (>= 0.6b3), python-all (>= 2.6.6-3), python-dateutil, python-tz, debhelper (>= 8), dh-python, python3-setuptools, python3-all, python3-dateutil, python3-tz
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 0babb20091e0aa475fa5605d38016a25 2359 python-vertica_0.6.8-2.dsc
+ 3b27c441c6f90e1de0ac8132cf8d5a76 24542 python-vertica_0.6.8.orig.tar.gz
+ cd43f69d39cedb850a0f4723211e638e 2680 python-vertica_0.6.8-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/python-vertica.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/python-vertica.git
+Checksums-Sha256:
+ b41ec655bf5e1e6432e90f8c16c4adeb585d8309279c0988d97227fa8060406b 2359 python-vertica_0.6.8-2.dsc
+ 20a911af09e91ce1032584c5bfa2ce07fc08b1461f1597c8e58fd239f0af82e8 24542 python-vertica_0.6.8.orig.tar.gz
+ 9d1bb70c1504734212ea4a730025e20ca6968af2574400fb84638da091f78ec7 2680 python-vertica_0.6.8-2.debian.tar.xz
+Homepage: https://github.com/uber/vertica-python
+Package-List: 
+ python-vertica deb contrib/python optional arch=all
+ python3-vertica deb contrib/python optional arch=all
+Directory: pool/contrib/p/python-vertica
+Priority: extra
+Section: contrib/misc
+
+Package: qmhandle
+Binary: qmhandle
+Version: 1.3.2-2
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.8.0
+Format: 3.0 (quilt)
+Files:
+ b484b71a05fdb1dd20a2fa1f84d1cb20 1313 qmhandle_1.3.2-2.dsc
+ 6a15192328c5f6e484aacf011c99690a 16944 qmhandle_1.3.2.orig.tar.gz
+ 4206615db4fca11be7d4ba3f9a30f8e4 1884 qmhandle_1.3.2-2.debian.tar.xz
+Checksums-Sha256:
+ 55ed8712135dba7cbceccd431a92634ee6e12d0cd32da570ebdce9b0e2acab2a 1313 qmhandle_1.3.2-2.dsc
+ 77ad5ea9891e0b4e8b4be2ee236f27fbac115345ee5a9c79ea2267152df5fca9 16944 qmhandle_1.3.2.orig.tar.gz
+ 9803525ec6734dc899e66623ea097d1e62a0b58ac5f69b08b05b208e2f7c80d3 1884 qmhandle_1.3.2-2.debian.tar.xz
+Package-List: 
+ qmhandle deb contrib/mail optional arch=all
+Directory: pool/contrib/q/qmhandle
+Priority: source
+Section: contrib/mail
+
+Package: reminiscence
+Binary: reminiscence
+Version: 0.2.1-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Damyan Ivanov <dmn@debian.org>
+Build-Depends: debhelper (>= 9), zlib1g-dev (>= 1.2.3), libsdl1.2-dev (>= 1.2.13), perl
+Architecture: any
+Standards-Version: 3.9.4
+Format: 3.0 (quilt)
+Files:
+ 43db375c09b270afba675cc215257178 1878 reminiscence_0.2.1-2.dsc
+ 59e7c5b3848c65f8eddb0e8c0e588221 101621 reminiscence_0.2.1.orig.tar.bz2
+ c4a4633b426dd57c2387d16a87e68a76 4245 reminiscence_0.2.1-2.debian.tar.gz
+Checksums-Sha256:
+ b4e000b05f2b9d7581f51d21e316294b58a3227036418c33f22562f78efe5bbc 1878 reminiscence_0.2.1-2.dsc
+ 3168ffb7cd29e72a150e22edc6f0891001288f4c89d7900cbac8864ce763c2bd 101621 reminiscence_0.2.1.orig.tar.bz2
+ b72fd96c3469a2afc231886813d6c4911aa73a470990570af94f4f1e7bd182c1 4245 reminiscence_0.2.1-2.debian.tar.gz
+Homepage: http://cyxdown.free.fr/reminiscence/
+Package-List: 
+ reminiscence deb contrib/games optional
+Directory: pool/contrib/r/reminiscence
+Priority: source
+Section: contrib/games
+
+Package: repo
+Binary: repo
+Version: 1.12.37-3
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 9), bash-completion
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 46adc6b3873e38e51b6e0f915d26bfe2 1659 repo_1.12.37-3.dsc
+ 8cad43be6b33b496927ae373a21d9ac5 115108 repo_1.12.37.orig.tar.gz
+ 4ba7de9dd4d99e90d93e957daced9e42 6752 repo_1.12.37-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=android-tools/repo.git
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/repo.git
+Checksums-Sha256:
+ f51039f83bd7892d9fdd22a3eb17f0025b38870fc9003207a7d8211682b75ab3 1659 repo_1.12.37-3.dsc
+ 24fa5ef57ac11434d961bc5b61956c68299371ca00cf0b60fbdff4de46ef80e1 115108 repo_1.12.37.orig.tar.gz
+ 5fee83ccfb400c863940d143a1ac271cf8d8a98ca6aea7c35b66b5c222d985da 6752 repo_1.12.37-3.debian.tar.xz
+Homepage: https://source.android.com/source/developing.html
+Package-List: 
+ repo deb contrib/devel extra arch=all
+Directory: pool/contrib/r/repo
+Priority: extra
+Section: contrib/misc
+
+Package: residualvm
+Binary: residualvm, residualvm-data
+Version: 0.2.1+dfsg-3
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Dmitry Smirnov <onlyjob@debian.org>
+Build-Depends: debhelper (>= 10), autotools-dev, fonts-freefont-ttf, libasound2-dev [linux-any], libfreetype6-dev, libgl1-mesa-dev, libjpeg-dev, libsdl1.2-dev, libz-dev, python, zip, libfaad-dev, libflac-dev, libfluidsynth-dev, libmad0-dev, libvorbisidec-dev, libpng-dev, timidity
+Architecture: any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ beab6c7ad8639638f1c3c9ce2996f2d0 2290 residualvm_0.2.1+dfsg-3.dsc
+ 887c1409e3f2dc4f0481d77b75cd510c 3378036 residualvm_0.2.1+dfsg.orig.tar.xz
+ 9c677808093c51020d94bb1f21de2237 7268 residualvm_0.2.1+dfsg-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/residualvm.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/residualvm.git
+Checksums-Sha256:
+ d0623e46c372870ae5353e85441c009e9d0a12d49b2d99e0324f47bb42464df3 2290 residualvm_0.2.1+dfsg-3.dsc
+ 48a94cb79b31ffb22b5e483be5346ffdda3e417fb15fc6abb0dbd876b0c60cef 3378036 residualvm_0.2.1+dfsg.orig.tar.xz
+ 8dcb8312509a32a143dab0a3de3f2da96db493ef6be81bbaf1405fd8cb773299 7268 residualvm_0.2.1+dfsg-3.debian.tar.xz
+Homepage: http://residualvm.org/
+Package-List: 
+ residualvm deb contrib/games optional arch=any
+ residualvm-data deb contrib/games optional arch=all
+Directory: pool/contrib/r/residualvm
+Priority: extra
+Section: contrib/misc
+
+Package: rocksndiamonds
+Binary: rocksndiamonds
+Version: 4.0.0.1+dfsg-1
+Maintainer: Dmitry E. Oboukhov <unera@debian.org>
+Uploaders: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Build-Depends: debhelper (>= 10), cdbs, po-debconf, libsdl2-dev, libsdl2-image-dev, libsdl2-mixer-dev, libsdl2-net-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 3849be9355a8be432e2e7d6ef4bd04d5 2113 rocksndiamonds_4.0.0.1+dfsg-1.dsc
+ 527bfeaafba5940384d19e646bde2733 565240 rocksndiamonds_4.0.0.1+dfsg.orig.tar.xz
+ 4264b79b2f79c4b3caafbc4b7da45712 22764 rocksndiamonds_4.0.0.1+dfsg-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/rocksndiamonds.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/rocksndiamonds.git
+Checksums-Sha256:
+ 73756105b476f882cba5472d651a7de61d84e0e9d6224f7fcfbf1d06f476fc40 2113 rocksndiamonds_4.0.0.1+dfsg-1.dsc
+ 7155b167c8b815f0be0e2558c242264218e82e98b9fd9f6f80e6a1473511b2c7 565240 rocksndiamonds_4.0.0.1+dfsg.orig.tar.xz
+ 48be39bac0d008442e544c47bffb5b51ed6df32607a3eba66271aafff84db729 22764 rocksndiamonds_4.0.0.1+dfsg-1.debian.tar.xz
+Homepage: http://artsoft.org
+Package-List: 
+ rocksndiamonds deb contrib/games extra arch=any
+Directory: pool/contrib/r/rocksndiamonds
+Priority: source
+Section: contrib/games
+
+Package: rott
+Binary: rott
+Version: 1.1.2+svn287-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Fabian Greffrath <fabian@debian.org>, Evgeni Golov <evgeni@debian.org>, Jon Dowland <jmtd@debian.org>
+Build-Depends: debhelper (>= 9), dh-autoreconf, libsdl-mixer1.2-dev, libsdl1.2-dev
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 40bd5449c77925e4b0291ccca459671c 2019 rott_1.1.2+svn287-2.dsc
+ bcc1773e23f10ff34c0e33db70da3365 532100 rott_1.1.2+svn287.orig.tar.xz
+ bc38e74b9b365bc0e595b263c470cf45 10552 rott_1.1.2+svn287-2.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/rott.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/rott.git
+Checksums-Sha256:
+ 3f890640d1385c60f78648e5b3318545eafc140b1181de100aa8a889b4050c9b 2019 rott_1.1.2+svn287-2.dsc
+ 93aa7319fa5a06a465845363f566f0bf6152116e43cb555a1a7069c316328f2e 532100 rott_1.1.2+svn287.orig.tar.xz
+ e62fd77111ed07761475f7238200273a3445a7505ecf98838144efab60bb992f 10552 rott_1.1.2+svn287-2.debian.tar.xz
+Homepage: http://icculus.org/rott/
+Package-List: 
+ rott deb contrib/games optional arch=any
+Directory: pool/contrib/r/rott
+Priority: source
+Section: contrib/games
+
+Package: ruby-googlecharts
+Binary: ruby-googlecharts
+Version: 1.6.12-1
+Maintainer: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
+Uploaders: Ryan Niebur <ryanryan52@gmail.com>, Cédric Boutillier <cedric.boutillier@gmail.com>
+Build-Depends: debhelper (>= 9), gem2deb
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 9472b9925309e1a4f1ca469acddd9f5e 2153 ruby-googlecharts_1.6.12-1.dsc
+ 586c0d0883782a5a4c7c67b5b3692b5e 20105 ruby-googlecharts_1.6.12.orig.tar.gz
+ ad0d383e3bd512da33500203d3f3a576 2828 ruby-googlecharts_1.6.12-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-ruby-extras/ruby-googlecharts.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-ruby-extras/ruby-googlecharts.git
+Checksums-Sha256:
+ b5e7cdeeb9b328c5af569e346de7debbddc98c1437b44dd38285ccf361bb43b9 2153 ruby-googlecharts_1.6.12-1.dsc
+ f9421195aab79e8f5512cd07df01e3ae5222002fee00b4756abb7219a89e8b21 20105 ruby-googlecharts_1.6.12.orig.tar.gz
+ 1906ec56d07d38847ae3692a4ec3675a8d7388269f5af0aa638484e817dfde2f 2828 ruby-googlecharts_1.6.12-1.debian.tar.xz
+Homepage: http://googlecharts.rubyforge.org/
+Package-List: 
+ ruby-googlecharts deb contrib/ruby optional arch=all
+Ruby-Versions: all
+Testsuite: autopkgtest-pkg-ruby
+Directory: pool/contrib/r/ruby-googlecharts
+Priority: source
+Section: contrib/ruby
+
+Package: ruby-handlebars-assets
+Binary: ruby-handlebars-assets
+Version: 2:0.23.1-1
+Maintainer: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
+Uploaders: Pirate Praveen <praveen@debian.org>
+Build-Depends: debhelper (>= 9~), gem2deb, ruby-execjs, ruby-haml, ruby-multi-json, ruby-slim, ruby-sprockets, ruby-tilt, node-handlebars (>= 3:4.0.5-4~)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ d78e68c6e8877a2e0a83e1be00bcf58b 2402 ruby-handlebars-assets_0.23.1-1.dsc
+ 6e879a223eb0c1ec1ae2a0c525c6e4b7 57531 ruby-handlebars-assets_0.23.1.orig.tar.gz
+ 6802ee8d6ef8a983992990b5c5689192 4532 ruby-handlebars-assets_0.23.1-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-ruby-extras/ruby-handlebars-assets.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-ruby-extras/ruby-handlebars-assets.git
+Checksums-Sha256:
+ 26f92bcae95e25ba7b208a7df3fa90e3bb1e04abb512166239bc8eeea12d426e 2402 ruby-handlebars-assets_0.23.1-1.dsc
+ 5e0e73f270d3eda8af4738e73bab4c8d3bd355e60021e5ddb09e4eaf88687ae9 57531 ruby-handlebars-assets_0.23.1.orig.tar.gz
+ 7c08c7cd0d6381e1b1296a8335849452379655c7f4bbefdcb1433c121c22912f 4532 ruby-handlebars-assets_0.23.1-1.debian.tar.xz
+Homepage: https://github.com/leshill/handlebars_assets
+Package-List: 
+ ruby-handlebars-assets deb contrib/ruby optional arch=all
+Ruby-Versions: all
+Testsuite: autopkgtest
+Testsuite-Triggers: gem2deb-test-runner, nodejs, ruby-coffee-rails, ruby-coffee-script, ruby-jbuilder, ruby-rails, ruby-sqlite3, ruby-turbolinks
+Directory: pool/contrib/r/ruby-handlebars-assets
+Priority: extra
+Section: contrib/misc
+
+Package: ruby-pgplot
+Binary: ruby-pgplot
+Version: 0.1.9-3
+Maintainer: Youhei SASAKI <uwabami@gfd-dennou.org>
+Uploaders: Debian Ruby Extras Maintainers <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
+Build-Depends: debhelper (>= 9~), gem2deb (>= 0.6.1~), gfortran, libpng-dev, libx11-dev, pgplot5, rdtool, ruby, ruby-all-dev, ruby-narray
+Architecture: any
+Standards-Version: 3.9.7
+Format: 3.0 (quilt)
+Files:
+ d1f812dee7a1c11e634df6be03a1853b 2099 ruby-pgplot_0.1.9-3.dsc
+ eae3cf2d5eab1c8dbf012455bff7112e 171358 ruby-pgplot_0.1.9.orig.tar.gz
+ 9288d7c3f95328c62206ce4efa474e3e 10124 ruby-pgplot_0.1.9-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-ruby-extras/ruby-pgplot.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-ruby-extras/ruby-pgplot.git
+Checksums-Sha256:
+ 59084627132a63be7bc711b7a560069079a3bc8dbc682aad1acb3ec98c2debe9 2099 ruby-pgplot_0.1.9-3.dsc
+ e447eb10106ccf7c137115c11cf62e7a67a15690e87647377918959f199c35f5 171358 ruby-pgplot_0.1.9.orig.tar.gz
+ 5d866b7361b936f5bb8407e1cf0799057d788a2c66ccfa7c5e30dd742e4326f6 10124 ruby-pgplot_0.1.9-3.debian.tar.xz
+Homepage: http://pgplot.rubyforge.org/
+Package-List: 
+ ruby-pgplot deb contrib/ruby optional arch=any
+Ruby-Versions: all
+Directory: pool/contrib/r/ruby-pgplot
+Priority: source
+Section: contrib/ruby
+
+Package: sabnzbdplus
+Binary: sabnzbdplus
+Version: 1.1.1+dfsg-1
+Maintainer: JCF Ploemen (jcfp) <linux@jcf.pm>
+Uploaders: Python Applications Packaging Team <python-apps-team@lists.alioth.debian.org>
+Build-Depends: debhelper (>= 9), devscripts, dh-python, dpkg-dev (>= 1.17), imagemagick, librsvg2-bin, python, subversion
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 76d9e7a281d95b669cd0556b0a2894e3 2074 sabnzbdplus_1.1.1+dfsg-1.dsc
+ 3bd35e6cb8ed01096efa543d6370f59a 3310473 sabnzbdplus_1.1.1+dfsg.orig.tar.gz
+ 48deb528e38ffe9299a5c6644cad7125 31808 sabnzbdplus_1.1.1+dfsg-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/viewvc/python-apps/packages/sabnzbdplus/trunk/
+Vcs-Svn: svn://anonscm.debian.org/python-apps/packages/sabnzbdplus/trunk/
+Checksums-Sha256:
+ 590465b01288680b8f3454ba90ad693349200c3d00b1299a796b431963e6aa66 2074 sabnzbdplus_1.1.1+dfsg-1.dsc
+ a2ad93e7bc0b09899f1acaedf3b9ea726a8bf370a7e7f0245692d077b8ae221a 3310473 sabnzbdplus_1.1.1+dfsg.orig.tar.gz
+ 54381ebbda61cb35f720549c8314682746180d3d83e8eba9649ecbcafd73e259 31808 sabnzbdplus_1.1.1+dfsg-1.debian.tar.xz
+Homepage: https://sabnzbd.org
+Package-List: 
+ sabnzbdplus deb contrib/net optional arch=all
+Directory: pool/contrib/s/sabnzbdplus
+Priority: source
+Section: contrib/net
+
+Package: sandboxgamemaker
+Binary: sandboxgamemaker
+Version: 2.8.2+dfsg-1
+Maintainer: Anthony F McInerney <afm404@gmail.com>
+Build-Depends: debhelper (>= 9), libsdl-image1.2-dev, libsdl-mixer1.2-dev, libsdl1.2-dev, libenet-dev (>= 1.3.1), po-debconf, libwxgtk3.0-dev
+Architecture: any
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ e577da28b6a15b5732f37097f46b7728 2065 sandboxgamemaker_2.8.2+dfsg-1.dsc
+ b7089e68822c576390d0607eee827325 1065446 sandboxgamemaker_2.8.2+dfsg.orig.tar.gz
+ 376cc10398756a463dbf2fcecf7dbd6f 110460 sandboxgamemaker_2.8.2+dfsg-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/sandboxgamemaker.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/sandboxgamemaker.git
+Checksums-Sha256:
+ 08c22462a5d275307f7d9347b652cd2c38d285c6bfc8474350b46ed4b6504d65 2065 sandboxgamemaker_2.8.2+dfsg-1.dsc
+ 9c3faa6cc6a3711dd88ae7a2d906d6ffd33881133ecadec83617781b971c0e12 1065446 sandboxgamemaker_2.8.2+dfsg.orig.tar.gz
+ f76e500973afa573da06dac73d24a47df78e7d1461176dcfaaee5e597a49c42b 110460 sandboxgamemaker_2.8.2+dfsg-1.debian.tar.xz
+Homepage: http://sandboxgamemaker.com/
+Package-List: 
+ sandboxgamemaker deb contrib/games optional arch=any
+Directory: pool/contrib/s/sandboxgamemaker
+Priority: source
+Section: contrib/games
+
+Package: sauerbraten
+Binary: sauerbraten, sauerbraten-server
+Version: 0.0.20140302-1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Bruno "Fuddl" Kleinert <fuddl@debian.org>, Vincent Cheng <vcheng@debian.org>, Markus Koschany <apo@gambaru.de>
+Build-Depends: debhelper (>= 9), imagemagick
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ 48eed156731352f174cf9447072c185e 2157 sauerbraten_0.0.20140302-1.dsc
+ b239f920297719b8cb5c70b751c3ead0 581845976 sauerbraten_0.0.20140302.orig.tar.gz
+ 81a6b3d00477638fc66bc8555adcfd16 29040 sauerbraten_0.0.20140302-1.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/sauerbraten.git
+Vcs-Git: git://anonscm.debian.org/pkg-games/sauerbraten.git
+Checksums-Sha256:
+ 7cc6b33a6dd82189a61a07507eb76c2221118e53ba658e2bd738c967f6a04585 2157 sauerbraten_0.0.20140302-1.dsc
+ 76dfe530515e2c3b7f2b98a72c76f0fc4db8b03bf5db84673d3a1d2d7fce7f9a 581845976 sauerbraten_0.0.20140302.orig.tar.gz
+ 7dc25e3feb1f34f957d0a0dadcc11e89193cf0599f76728d2cf1ccd1ce306590 29040 sauerbraten_0.0.20140302-1.debian.tar.xz
+Homepage: http://sauerbraten.org/
+Package-List: 
+ sauerbraten deb non-free/games optional arch=all
+ sauerbraten-server deb non-free/games optional arch=all
+Directory: pool/contrib/s/sauerbraten
+Priority: source
+Section: contrib/games
+
+Package: skype4py
+Binary: python-skype4py
+Version: 1.0.35-2
+Maintainer: Gianfranco Costamagna <locutusofborg@debian.org>
+Build-Depends: debhelper (>= 10), dh-python, python-all, python-setuptools
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 1944fd45431e9db53509f281bc20b7cc 1779 skype4py_1.0.35-2.dsc
+ e7c224b004ba968b3d4c846b49f2fd63 125532 skype4py_1.0.35.orig.tar.gz
+ 660090e63b13ef900ba26fe688637aed 2056 skype4py_1.0.35-2.debian.tar.xz
+Checksums-Sha256:
+ 3a0385eacc22e8949f846e71978bd8488ba5164688203d0f8ec12eb519ffe99f 1779 skype4py_1.0.35-2.dsc
+ 60a3c745d89e6c2b4deea4fe6438c570902803654f6462b82cc6f9787129699e 125532 skype4py_1.0.35.orig.tar.gz
+ 2e80d66de1418f1d6ad8bfbca4c6ff0390ad28125f2d312970d2c889b3a314c4 2056 skype4py_1.0.35-2.debian.tar.xz
+Homepage: https://github.com/awahlig/skype4py
+Package-List: 
+ python-skype4py deb contrib/python extra arch=all
+Directory: pool/contrib/s/skype4py
+Priority: extra
+Section: contrib/misc
+
+Package: spectemu
+Binary: spectemu-common, spectemu-x11
+Version: 0.94a-19
+Maintainer: Colin Watson <cjwatson@debian.org>
+Build-Depends: dpkg-dev (>= 1.16.1~), debhelper (>= 9~), dh-exec, libreadline-dev, x11proto-core-dev, libx11-dev, libxt-dev, libxext-dev, dh-autoreconf, autotools-dev
+Architecture: any
+Standards-Version: 3.5.6
+Format: 3.0 (quilt)
+Files:
+ 2dacee1410be17a40bd34bf158e75c64 2102 spectemu_0.94a-19.dsc
+ 9b25005b137d1dc86220040c09c994e3 212336 spectemu_0.94a.orig.tar.gz
+ e037a5dae72a174c41f01e908e1c807d 7968 spectemu_0.94a-19.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/users/cjwatson/spectemu.git/
+Vcs-Git: https://anonscm.debian.org/git/users/cjwatson/spectemu.git
+Checksums-Sha256:
+ 3f0b0cd4c86c778265594276fa3e8230d70759c4e2eca52418a88397355b6bfc 2102 spectemu_0.94a-19.dsc
+ 3fbf080e2ccef74b048a8265a2804545a483c1ddff9b6601470a1b21bcce5dec 212336 spectemu_0.94a.orig.tar.gz
+ 0ab8ed6fe99155926f9de496d732f422ee51eeb2f1bca4bf05b54b73d9418350 7968 spectemu_0.94a-19.debian.tar.xz
+Package-List: 
+ spectemu-common deb contrib/otherosfs optional arch=any
+ spectemu-x11 deb contrib/otherosfs optional arch=any
+Directory: pool/contrib/s/spectemu
+Priority: source
+Section: contrib/otherosfs
+
+Package: speech-dispatcher-contrib
+Binary: speech-dispatcher-pico
+Version: 0.8.6-3
+Maintainer: Debian TTS Team <tts-project@lists.alioth.debian.org>
+Uploaders: Paul Gevers <elbrus@debian.org>, Samuel Thibault <sthibault@debian.org>
+Build-Depends: automake, autotools-dev, debhelper (>= 9.20150628), dh-autoreconf, flite1-dev (>= 1.4), intltool, libao-dev, libasound2-dev [linux-any], libaudio-dev, libdotconf-dev (>= 1.3), libespeak-dev, libespeak-ng-dev, libglib2.0-dev, libltdl-dev, libpulse-dev, libtool, libxau-dev, libsndfile1-dev, libttspico-dev, python3, texinfo
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 9a019c2ed597085275a3cfa2ed02c202 2423 speech-dispatcher-contrib_0.8.6-3.dsc
+ a4230e59c31e954862dfe44392f31408 1327500 speech-dispatcher-contrib_0.8.6.orig.tar.gz
+ 7eafacf6a7ec43d29aed93892b50afc1 20096 speech-dispatcher-contrib_0.8.6-3.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=tts/speech-dispatcher.git;a=summary
+Vcs-Git: git://anonscm.debian.org/tts/speech-dispatcher.git
+Checksums-Sha256:
+ cd008f3bc262afe063843523e2c88b54370540263d6f09f40f953f76ccf5d5c7 2423 speech-dispatcher-contrib_0.8.6-3.dsc
+ c233dc3757c1f0d3676480d1052d42d88d18d29ab0cb0c8b5ce8edc3e7386ff8 1327500 speech-dispatcher-contrib_0.8.6.orig.tar.gz
+ 6a0189745e26c183e91a4fe1eaff98fbbab8b2144460001d2b76c1be9511f60a 20096 speech-dispatcher-contrib_0.8.6-3.debian.tar.xz
+Homepage: http://devel.freebsoft.org/speechd
+Package-List: 
+ speech-dispatcher-pico deb contrib/sound optional arch=any
+Directory: pool/contrib/s/speech-dispatcher-contrib
+Priority: extra
+Section: contrib/misc
+
+Package: sqldeveloper-package
+Binary: sqldeveloper-package
+Version: 0.2.4+deb9u1
+Maintainer: Lazarus Long <lazarus.long@bigfoot.com>
+Build-Depends: debhelper (>= 7)
+Architecture: all
+Standards-Version: 3.8.1
+Format: 1.0
+Files:
+ cbe36480472ff8c6a88e673b9ee960eb 1497 sqldeveloper-package_0.2.4+deb9u1.dsc
+ 759722fc522991493f2194e09bb30842 15778 sqldeveloper-package_0.2.4+deb9u1.tar.gz
+Checksums-Sha256:
+ 8ab1e64fbc56198d40ce50105ade946d712236c4ab60fb8247c6fa2809436117 1497 sqldeveloper-package_0.2.4+deb9u1.dsc
+ c7180f12a9b8159054226d5ad2b6b7bdc90ece5ca2d7b684cb8270b2016d4596 15778 sqldeveloper-package_0.2.4+deb9u1.tar.gz
+Package-List: 
+ sqldeveloper-package deb contrib/misc optional arch=all
+Directory: pool/contrib/s/sqldeveloper-package
+Priority: source
+Section: contrib/misc
+
+Package: starpu-contrib
+Binary: libstarpu-contrib-dev, libstarpu-contrib-1.2-0, libstarpu-contribfft-1.2-0, libstarpu-contribmpi-1.2-0, starpu-contrib-tools, starpu-contrib-examples, libsocl-contrib-1.2-0
+Version: 1.2.0+dfsg-4
+Maintainer: Samuel Thibault <sthibault@debian.org>
+Build-Depends: debhelper (>= 9~), autotools-dev, dh-autoreconf, pkg-config, libnuma-dev [amd64 arm64 i386 ia64 mips mips64 mipsel mips64el powerpc ppc64el], libglpk-dev, mpi-default-dev, libgl1-mesa-dev | libgl-dev, libglu1-mesa-dev | libglu-dev, freeglut3-dev, libx11-dev, libblas-dev, libfftw3-dev, libhwloc-dev, libleveldb-dev, qt4-qmake, libqt4-dev, libqt4-opengl-dev, libqwt5-qt4-dev, valgrind [amd64 arm64 armhf i386 mips mips64 mipsel mips64el powerpc ppc64el s390x], guile-2.0, opencl-c-headers, ocl-icd-opencl-dev | opencl-dev, clang-3.8, help2man, doxygen, doxygen-latex, nvidia-cuda-toolkit
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ b52b69b0928d0d161a6c530bc0e50dfa 3036 starpu-contrib_1.2.0+dfsg-4.dsc
+ 09cd5f1405ce7943d21354cd92403d2d 2879944 starpu-contrib_1.2.0+dfsg.orig.tar.xz
+ 12a3ebcbd00c652ac0d7df7f53fb9794 11104 starpu-contrib_1.2.0+dfsg-4.debian.tar.xz
+Vcs-Browser: https://gforge.inria.fr/scm/viewvc.php/debian/unstable/?root=starpu
+Vcs-Svn: svn://scm.gforge.inria.fr/svn/starpu/debian/unstable
+Checksums-Sha256:
+ a45de04b117b5ae3bc3becd6b2d64b6ce3eef475b52cab59030a45ddd32aced8 3036 starpu-contrib_1.2.0+dfsg-4.dsc
+ 812bbd875d2a8b5cc35c432aa3d521c5261afe58fab7a90866924ec8a4301486 2879944 starpu-contrib_1.2.0+dfsg.orig.tar.xz
+ 0f294b807613f2085e9ccb803b2511ccbe2118525b908d499f91b8f875682eaa 11104 starpu-contrib_1.2.0+dfsg-4.debian.tar.xz
+Homepage: http://starpu.gforge.inria.fr/
+Package-List: 
+ libsocl-contrib-1.2-0 deb contrib/libs extra arch=any
+ libstarpu-contrib-1.2-0 deb contrib/libs extra arch=any
+ libstarpu-contrib-dev deb contrib/libdevel extra arch=any
+ libstarpu-contribfft-1.2-0 deb contrib/libs extra arch=any
+ libstarpu-contribmpi-1.2-0 deb contrib/libs extra arch=any
+ starpu-contrib-examples deb contrib/science extra arch=any
+ starpu-contrib-tools deb contrib/utils extra arch=any
+Directory: pool/contrib/s/starpu-contrib
+Priority: source
+Section: contrib/libs
+
+Package: sugar-etoys-activity
+Binary: sugar-etoys-activity
+Version: 116-7
+Maintainer: Debian Sugar Team <pkg-sugar-devel@lists.alioth.debian.org>
+Uploaders: Jonas Smedegaard <dr@jones.dk>, Luke Faraone <lfaraone@debian.org>
+Build-Depends: cdbs (>= 0.4.90~), licensecheck, debhelper, dh-buildinfo, python, python-sugar3, unzip
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ facbb6dbade7c3383d7ab732a8007dce 2103 sugar-etoys-activity_116-7.dsc
+ 44673a6624aa695e661b799d2a92b522 5692 sugar-etoys-activity_116.orig.tar.gz
+ 27dbb8f7dd034bdd0a2fed1f1d99c93b 5792 sugar-etoys-activity_116-7.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-sugar/sugar-etoys-activity.git
+Vcs-Git: git://anonscm.debian.org/pkg-sugar/sugar-etoys-activity.git
+Checksums-Sha256:
+ dc52fbbddc459c7f69c2d4fa8acd11fc610eac863f5b379a61df77ff370c445e 2103 sugar-etoys-activity_116-7.dsc
+ 818db9497d8b40b59ec58bc38167c122dc7276a4a034b8c2381d903b56625cde 5692 sugar-etoys-activity_116.orig.tar.gz
+ 66ae0f3b5a626a37176c3e39e7e34e74cb3c77fdd150e95d23f936c88e5e47e8 5792 sugar-etoys-activity_116-7.debian.tar.xz
+Homepage: https://wiki.sugarlabs.org/go/Activities/Etoys
+Package-List: 
+ sugar-etoys-activity deb contrib/x11 optional arch=all
+Directory: pool/contrib/s/sugar-etoys-activity
+Priority: source
+Section: contrib/x11
+
+Package: sus
+Binary: susv2, susv3, susv4
+Version: 7.20161013
+Maintainer: David Weinehall <tao@debian.org>
+Build-Depends-Indep: debhelper (>= 10)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (native)
+Files:
+ 514745cf82eee53b0fdaf346c41ad982 1451 sus_7.20161013.dsc
+ 5314845a1bd9932cd5e9764cbf70dd49 3076 sus_7.20161013.tar.xz
+Checksums-Sha256:
+ f29738a98c71f21c3f16855cb1cfc0af49ce984775bec1e540b945e897e6ff82 1451 sus_7.20161013.dsc
+ 853398c1fde2ef395ec3612a5b663dbb38973bc35ec16f37bca4d79382a96cf8 3076 sus_7.20161013.tar.xz
+Package-List: 
+ susv2 deb contrib/doc extra arch=all
+ susv3 deb contrib/doc extra arch=all
+ susv4 deb contrib/doc extra arch=all
+Directory: pool/contrib/s/sus
+Priority: extra
+Section: contrib/misc
+
+Package: thunar-dropbox-plugin
+Binary: thunar-dropbox-plugin
+Version: 0.2.1+dfsg1-3
+Maintainer: Unit 193 <unit193@ubuntu.com>
+Uploaders: Sean Davis <smd.seandavis@gmail.com>, Micah Gersten <micahg@ubuntu.com>
+Build-Depends: debhelper (>= 9), python2.7, python-minimal, libthunarx-2-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 0996082c08d5ab6914aa5b34acd551ce 2162 thunar-dropbox-plugin_0.2.1+dfsg1-3.dsc
+ 6c8c187b3983a08520fd0cd30114a60f 123847 thunar-dropbox-plugin_0.2.1+dfsg1.orig.tar.gz
+ 017d81c1984b2d22a272e00d2c09b217 3180 thunar-dropbox-plugin_0.2.1+dfsg1-3.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/thunar-dropbox-plugin.git
+Vcs-Git: https://anonscm.debian.org/cgit/collab-maint/thunar-dropbox-plugin.git
+Checksums-Sha256:
+ 4592562c5b7834db2c2dc561f86c7dd5e488a5e94f2b7b0b5f9672f7e10930c8 2162 thunar-dropbox-plugin_0.2.1+dfsg1-3.dsc
+ 8d239c134a8dd78f8ba2c004a6a1243d6046fa6fd96ee95247ce099cc0238cde 123847 thunar-dropbox-plugin_0.2.1+dfsg1.orig.tar.gz
+ 6c76ab9ed4fa91abe02aeb699057313a64b802081506f8ac0f16ae6bd8011a66 3180 thunar-dropbox-plugin_0.2.1+dfsg1-3.debian.tar.xz
+Homepage: http://softwarebakery.com/maato/thunar-dropbox.html
+Package-List: 
+ thunar-dropbox-plugin deb contrib/misc optional arch=any
+Directory: pool/contrib/t/thunar-dropbox-plugin
+Priority: extra
+Section: contrib/misc
+
+Package: tightvnc-java
+Binary: tightvnc-java
+Version: 1.2.7-9
+Maintainer: Ola Lundqvist <opal@debian.org>
+Build-Depends: debhelper (>> 9.0)
+Build-Depends-Indep: default-jdk
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ d76eac7b04c154afa72d344e36c2476a 1703 tightvnc-java_1.2.7-9.dsc
+ 8f98ea0b77bcd38926344b7a1a36b355 62369 tightvnc-java_1.2.7.orig.tar.gz
+ 303745b47e5a7245d8044e3ac07fc0a5 4882 tightvnc-java_1.2.7-9.diff.gz
+Checksums-Sha256:
+ 2964803f87735c010b78d219b78a563e940b87bb6467df176e3d9d5e1bf8b337 1703 tightvnc-java_1.2.7-9.dsc
+ 6d387355ef6436c6b616efd24c631a721fe5dc641bfacaf20ce8b79b72e397b5 62369 tightvnc-java_1.2.7.orig.tar.gz
+ 7f2c70eb4531e9ff6f0c9256183ba34e49817f6bcafae5d6e01658b8a91666b8 4882 tightvnc-java_1.2.7-9.diff.gz
+Package-List: 
+ tightvnc-java deb contrib/web optional arch=all
+Directory: pool/contrib/t/tightvnc-java
+Priority: source
+Section: contrib/java
+
+Package: translate-shell
+Binary: translate-shell
+Version: 0.9.5-1
+Maintainer: Andreas Tille <tille@debian.org>
+Build-Depends: debhelper (>= 10), gawk
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ e9e6c09c577065e225ca92883977b1ed 1978 translate-shell_0.9.5-1.dsc
+ 90e2bf61074ff3c8079d72898d553046 69030 translate-shell_0.9.5.orig.tar.gz
+ e323aa4d682e6b0c07275a5ecd87e247 2752 translate-shell_0.9.5-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/translate-shell.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/translate-shell.git
+Checksums-Sha256:
+ ea3841ba240a97ed8e02f5eccf5cc03f5e31a7e3df7f1f5274a4514eb8d18fe6 1978 translate-shell_0.9.5-1.dsc
+ 74bd84f48b0b2887949d954be4530c34faddf8605f936668f8e904bb3ab5712a 69030 translate-shell_0.9.5.orig.tar.gz
+ 9f85855cbbc74dffb9d08a1231a73fd7da9ecb1b467dad9762155834384aec1e 2752 translate-shell_0.9.5-1.debian.tar.xz
+Homepage: https://github.com/soimort/translate-shell
+Autobuild: no
+Package-List: 
+ translate-shell deb contrib/misc optional arch=all
+Directory: pool/contrib/t/translate-shell
+Priority: extra
+Section: contrib/misc
+
+Package: tuxonice-userui
+Binary: tuxonice-userui
+Version: 1.1+dfsg1.gc3bdd83-4
+Maintainer: Julien Muchembled <jm@jmuchemb.eu>
+Build-Depends: debhelper (>= 9~), libmng-dev (>= 1.0.5), libfreetype6-dev, libpng-dev
+Architecture: i386 ia64 powerpc ppc64 amd64
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ c32ea20e83950bdaafe91061f268246a 2266 tuxonice-userui_1.1+dfsg1.gc3bdd83-4.dsc
+ c0a1f9c7fe0baf47ca043bc686b0b6d9 58368 tuxonice-userui_1.1+dfsg1.gc3bdd83.orig.tar.xz
+ 1b9d04a0419fa776b3fadee12dabf3a7 12720 tuxonice-userui_1.1+dfsg1.gc3bdd83-4.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/tuxonice-userui.git;a=summary
+Vcs-Git: git://anonscm.debian.org/collab-maint/tuxonice-userui.git
+Checksums-Sha256:
+ 211c435477e17199766735651ea54273bd70023d9573acfb58df8edc25407285 2266 tuxonice-userui_1.1+dfsg1.gc3bdd83-4.dsc
+ 62346f9c92371901819af73e2763a223f96916649c2eb972a9a91a7d1c7d4d2f 58368 tuxonice-userui_1.1+dfsg1.gc3bdd83.orig.tar.xz
+ 408deaefade9bb5bde103b56a5fe38fcf6ac0971d20ded77e75351b861e7b886 12720 tuxonice-userui_1.1+dfsg1.gc3bdd83-4.debian.tar.xz
+Homepage: https://github.com/NigelCunningham/Tuxonice-Userui
+Package-List: 
+ tuxonice-userui deb contrib/misc optional arch=i386,ia64,powerpc,ppc64,amd64
+Directory: pool/contrib/t/tuxonice-userui
+Priority: extra
+Section: contrib/misc
+
+Package: uhexen2
+Binary: uhexen2, uhexen2-common
+Version: 1.5.8+dfsg-1
+Maintainer: gustavo panizzo <gfa@zumbi.com.ar>
+Uploaders: Jon Dowland <jmtd@debian.org>
+Build-Depends: autotools-dev, debhelper (>= 9.0.0), dpkg-dev (>= 1.16.1~), libmad0-dev, libogg-dev, libsdl1.2-dev, libvorbis-dev, nasm
+Architecture: any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 5aab4e1c1e16af283419912b6700dd44 1929 uhexen2_1.5.8+dfsg-1.dsc
+ 2f3595e950743d2ec0d17e13c0f8ee86 1713848 uhexen2_1.5.8+dfsg.orig.tar.xz
+ 5eec78227eb4e303d56bcd4ba81151a2 12224 uhexen2_1.5.8+dfsg-1.debian.tar.xz
+Checksums-Sha256:
+ be3a3d22221f53ba0a8d5e073539eac0002ac6dd4608bd69b5ec24cc8f5f10f7 1929 uhexen2_1.5.8+dfsg-1.dsc
+ 7938cda5bed51af09e6075c251dea84dbe76523bc926c651e7e116fae943464f 1713848 uhexen2_1.5.8+dfsg.orig.tar.xz
+ 3e335f439fa9376dc74acfaf366a8a4d3b82b68db1439ea9a0e9a93ae025ef41 12224 uhexen2_1.5.8+dfsg-1.debian.tar.xz
+Homepage: http://uhexen2.sourceforge.net/
+Package-List: 
+ uhexen2 deb contrib/games optional arch=any
+ uhexen2-common deb contrib/games optional arch=all
+Directory: pool/contrib/u/uhexen2
+Priority: extra
+Section: contrib/misc
+
+Package: uqm
+Binary: uqm
+Version: 0.6.2.dfsg-9.4
+Maintainer: Dmitry E. Oboukhov <unera@debian.org>
+Build-Depends: debhelper (>= 5), libogg-dev, libvorbis-dev, libsdl-image1.2-dev, libsdl1.2-dev, libz-dev, libmikmod-dev, pkg-config
+Architecture: any
+Standards-Version: 3.8.0
+Format: 3.0 (quilt)
+Files:
+ bca8931ac39c45e2e9665373924c56a1 1940 uqm_0.6.2.dfsg-9.4.dsc
+ a18127e9032ca536c7853e835a9dd7bc 1451988 uqm_0.6.2.dfsg.orig.tar.gz
+ 255fcc2bd351b00d043c588b7c35f217 9504 uqm_0.6.2.dfsg-9.4.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/uqm.git
+Vcs-Git: https://anonscm.debian.org/git/collab-maint/uqm.git
+Checksums-Sha256:
+ 676ba11cf81ecf2bb705ce70a7e223c85a25fef6f0b1a6ed25737f62f6f6a94b 1940 uqm_0.6.2.dfsg-9.4.dsc
+ 60f403b6d5d19f09f095a7dac6317e147c053736f4de65394a8c6ac153031b16 1451988 uqm_0.6.2.dfsg.orig.tar.gz
+ cf91075a305718cb96e751c4e173a5c31f6b959649547708ab61349dde5148b1 9504 uqm_0.6.2.dfsg-9.4.debian.tar.xz
+Homepage: http://sc2.sourceforge.net/
+Package-List: 
+ uqm deb contrib/games optional arch=any
+Directory: pool/contrib/u/uqm
+Priority: source
+Section: contrib/games
+
+Package: uqm-russian
+Binary: uqm-russian
+Version: 1.0.2-5
+Maintainer: Dmitry E. Oboukhov <unera@debian.org>
+Uploaders: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Build-Depends: debhelper (>= 5)
+Build-Depends-Indep: unzip
+Architecture: all
+Standards-Version: 3.8.3
+Format: 1.0
+Files:
+ 4cde65e5ccec159bd3eb01947e892065 1252 uqm-russian_1.0.2-5.dsc
+ 652641ab1a0cf9c844eea4ee7e08f41a 1080967 uqm-russian_1.0.2.orig.tar.gz
+ ae990050a41b0fa740442600770f6534 2212 uqm-russian_1.0.2-5.diff.gz
+Vcs-Browser: http://git.debian.org/?p=collab-maint/uqm-russian.git;a=summary
+Vcs-Git: git://git.debian.org/collab-maint/uqm-russian.git
+Checksums-Sha256:
+ e534032e47d1515e47f392b16b581831420192a4c37a3a42b721767a1078168d 1252 uqm-russian_1.0.2-5.dsc
+ 9996a11321d98dacb42f95dd571d1c062442f9b758f75d78dfe0e9f00e82dd38 1080967 uqm-russian_1.0.2.orig.tar.gz
+ ab6d3b5cfc74c9f7d8186367ebf2e3e928ac53f4fcdfe9d0bc534be86fc5ce45 2212 uqm-russian_1.0.2-5.diff.gz
+Homepage: http://uqm-rus.uvw.ru
+Directory: pool/contrib/u/uqm-russian
+Priority: source
+Section: contrib/games
+
+Package: vcmi
+Binary: vcmi
+Version: 0.99+dfsg-2
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Stephen Kitt <skitt@debian.org>, Johannes Schauer <josch@debian.org>
+Build-Depends: debhelper (>= 9.20151219~), cmake, libminizip-dev, libfuzzylite-dev, libsdl2-dev, libsdl2-image-dev, libsdl2-mixer-dev, libsdl2-ttf-dev, zlib1g-dev, libavformat-dev, libswscale-dev, libboost-dev, libboost-program-options-dev, libboost-filesystem-dev, libboost-system-dev, libboost-locale-dev, libboost-thread-dev, libboost-test-dev, qtbase5-dev, help2man, tex4ht, texlive-latex-base, texlive-latex-extra
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ ada6c3ca43a1484faa725a4415e41630 2336 vcmi_0.99+dfsg-2.dsc
+ 4c807e2bacc9baf2b98a68e568fa8e1c 4016724 vcmi_0.99+dfsg.orig.tar.gz
+ a53f67119fb5b78d27d46e52dd028279 8460 vcmi_0.99+dfsg-2.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/gitweb/?p=pkg-games/vcmi.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/vcmi.git
+Checksums-Sha256:
+ d4a47fac96b94c8621ff3564919a04b6259081195cdb1bc1d078e443fc43076b 2336 vcmi_0.99+dfsg-2.dsc
+ 5308f68668c9d715e2b436f2c8b340d65143d3e44b3a0ab4af6afed9c36f119d 4016724 vcmi_0.99+dfsg.orig.tar.gz
+ 0b78db1822434f02e0cb6c8459b3c1bb4ada6650a70634dc735db107f7fe5438 8460 vcmi_0.99+dfsg-2.debian.tar.xz
+Homepage: http://vcmi.eu
+Package-List: 
+ vcmi deb contrib/games optional arch=any
+Directory: pool/contrib/v/vcmi
+Priority: extra
+Section: contrib/misc
+
+Package: vice
+Binary: vice
+Version: 3.0.0.dfsg-2
+Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Build-Depends: debhelper (>= 9), dh-autoreconf, dpkg-dev (>= 1.16.1~), autoconf, automake, autotools-dev, bison++ | bison, flex, texinfo, libreadline-dev, libjpeg-dev, libpng-dev, libgtk2.0-dev, libasound2-dev [linux-any], libpulse-dev, libmp3lame-dev, libavformat-dev (>= 6:10), libieee1284-3-dev [!hurd-i386], libgtkglext1-dev, libvte-2.91-dev, libswscale-dev, libxaw7-dev, xfonts-utils, yasm (>= 1.2)
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 04697d98c308d181aba804ff6f61ac6d 2105 vice_3.0.0.dfsg-2.dsc
+ fb9b15e310beef738f0f280bbc383539 16723636 vice_3.0.0.dfsg.orig.tar.xz
+ cafdd87af0e9eb432ca07fb470ec208f 24956 vice_3.0.0.dfsg-2.debian.tar.xz
+Checksums-Sha256:
+ 7e30c43c5abf1440bb9a2c6b90014b2495fbe5650ca2f562c1d46b1760bfcd6f 2105 vice_3.0.0.dfsg-2.dsc
+ 4abc3040360b3d9d1cffc043a8f65aa95d804a3f15a2de60e51b2afb4cb47a48 16723636 vice_3.0.0.dfsg.orig.tar.xz
+ 5260b0aa1792893985f577d6fe0c9abfb7d07e9d8ea9d6b7ab840a10298d9fc8 24956 vice_3.0.0.dfsg-2.debian.tar.xz
+Homepage: http://vice-emu.sourceforge.net/
+Package-List: 
+ vice deb contrib/otherosfs optional arch=any
+Directory: pool/contrib/v/vice
+Priority: source
+Section: contrib/otherosfs
+
+Package: vmware-manager
+Binary: vmware-manager
+Version: 0.2.0-3
+Maintainer: Alexander Zangerl <az@debian.org>
+Build-Depends: perl (>= 5.10.0), debhelper (>= 8.0.0)
+Architecture: all
+Standards-Version: 3.9.3
+Format: 1.0
+Files:
+ 590812c332cfc6ae3ce78057e8f0006e 1094 vmware-manager_0.2.0-3.dsc
+ d72cc21e46603fab2ef463f5eb047199 54131 vmware-manager_0.2.0.orig.tar.gz
+ 5e953d9e6f33e33c43e2c138414bec87 4992 vmware-manager_0.2.0-3.diff.gz
+Checksums-Sha256:
+ 0e8afe3aa8269fb00492ac3d02a33e7419badb65c29c3b831fc708bb675afb50 1094 vmware-manager_0.2.0-3.dsc
+ e0a09c475b5c8054e3c6d16c937743e03cb0c9a9c5c38c516589c2420c3cb391 54131 vmware-manager_0.2.0.orig.tar.gz
+ a5563f09496fb6f0bc8d4414e10a306e08b849e97619c09e7e2c5060e20ecede 4992 vmware-manager_0.2.0-3.diff.gz
+Homepage: https://github.com/hash-bang/VMM
+Directory: pool/contrib/v/vmware-manager
+Priority: source
+Section: contrib/admin
+
+Package: vnc-java
+Binary: vnc-java
+Version: 3.3.3r2-9
+Maintainer: Ola Lundqvist <opal@debian.org>
+Build-Depends-Indep: debhelper (>> 9.0), default-jdk
+Architecture: all
+Standards-Version: 3.9.6
+Format: 1.0
+Files:
+ 4e72d876949ab4b87f48684f8b7ca114 1661 vnc-java_3.3.3r2-9.dsc
+ 265e994e31774ae0b53a2e7b439712ce 25734 vnc-java_3.3.3r2.orig.tar.gz
+ 552e44cbbf831b7b1c53f1d429a73200 21407 vnc-java_3.3.3r2-9.diff.gz
+Checksums-Sha256:
+ 18a3706f5857c206385647fa6c0f781bfdeb6a0b70a7af05e9469beb069a2ed7 1661 vnc-java_3.3.3r2-9.dsc
+ 7398e650f58147a6f748e54acf168018ae7fdb8929bc12df762d531ea9dc70d5 25734 vnc-java_3.3.3r2.orig.tar.gz
+ 853e4898bee255b991d81073ad7f63ac469955aefd91258d3eeb71be27a7e1be 21407 vnc-java_3.3.3r2-9.diff.gz
+Package-List: 
+ vnc-java deb contrib/x11 optional arch=all
+Directory: pool/contrib/v/vnc-java
+Priority: source
+Section: contrib/java
+
+Package: vusb-analyzer
+Binary: vusb-analyzer
+Version: 1.1-6
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>= 8), dh-python, python
+Architecture: all
+Standards-Version: 3.9.5
+Format: 3.0 (quilt)
+Files:
+ f389a308db49edd629950c42668a2ba6 1758 vusb-analyzer_1.1-6.dsc
+ de3a25c869178863e8ac5ed7d5f60532 41381 vusb-analyzer_1.1.orig.tar.gz
+ 899db2ccdf96e11c649cc8339bb98b4d 7604 vusb-analyzer_1.1-6.debian.tar.xz
+Checksums-Sha256:
+ 5b609a99d5e39a5ea06f88793791da1eb154673f2d30a9b4f588f0a03b1b0e2c 1758 vusb-analyzer_1.1-6.dsc
+ c9db8cf3d26fb4cef74885a95e9f98712b708a297dd391ed100da039c9ac1c68 41381 vusb-analyzer_1.1.orig.tar.gz
+ 72165dc2491987f6158bed6a31fca8dabe8df6cd15f9a20ad75787f27f061a11 7604 vusb-analyzer_1.1-6.debian.tar.xz
+Homepage: http://vusb-analyzer.sourceforge.net/
+Package-List: 
+ vusb-analyzer deb contrib/utils optional arch=all
+Directory: pool/contrib/v/vusb-analyzer
+Priority: source
+Section: contrib/utils
+
+Package: wdq2wav
+Binary: wdq2wav
+Version: 1.0.0-1.1
+Maintainer: Kevin M. Rosenberg <kmr@debian.org>
+Build-Depends: debhelper (>= 10)
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ cfdf1f707530a08aa182edc1cc994a7b 1711 wdq2wav_1.0.0-1.1.dsc
+ 3483bc55e21f4ffedb257e5bce6df307 41092 wdq2wav_1.0.0.orig.tar.gz
+ 5ca37fbf50d984cbeaa4f48b9203b854 2472 wdq2wav_1.0.0-1.1.debian.tar.xz
+Vcs-Git: git://git.b9.com/wdq2wav.git
+Checksums-Sha256:
+ 04acea32dc6214428ab1d4ccd3fa388f9641217a89eadedabc87e29fe96dc2a3 1711 wdq2wav_1.0.0-1.1.dsc
+ 12e2268557674abdb71cb715bd6cf84900de533712e483780c87103798839803 41092 wdq2wav_1.0.0.orig.tar.gz
+ 5bd45ac5e621deb96908e5109cff306b795be1943838d41e9a87a501d0dcb9da 2472 wdq2wav_1.0.0-1.1.debian.tar.xz
+Homepage: http://files.b9.com/wdq2wav/
+Package-List: 
+ wdq2wav deb contrib/utils extra arch=any
+Directory: pool/contrib/w/wdq2wav
+Priority: source
+Section: contrib/utils
+
+Package: winetricks
+Binary: winetricks
+Version: 0.0+20170101-1
+Maintainer: Debian Wine Party <pkg-wine-party@lists.alioth.debian.org>
+Uploaders: Joseph Bisch <joseph.bisch@gmail.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 5a3b9dbb7a152f816630573aa4a50a70 2003 winetricks_0.0+20170101-1.dsc
+ 0227e0ed0d9ff6b150676a060b1b6c8f 180369 winetricks_0.0+20170101.orig.tar.gz
+ ac08ead1c6fa67af6029c1fccb898cb3 91168 winetricks_0.0+20170101-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-wine/winetricks.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-wine/winetricks.git
+Checksums-Sha256:
+ 711126abe5fc905491bd9af114b42e41614424dec6c1bee6ab7f3804e64a3e47 2003 winetricks_0.0+20170101-1.dsc
+ 3862ce2d94132484cb7fced13ccef6a7d1e94d75b5ee96b269d1bc45309f7b49 180369 winetricks_0.0+20170101.orig.tar.gz
+ 77d8b845abae2bd5a05c59a108d93d8442155139dd2cc01fc81c0e4851864530 91168 winetricks_0.0+20170101-1.debian.tar.xz
+Homepage: https://github.com/Winetricks/winetricks
+Package-List: 
+ winetricks deb contrib/otherosfs optional arch=all
+Directory: pool/contrib/w/winetricks
+Priority: source
+Section: contrib/otherosfs
+
+Package: wnn7egg
+Binary: wnn7egg
+Version: 1.02-8
+Maintainer: ISHIKAWA Mutsumi <ishikawa@debian.org>
+Build-Depends: debhelper (>> 5.0.0)
+Architecture: all
+Standards-Version: 3.8.4.0
+Format: 1.0
+Files:
+ 417177ec459afcc9f0963ade2584c5a4 949 wnn7egg_1.02-8.dsc
+ 54fcd4a4b71702d3e410be1d0b7464bc 210894 wnn7egg_1.02.orig.tar.gz
+ 419494001373d7bb9aedd46e0b090266 16138 wnn7egg_1.02-8.diff.gz
+Checksums-Sha256:
+ 792f96c3633c6c75bb051d5e8a30a945e72c36f096187e50ade385bb4987e2c4 949 wnn7egg_1.02-8.dsc
+ 53be932da8cee3b5c6c0de3b83c0f243117d2164594f4e9b91fdfc2bfc440c73 210894 wnn7egg_1.02.orig.tar.gz
+ 38233affc11bd7a4eb1cf4768cbea9c8dfbc9955e4708a97cdd53adcc1886fec 16138 wnn7egg_1.02-8.diff.gz
+Directory: pool/contrib/w/wnn7egg
+Priority: source
+Section: contrib/utils
+
+Package: wolf4sdl
+Binary: wolf4sdl
+Version: 1.7+svn262+dfsg1-4
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Fabian Greffrath <fabian+debian@greffrath.com>
+Build-Depends: debhelper (>= 9), libsdl1.2-dev, libsdl-mixer1.2-dev
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 399d1bcf461dd9059fc79e73f3f54efc 2049 wolf4sdl_1.7+svn262+dfsg1-4.dsc
+ 854cbc8882d4761c230dd84be3e352c1 681684 wolf4sdl_1.7+svn262+dfsg1.orig.tar.gz
+ 7bf98fd34c30e4497ba197ada943bcc7 23212 wolf4sdl_1.7+svn262+dfsg1-4.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-games/wolf4sdl.git;a=summary
+Vcs-Git: git://anonscm.debian.org/pkg-games/wolf4sdl.git
+Checksums-Sha256:
+ 3d1e09e1b633ee3954f24279ddeabc1d2ad4d58f58b493d777478d58c28894a5 2049 wolf4sdl_1.7+svn262+dfsg1-4.dsc
+ 00e49d840ad6537a7f461645363f2e54303902e4a414b1af8ecd90a2f800aafd 681684 wolf4sdl_1.7+svn262+dfsg1.orig.tar.gz
+ afb975f352debc5aba0232f4de01556db0e7c4bd31824e04381afcddf9e0b3d0 23212 wolf4sdl_1.7+svn262+dfsg1-4.debian.tar.xz
+Homepage: http://www.chaos-software.de.vu/
+Package-List: 
+ wolf4sdl deb contrib/games extra arch=any
+Directory: pool/contrib/w/wolf4sdl
+Priority: source
+Section: contrib/games
+
+Package: xserver-xorg-video-ivtvdev
+Binary: xserver-xorg-video-ivtv, xserver-xorg-video-ivtv-dbg
+Version: 1.1.2-2
+Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Uploaders: Ian Campbell <ijc@hellion.org.uk>, Cyril Brulebois <kibi@debian.org>
+Build-Depends: debhelper (>= 8), dh-autoreconf, quilt, pkg-config, autotools-dev, xserver-xorg-dev (>= 2:1.9.4), x11proto-video-dev, libxvmc-dev, x11proto-fonts-dev, x11proto-randr-dev, x11proto-render-dev, x11proto-xext-dev
+Architecture: alpha amd64 arm hppa hurd-i386 i386 ia64 kfreebsd-i386 m68k mips mipsel netbsd-i386 powerpc
+Standards-Version: 3.9.1
+Format: 1.0
+Files:
+ 214145966ae802d0aec5c1e9d341d366 2412 xserver-xorg-video-ivtvdev_1.1.2-2.dsc
+ 4a331ed8b4fe1d72ceaa7586c8babdd5 303046 xserver-xorg-video-ivtvdev_1.1.2.orig.tar.gz
+ 54713d65233035c28a79ce951c6c3107 8466 xserver-xorg-video-ivtvdev_1.1.2-2.diff.gz
+Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-ivtvdev.git
+Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-ivtvdev
+Checksums-Sha256:
+ 83408668355fc24fc2e25452ac52ca5156daaa849a38f8b5c1816a65a175b8b0 2412 xserver-xorg-video-ivtvdev_1.1.2-2.dsc
+ 863f449ec9dc9b2a2a15c8305660267a3365c72fa2e805d1e311dddf2791c938 303046 xserver-xorg-video-ivtvdev_1.1.2.orig.tar.gz
+ a32f905c32fe933681b05bc2265997be895d2edff9b21c58a53baa3358f0eae1 8466 xserver-xorg-video-ivtvdev_1.1.2-2.diff.gz
+Package-List: 
+ xserver-xorg-video-ivtv deb contrib/x11 extra
+ xserver-xorg-video-ivtv-dbg deb contrib/debug extra
+Directory: pool/contrib/x/xserver-xorg-video-ivtvdev
+Priority: source
+Section: contrib/x11
+
+Package: xtrs
+Binary: xtrs
+Version: 4.9c-4
+Maintainer: G. Branden Robinson <g.branden.robinson@gmail.com>
+Build-Depends: libncurses5-dev, libreadline-dev, libx11-dev, groff, debhelper (>= 5), po-debconf, html2text
+Architecture: any
+Standards-Version: 3.7.3
+Format: 1.0
+Files:
+ c21752b27198f31f3ce6677c18623b65 1810 xtrs_4.9c-4.dsc
+ 92b9b1fc28b4f341452b14e28c7e302d 443651 xtrs_4.9c.orig.tar.gz
+ 75efbc8ac0abadc9b766ef1990e0907d 101820 xtrs_4.9c-4.diff.gz
+Checksums-Sha256:
+ 5f8d4d18df9bc446c257f7cc4f3af2d6d411acbc48241c0969b14b0ded9bf126 1810 xtrs_4.9c-4.dsc
+ a5071dee883b83d893467b913441f8bb75984d0d4e567eef0479d43891dfb978 443651 xtrs_4.9c.orig.tar.gz
+ 6a14a7cd2e815bf77632b230be22640c43e0b30b2c790a916c138d18fe7e4f9a 101820 xtrs_4.9c-4.diff.gz
+Dgit: 108a3cd52ec61f4919d281e93d11a3181c063bee debian archive/debian/4.9c-4 https://git.dgit.debian.org/xtrs
+Package-List: 
+ xtrs deb contrib/otherosfs extra arch=any
+Directory: pool/contrib/x/xtrs
+Priority: source
+Section: contrib/otherosfs
+
+Package: ydpdict
+Binary: ydpdict
+Version: 1.0.2+1.0.3-2
+Maintainer: Marcin Owsiany <porridge@debian.org>
+Build-Depends: debhelper (>= 9~), dh-autoreconf, libncursesw5-dev, libydpdict2-dev (>= 1.0.0), libao-dev, autoconf, automake, pkg-config
+Build-Conflicts: autoconf2.13, automake1.4
+Architecture: any
+Standards-Version: 3.9.6
+Format: 3.0 (quilt)
+Files:
+ 2119f7c73458524f52f74dccff924a02 1989 ydpdict_1.0.2+1.0.3-2.dsc
+ 7ced02613c7c5b0c6d09d0c4e6c6db1a 70529 ydpdict_1.0.2+1.0.3.orig.tar.gz
+ 64803478da55059f45ce333484c21aab 4232 ydpdict_1.0.2+1.0.3-2.debian.tar.xz
+Vcs-Browser: https://github.com/porridge/ydpdict
+Vcs-Git: https://github.com/porridge/ydpdict.git -b debian-master
+Checksums-Sha256:
+ 238ac9f73849a190be6ad9f86a3f9ed5515fafb55f29e1792f8cdd75f6b9b966 1989 ydpdict_1.0.2+1.0.3-2.dsc
+ 1aaeb03153020c36b6909a42d2f8336d170f3d887993942a3e0f7b75afda16a7 70529 ydpdict_1.0.2+1.0.3.orig.tar.gz
+ 98983b83a2382c73bd2638bed482185ccc209406030841af69e71c2d6839b6f7 4232 ydpdict_1.0.2+1.0.3-2.debian.tar.xz
+Homepage: http://toxygen.net/ydpdict/
+Package-List: 
+ ydpdict deb contrib/text optional arch=any
+Directory: pool/contrib/y/ydpdict
+Priority: source
+Section: contrib/text
+
+Package: yquake2
+Binary: yamagi-quake2, yamagi-quake2-core
+Version: 6.00~dfsg1-1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Fabian Greffrath <fabian@debian.org>, Simon McVittie <smcv@debian.org>
+Build-Depends: debhelper (>= 9), libgl1-mesa-dev | libgl-dev, libopenal-dev, libsdl2-dev, libvorbis-dev, libxrandr-dev, libxxf86vm-dev, zlib1g-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 0306b06f93392ff8e57851e38f781235 2171 yquake2_6.00~dfsg1-1.dsc
+ ce18210e0d34f319c21b56b2f90b7f7e 675308 yquake2_6.00~dfsg1.orig.tar.gz
+ bbd99609341e5de52bafc0501b649ffc 7844 yquake2_6.00~dfsg1-1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/yquake2.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/yquake2.git
+Checksums-Sha256:
+ d52855e0e642221dc70a594fc8bb82da2b1e7b6f5e3e33ff6cacc59c6f0d2db8 2171 yquake2_6.00~dfsg1-1.dsc
+ 395aea59fb648425170c9d492c35aa83f2e330c4f8eef8277bab8af38007e068 675308 yquake2_6.00~dfsg1.orig.tar.gz
+ 255f62a897b6e8b98513875daf47b57df300bd9123b27b25555566527ed74bac 7844 yquake2_6.00~dfsg1-1.debian.tar.xz
+Homepage: http://www.yamagi.org/quake2/
+Package-List: 
+ yamagi-quake2 deb contrib/games extra arch=any
+ yamagi-quake2-core deb contrib/games extra arch=any
+Directory: pool/contrib/y/yquake2
+Priority: extra
+Section: contrib/misc
+
+Package: zfs-auto-snapshot
+Binary: zfs-auto-snapshot
+Version: 1.2.1-1
+Maintainer: Jonathan Carter <jcarter@linux.com>
+Build-Depends: debhelper (>= 9)
+Architecture: all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ b67a67452c1083943f2851804f72c670 1929 zfs-auto-snapshot_1.2.1-1.dsc
+ e8024a311a2e729bf60ffb8e9fdcb5e2 15020 zfs-auto-snapshot_1.2.1.orig.tar.gz
+ 07f181868448d165f1361f5fe3b8ec2a 1604 zfs-auto-snapshot_1.2.1-1.debian.tar.xz
+Vcs-Browser: https://gitlab.com/highvoltage/zfs-auto-snapshot-packaging/tree/master
+Vcs-Git: https://gitlab.com/highvoltage/zfs-auto-snapshot-packaging.git
+Checksums-Sha256:
+ e64d3ba577eef254acdd976668a320a65e089ea4564252633425d2f0ac107b0a 1929 zfs-auto-snapshot_1.2.1-1.dsc
+ ecf6f43accfa191758960660fc6e014898209070e722a38535783b96d319f401 15020 zfs-auto-snapshot_1.2.1.orig.tar.gz
+ 73b22cebfe138fe6dd7e637fe9d33a59e2fc69b09d942cd2a1661c799c77437d 1604 zfs-auto-snapshot_1.2.1-1.debian.tar.xz
+Homepage: https://github.com/zfsonlinux/zfs-auto-snapshot
+Package-List: 
+ zfs-auto-snapshot deb contrib/utils extra arch=all
+Directory: pool/contrib/z/zfs-auto-snapshot
+Priority: extra
+Section: contrib/misc
+
+Package: zfs-linux
+Binary: libnvpair1linux, libuutil1linux, libzfslinux-dev, libzfs2linux, libzpool2linux, zfs-dkms, zfs-initramfs, zfs-dracut, zfsutils-linux, zfs-zed, zfs-dbg
+Version: 0.6.5.9-5
+Maintainer: Debian ZFS on Linux maintainers <pkg-zfsonlinux-devel@lists.alioth.debian.org>
+Uploaders: Aron Xu <aron@debian.org>, Petter Reinholdtsen <pere@debian.org>, Carlos Alberto Lopez Perez <clopez@igalia.com>
+Build-Depends: dh-autoreconf, dh-systemd, autotools-dev, debhelper (>= 9), dkms (>> 2.1.1.2-5), libselinux1-dev, libtool, lsb-release, po-debconf, uuid-dev, zlib1g-dev, python3, dh-python, libblkid-dev, libattr1-dev
+Architecture: linux-any all
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 7117d614fa23211c330b5f07df9f3a11 2578 zfs-linux_0.6.5.9-5.dsc
+ 9dceb3930be4e1a8cf35bcc40e48e527 2610650 zfs-linux_0.6.5.9.orig.tar.gz
+ 848e92d9571f35cdb4c66c070ebf127e 52612 zfs-linux_0.6.5.9-5.debian.tar.xz
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-zfsonlinux/zfs.git
+Vcs-Git: git://anonscm.debian.org/pkg-zfsonlinux/zfs.git
+Checksums-Sha256:
+ ad9ab0b9052a46b073ea9ff5edaf86483fee08592e20f1b2894c4b672de6549f 2578 zfs-linux_0.6.5.9-5.dsc
+ b724b57dbddae59246fdc15f88f1224061c712945bb36412a2087e0c7760d77f 2610650 zfs-linux_0.6.5.9.orig.tar.gz
+ ed8152494b95a01809c4c1d1a508dd4fe26cf963c2207f6fc9f332de842fae23 52612 zfs-linux_0.6.5.9-5.debian.tar.xz
+Homepage: http://www.zfsonlinux.org/
+Package-List: 
+ libnvpair1linux deb contrib/libs optional arch=linux-any
+ libuutil1linux deb contrib/libs optional arch=linux-any
+ libzfs2linux deb contrib/libs optional arch=linux-any
+ libzfslinux-dev deb contrib/libdevel optional arch=linux-any
+ libzpool2linux deb contrib/libs optional arch=linux-any
+ zfs-dbg deb contrib/debug extra arch=linux-any
+ zfs-dkms deb contrib/kernel optional arch=all
+ zfs-dracut deb contrib/kernel optional arch=all
+ zfs-initramfs deb contrib/kernel optional arch=all
+ zfs-zed deb contrib/admin optional arch=linux-any
+ zfsutils-linux deb contrib/admin optional arch=linux-any
+Testsuite: autopkgtest
+Directory: pool/contrib/z/zfs-linux
+Priority: extra
+Section: contrib/misc
+

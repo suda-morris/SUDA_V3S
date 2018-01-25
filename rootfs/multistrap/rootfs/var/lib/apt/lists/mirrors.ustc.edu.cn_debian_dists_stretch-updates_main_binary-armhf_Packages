@@ -1,0 +1,623 @@
+Package: base-files
+Version: 9.9+deb9u2
+Essential: yes
+Installed-Size: 333
+Maintainer: Santiago Vila <sanvila@debian.org>
+Architecture: armhf
+Replaces: base, dpkg (<= 1.15.0), miscutils
+Provides: base
+Pre-Depends: awk
+Breaks: initscripts (<< 2.88dsf-13.3), sendfile (<< 2.1b.20080616-5.2~)
+Description: Debian base system miscellaneous files
+Multi-Arch: foreign
+Description-md5: 6d16337f57b84c4747f56438355b2395
+Tag: admin::configuring, role::app-data, suite::debian
+Section: admin
+Priority: required
+Filename: pool/main/b/base-files/base-files_9.9+deb9u2_armhf.deb
+Size: 67244
+MD5sum: 3014a05a6b46d46c2cbcbcc6728bb99e
+SHA256: 9ff9efa8a955021cc4ed19d2886186c851b76aa751fee5d4e62decc7025d68cb
+
+Package: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 1378
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: apparmor-profiles (<< 2.1+1075-0ubuntu4), bind, bind9utils (<< 1:9.9.3.dfsg.P2-3), dnsutils (<< 1:9.1.0-3)
+Depends: libbind9-140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libirs141, libisc160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccc140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), liblwres141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.7.4), debconf (>= 0.5) | debconf-2.0, init-system-helpers (>= 1.18~), netbase, adduser, lsb-base (>= 3.2-14), bind9utils (= 1:9.10.3.dfsg.P4-12.3+deb9u3), net-tools
+Suggests: dnsutils, bind9-doc, resolvconf, ufw
+Conflicts: apparmor-profiles (<< 2.1+1075-0ubuntu4), bind
+Description: Internet Domain Name Server
+Description-md5: afd61d02df1ec6f856b928dfbf6fd201
+Tag: implemented-in::c, interface::daemon, network::server, network::service,
+ protocol::dns, protocol::ipv6, protocol::ssl, role::program
+Section: net
+Priority: optional
+Filename: pool/main/b/bind9/bind9_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 526198
+MD5sum: 82c6960724b3276185b8d64b49135caf
+SHA256: bf54842d41651ba21420c09a6560c79d98f5e669054c37c693fc9b5060a1b02a
+
+Package: bind9-doc
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 1540
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: all
+Description: Documentation for BIND
+Description-md5: 329b8ef5cf9ad3d51ce47e6d8d13d75e
+Tag: interface::daemon, made-of::html, network::service, protocol::dns,
+ protocol::ip, protocol::ipv6, role::documentation
+Section: doc
+Priority: optional
+Filename: pool/main/b/bind9/bind9-doc_9.10.3.dfsg.P4-12.3+deb9u3_all.deb
+Size: 378376
+MD5sum: 44a0b3aa954268462193cc29f656f124
+SHA256: 7f958f29050bdc1b7e572c2e94a46ac75793fda151c973436102200a915b78ec
+
+Package: bind9-host
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 283
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: dnsutils (<< 1:9.0.0), host (<< 1:9.7.0)
+Provides: host
+Depends: libbind9-140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), liblwres141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27)
+Conflicts: dnsutils (<< 1:9.0.0), host (<< 1:9.7.0)
+Description: Version of 'host' bundled with BIND 9.X
+Description-md5: acdae162c721f5d2986f557bdefa1e70
+Tag: implemented-in::c, interface::commandline, network::client,
+ network::service, protocol::dns, protocol::ssl, role::program
+Section: net
+Priority: standard
+Filename: pool/main/b/bind9/bind9-host_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 229504
+MD5sum: e40056491379fa33044da6123c461b86
+SHA256: e89f6266213d4a1fe93fc91f81b809ad315421892a8fddc57b7f0df741dce6ad
+
+Package: bind9utils
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 1048
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: bind9 (<= 1:9.9.5.dfsg-1)
+Depends: libbind9-140, libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162, libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160, libisccc140, libisccfg140, libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27), python3
+Description: Utilities for BIND
+Description-md5: 5f6f5621a6edd04ef33a0fe5d2d5bff8
+Tag: implemented-in::TODO, interface::commandline, network::configuration,
+ protocol::dns, protocol::ip, role::program, scope::utility,
+ use::checking, use::configuring
+Section: net
+Priority: optional
+Filename: pool/main/b/bind9/bind9utils_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 368288
+MD5sum: 55c40ba873f62193b51edb3b43119199
+SHA256: 8ae912b05820c45cad820f7c7c70461ff1660ac27d4d165dd4ceede8fba5b7ee
+
+Package: dnsutils
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 444
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: bind, bind9 (<< 1:9.1.0-3)
+Depends: libbind9-140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), liblwres141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27), bind9-host | host
+Suggests: rblcheck
+Conflicts: netstd (<< 2.00)
+Description: Clients provided with BIND
+Description-md5: 11090f3795381e992a73710a1cc4118b
+Tag: implemented-in::c, interface::commandline, network::client,
+ protocol::dns, role::program
+Section: net
+Priority: optional
+Filename: pool/main/b/bind9/dnsutils_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 280456
+MD5sum: d749d7b0d11c8e4358be10685cf5bb48
+SHA256: e63aa8ab9dd09e3fa4cbcf80258b80b71623857e904bec465246294626426293
+
+Package: host
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 190
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: all
+Depends: bind9-host
+Description: Transitional package
+Description-md5: 3c0b6923194ef2929ab26358ef75c037
+Tag: role::shared-lib
+Section: oldlibs
+Priority: extra
+Filename: pool/main/b/bind9/host_9.10.3.dfsg.P4-12.3+deb9u3_all.deb
+Size: 185524
+MD5sum: c5d70106cb7bf0994ffaba3f2e707b49
+SHA256: c1745f239ec7193e9271dac9ba6f5933cc446c3063da73a35805fa13cbc1daf7
+
+Package: libbind-dev
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 8209
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: bind-dev, bind9 (<< 1:9.10.3.dfsg.P2-4)
+Depends: libdns162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisc160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), liblwres141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libbind9-140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libirs141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3)
+Conflicts: bind-dev
+Description: Static Libraries and Headers used by BIND
+Multi-Arch: same
+Description-md5: 2224f8c1f8613ab53bfc2393a6add6a6
+Tag: devel::lang:c, devel::library, implemented-in::c, protocol::dns,
+ role::devel-lib
+Section: libdevel
+Priority: optional
+Filename: pool/main/b/bind9/libbind-dev_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 1517502
+MD5sum: e1086f9c91a78855c25cf631dd9b1d76
+SHA256: cd645f307c59d6307de1d23e1ead5d482a1743ddd3272ff344a9d280a2e64ac0
+
+Package: libbind-export-dev
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 4895
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libdns-export162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccc-export140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg-export140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisc-export160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libirs-export141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3)
+Conflicts: libbind-dev
+Description: Development files for the exported BIND libraries
+Description-md5: a05e1255c8f5132e4039267975293e0e
+Tag: devel::library, role::devel-lib
+Section: libdevel
+Priority: optional
+Filename: pool/main/b/bind9/libbind-export-dev_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 1372392
+MD5sum: 98f09db633900de468c8aab923ca4137
+SHA256: 7c4063ea9d880a8f51011c48d46d3405d4ffba5e61a1a151bbc5348c9601924b
+
+Package: libbind9-140
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 237
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162, libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160, libisccfg140, libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27)
+Conflicts: libbind0, libbind9-41
+Description: BIND9 Shared Library used by BIND
+Multi-Arch: same
+Description-md5: 29eb09ddc694703c77f94b42a079fe3f
+Tag: role::shared-lib
+Section: libs
+Priority: standard
+Filename: pool/main/b/bind9/libbind9-140_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 204060
+MD5sum: 794480583fe04cb34db3b52d1cbf7733
+SHA256: b55e26205538e698b2aa59f564ac25d4afd667b1132a9d85d27fb5402efd026e
+
+Package: libdns-export162
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 1457
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.4), libisc-export160, libssl1.0.2 (>= 1.0.2d)
+Description: Exported DNS Shared Library
+Description-md5: 52d527bf4a46771b661269a614c3c1eb
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libdns-export162_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 789518
+MD5sum: 53a06540e0222f9a2f1da95c45bc55c4
+SHA256: 8d8093e9fcfb743b6dbe51c09c69f158228816a499c270fcd9d6b9463e7fe37c
+
+Package: libdns162
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 2870
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libgeoip1, libgssapi-krb5-2 (>= 1.14+dfsg), libisc160, libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.7.4)
+Conflicts: libbind0, libbind9-41
+Description: DNS Shared Library used by BIND
+Multi-Arch: same
+Description-md5: fadbc60724c646c80c4b57d45d5e5161
+Tag: role::shared-lib
+Section: libs
+Priority: standard
+Filename: pool/main/b/bind9/libdns162_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 974838
+MD5sum: fb1f919297e39d8bfa2c707930bd8507
+SHA256: 9cb902e43c796b008969216cd314c8c6e786653b8e4873d28fe2ddd27eae2b1f
+
+Package: libirs-export141
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 225
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.4), libdns-export162, libisc-export160, libisccfg-export140, libssl1.0.2 (>= 1.0.2d)
+Description: Exported IRS Shared Library
+Description-md5: 7e57fb542b884102b27905ba45de52ac
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libirs-export141_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 197722
+MD5sum: 127ce11e8745fd1d186ee9f425181c94
+SHA256: a260ab1b4c7d83ec1c7bd7571cbfab39e813ed512280b4ab7b83a7a846d49592
+
+Package: libirs141
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 225
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libdns162, libgeoip1, libisc160, libisccfg140, libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27)
+Conflicts: libbind0, libbind9-41
+Description: DNS Shared Library used by BIND
+Multi-Arch: same
+Description-md5: ae6663842399469aa3234854fdad284b
+Tag: role::shared-lib
+Section: libs
+Priority: standard
+Filename: pool/main/b/bind9/libirs141_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 198014
+MD5sum: b7f635f62054ee331dd6c11335a50bd4
+SHA256: caa6a2c62b40ace58c1ea1211fa6e0676bff076ff352cafb662ff87af9c123a1
+
+Package: libisc-export160
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 466
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.4)
+Description: Exported ISC Shared Library
+Description-md5: cd6e16cd398bc2214c99d8500959c204
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libisc-export160_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 317982
+MD5sum: f5ccffc739df24ba6ea31725678ce072
+SHA256: 5b131e1b4ee89dd4223e1cb8cb610a0f11b127e199c13a75456980303b780f33
+
+Package: libisc160
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 810
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libgeoip1, libxml2 (>= 2.7.4)
+Conflicts: libbind0, libbind9-41
+Description: ISC Shared Library used by BIND
+Multi-Arch: same
+Description-md5: 538f08c974b457d9907e201f70a51533
+Tag: role::shared-lib
+Section: libs
+Priority: standard
+Filename: pool/main/b/bind9/libisc160_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 369674
+MD5sum: 09acbb78185619619f747d50c63b9719
+SHA256: c4682be739fe89e8eb95e369f6e17044b45beda7664d4e1e17c131f0e58e128f
+
+Package: libisccc-export140
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 221
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libisc-export160
+Conflicts: libbind0, libbind9-41
+Description: Command Channel Library used by BIND
+Multi-Arch: same
+Description-md5: c7785673bc5b2dfed3c5bcee1452c16c
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libisccc-export140_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 196096
+MD5sum: fcad293cb048b85fdb321d8267933f91
+SHA256: f584d78d45536f328dcfcfed33b06f1874a910beedfd00235ef2c98c6c7ca346
+
+Package: libisccc140
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 221
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libgeoip1, libisc160, libxml2 (>= 2.6.27)
+Conflicts: libbind0, libbind9-41
+Description: Command Channel Library used by BIND
+Multi-Arch: same
+Description-md5: c7785673bc5b2dfed3c5bcee1452c16c
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libisccc140_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 196238
+MD5sum: b6988bf0238054d4d9a7280b73c2d352
+SHA256: f59fbcac621d3c14923d9c29b825ce1c156e4a576e80ff96d92b7e9474d6c33e
+
+Package: libisccfg-export140
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 272
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.4), libdns-export162, libisc-export160, libisccc-export140
+Description: Exported ISC CFG Shared Library
+Description-md5: b188c8f9eedec4b6c04d1dd6d0169cf4
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libisccfg-export140_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 213120
+MD5sum: 6e7fce12c5d6a1654765a0e21c977874
+SHA256: e30a651c29ffa95ed380da409082dea2d133d26d3f821d195a7df6d9581a0388
+
+Package: libisccfg140
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 280
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162, libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160, libisccc140, libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.6.27)
+Conflicts: libbind0, libbind9-41
+Description: Config File Handling Library used by BIND
+Multi-Arch: same
+Description-md5: d214b6bf2b32d3830998548c9fa53da4
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/b/bind9/libisccfg140_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 215498
+MD5sum: 2dc16329341e46ebdc6d3c34cec1d902
+SHA256: cba4299e4acc806d44179708b851bab75d6647aebd599aa89f58e1aeee89d492
+
+Package: liblwres141
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 245
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Replaces: libbind0
+Depends: libc6 (>= 2.4), libcap2 (>= 1:2.10), libgeoip1, libxml2 (>= 2.6.27)
+Conflicts: libbind0
+Description: Lightweight Resolver Library used by BIND
+Multi-Arch: same
+Description-md5: 6c5041f39bdcc8de6092f4354d6f893b
+Tag: role::shared-lib
+Section: libs
+Priority: standard
+Filename: pool/main/b/bind9/liblwres141_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 209344
+MD5sum: bb9e1db0a416cf0b197e6581b72662e3
+SHA256: eff5753f852f1ae856b41b8b4df05310ec606c8160f914c58a3cd7e49d8d9ab4
+
+Package: lwresd
+Source: bind9
+Version: 1:9.10.3.dfsg.P4-12.3+deb9u3
+Installed-Size: 653
+Maintainer: LaMont Jones <lamont@debian.org>
+Architecture: armhf
+Depends: libbind9-140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libc6 (>= 2.4), libcap2 (>= 1:2.10), libcomerr2 (>= 1.01), libdns162 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libgeoip1, libgssapi-krb5-2 (>= 1.6.dfsg.2), libisc160 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccc140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libisccfg140 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libk5crypto3 (>= 1.6.dfsg.2), libkrb5-3 (>= 1.6.dfsg.2), liblwres141 (= 1:9.10.3.dfsg.P4-12.3+deb9u3), libssl1.0.2 (>= 1.0.2d), libxml2 (>= 2.7.4), init-system-helpers (>= 1.18~), adduser, lsb-base (>= 3.0-6)
+Recommends: libnss-lwres
+Suggests: bind9utils
+Description: Lightweight Resolver Daemon
+Description-md5: 71f952026129db86d1ca118762b06ef2
+Tag: implemented-in::c, interface::daemon, network::server, protocol::dns,
+ role::program
+Section: net
+Priority: optional
+Filename: pool/main/b/bind9/lwresd_9.10.3.dfsg.P4-12.3+deb9u3_armhf.deb
+Size: 395590
+MD5sum: acbd3fa1b9c40e24bba9c62172319df2
+SHA256: 4fb7db4385998db5421389544e3fce9b05f631fc314cd3a9a8ecb0d607c35f1c
+
+Package: dns-root-data
+Version: 2017072601~deb9u1
+Installed-Size: 17
+Maintainer: Debian DNS Maintainers <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: all
+Description: DNS root data including root zone and DNSSEC key
+Homepage: https://data.iana.org/root-anchors/
+Description-md5: bbcb2dc96efef2350f3f0122e975cf90
+Section: misc
+Priority: optional
+Filename: pool/main/d/dns-root-data/dns-root-data_2017072601~deb9u1_all.deb
+Size: 4840
+MD5sum: eb1e4ac413afa0b492abea3092cea0e7
+SHA256: e6c9bfbaa6d088bb8a89ca5b496b774b11523faa775d96722a1dbc99b06325fa
+
+Package: dnsviz
+Version: 0.6.4-1+deb9u1
+Installed-Size: 1661
+Maintainer: Debian DNS Maintainers <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: all
+Depends: python-dnspython, python-m2crypto, python-pygraphviz, python2.7, python:any (<< 2.8), python:any (>= 2.7.5-5~), dns-root-data, libjs-jquery, libjs-jquery-ui, libjs-jquery-ui-theme-redmond, libjs-raphael
+Description: Tools for analyzing and visualizing DNS and DNSSEC behavior
+Homepage: https://github.com/dnsviz/dnsviz
+Description-md5: 4f2e5db401d3a48757f46cd4365530b7
+Section: net
+Priority: optional
+Filename: pool/main/d/dnsviz/dnsviz_0.6.4-1+deb9u1_all.deb
+Size: 730912
+MD5sum: 1f0552ad299d529afb518cda50aca1c9
+SHA256: d8d4029b859dc1b419b0dd484866f66e8109d3d39fc64682634283dac4d47691
+
+Package: libdatetime-timezone-perl
+Version: 1:2.09-1+2017c
+Installed-Size: 6713
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Architecture: all
+Depends: perl, libclass-singleton-perl, libmodule-runtime-perl, libnamespace-autoclean-perl, libparams-validationcompiler-perl, libspecio-perl, libtry-tiny-perl, perl (>= 5.19.5) | libscalar-list-utils-perl (>= 1:1.33)
+Recommends: libdatetime-perl
+Description: framework exposing the Olson time zone database to Perl
+Homepage: http://datetime.perl.org/
+Description-md5: 49fff32146b7c0ac14d7bcca1f92bfe6
+Tag: devel::lang:perl, devel::library, implemented-in::perl, use::timekeeping
+Section: perl
+Priority: optional
+Filename: pool/main/libd/libdatetime-timezone-perl/libdatetime-timezone-perl_2.09-1+2017c_all.deb
+Size: 268026
+MD5sum: 38b8e0abb18c0f8f5324bf2f66036420
+SHA256: 5e99dc0d7dd881aaa660380cfbc7d6dec8eb52387e647f2729cf98c1edb5561a
+
+Package: tzdata
+Version: 2017c-0+deb9u1
+Installed-Size: 3009
+Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Architecture: all
+Replaces: libc0.1, libc0.3, libc6, libc6.1
+Provides: tzdata-stretch
+Depends: debconf (>= 0.5) | debconf-2.0
+Description: time zone and daylight-saving time data
+Multi-Arch: foreign
+Homepage: http://www.iana.org/time-zones
+Description-md5: a77a3cc9a67658dd7cfdc6547391b8f8
+Tag: role::app-data, use::timekeeping
+Section: localization
+Priority: required
+Filename: pool/main/t/tzdata/tzdata_2017c-0+deb9u1_all.deb
+Size: 262110
+MD5sum: 513af6ae19a262373e29234aa9383bcb
+SHA256: f3302284266843c6a3ab5250a338641bdba8970527d60dbcad0e030ed9569aa7
+
+Package: libunbound-dev
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 1032
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: libunbound2 (= 1.6.0-3+deb9u1)
+Description: static library, header files, and docs for libunbound
+Multi-Arch: same
+Homepage: https://www.unbound.net/
+Description-md5: ed3009c5a462f3287f75c961064034a6
+Tag: devel::doc, devel::library, protocol::dns, role::devel-lib,
+ role::documentation
+Section: libdevel
+Priority: optional
+Filename: pool/main/u/unbound/libunbound-dev_1.6.0-3+deb9u1_armhf.deb
+Size: 403900
+MD5sum: 8b383e8a269b00a6b177b55ce488f568
+SHA256: 744767205761a2d6622deb4b2abcc1fb63a72c93f60f1bcaa556082675d68c9f
+
+Package: libunbound2
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 597
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.17), libgmp10, libhogweed4, libnettle6
+Description: library implementing DNS resolution and validation
+Multi-Arch: same
+Homepage: https://www.unbound.net/
+Description-md5: 2be0d2578ccb5656d253e8013682ad4a
+Tag: role::shared-lib
+Section: libs
+Priority: optional
+Filename: pool/main/u/unbound/libunbound2_1.6.0-3+deb9u1_armhf.deb
+Size: 332716
+MD5sum: 428b5e72504afd3787799bbf30ebcced
+SHA256: 7d280190ea26b9f7d4279d5f8dc73ea4b009ccb0367b15c6c8cf212d035a4170
+
+Package: python-unbound
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 314
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: python (<< 2.8), python (>= 2.7~), python:any (<< 2.8), python:any (>= 2.7.5-5~), libc6 (>= 2.4), libunbound2 (>= 1.5.8)
+Description: library implementing DNS resolution and validation (Python bindings)
+Homepage: https://www.unbound.net/
+Description-md5: 103cd64b79e42ad710e19fe727ffce50
+Section: python
+Priority: optional
+Filename: pool/main/u/unbound/python-unbound_1.6.0-3+deb9u1_armhf.deb
+Size: 130940
+MD5sum: 793188b6ca1634a8f67d793d92efb126
+SHA256: 9c7bd0b8bd853efdc790adeffaa7439d5fac6dfe25ee17c96e5e8ca8074bb664
+
+Package: python3-unbound
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 314
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: python3 (<< 3.6), python3 (>= 3.5~), python3:any (>= 3.3.2-2~), libc6 (>= 2.4), libunbound2 (>= 1.5.8)
+Description: library implementing DNS resolution and validation (Python3 bindings)
+Homepage: https://www.unbound.net/
+Description-md5: af30f925fc4c43d06de34592670b36e8
+Section: python
+Priority: optional
+Filename: pool/main/u/unbound/python3-unbound_1.6.0-3+deb9u1_armhf.deb
+Size: 131030
+MD5sum: fb00500bd8bbd559af9bddb34c1bf247
+SHA256: 46bc5a91094048c210314fa60692805cd8b8a391f1d1ab3974062349fadcb366
+
+Package: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 2390
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: adduser, dns-root-data (>= 2017072601~), openssl, unbound-anchor, init-system-helpers (>= 1.18~), libc6 (>= 2.17), libevent-2.0-5 (>= 2.0.10-stable), libfstrm0 (>= 0.2.0), libprotobuf-c1 (>= 1.0.1), libpython3.5 (>= 3.5.0~b1), libssl1.1 (>= 1.1.0)
+Suggests: apparmor
+Enhances: munin-node
+Description: validating, recursive, caching DNS resolver
+Homepage: https://www.unbound.net/
+Description-md5: fbeecad8349f6b3042087b256bc69b68
+Tag: implemented-in::c, interface::daemon, network::server, protocol::dns,
+ role::program, security::authentication, security::cryptography,
+ security::privacy, use::checking
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound_1.6.0-3+deb9u1_armhf.deb
+Size: 548890
+MD5sum: 271566228b74a9779058b25514d0ab02
+SHA256: 42136cda8ce9c696eb0b3eb9b29b0a1a89c5bf7c0827efc28bf1a30ac72f0ca7
+
+Package: unbound-anchor
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 169
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Replaces: unbound (<< 1.4.13-1)
+Depends: libc6 (>= 2.17), libexpat1 (>= 2.0.1), libssl1.1 (>= 1.1.0), libunbound2 (>= 1.4.1)
+Breaks: unbound (<< 1.4.13-1)
+Description: utility to securely fetch the root DNS trust anchor
+Homepage: https://www.unbound.net/
+Description-md5: f49fb3435120bde9cd4af959aeac719c
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound-anchor_1.6.0-3+deb9u1_armhf.deb
+Size: 123876
+MD5sum: 3426d564f0520bf9708af661f057acbb
+SHA256: b997a5682b523c9a70f8c049c363f5861746bbf8896891f5ffe5738f2726d2dd
+
+Package: unbound-host
+Source: unbound
+Version: 1.6.0-3+deb9u1
+Installed-Size: 192
+Maintainer: Debian DNS Packaging <pkg-dns-devel@lists.alioth.debian.org>
+Architecture: armhf
+Depends: libc6 (>= 2.4), libssl1.1 (>= 1.1.0), libunbound2 (>= 1.4.2)
+Description: reimplementation of the 'host' command
+Homepage: https://www.unbound.net/
+Description-md5: 287e113772f55d3575bb8577560cb3eb
+Section: net
+Priority: optional
+Filename: pool/main/u/unbound/unbound-host_1.6.0-3+deb9u1_armhf.deb
+Size: 130116
+MD5sum: eb33ef1b628cd5f8cc4c950168ad8c9a
+SHA256: 6e2f48757da23d3946fc3cba31b6e97cac2c486631ae14d99725276c17bc16f1
+

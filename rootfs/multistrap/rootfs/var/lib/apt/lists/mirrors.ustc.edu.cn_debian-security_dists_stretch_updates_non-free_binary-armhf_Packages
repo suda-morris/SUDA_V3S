@@ -1,0 +1,39 @@
+Package: otrs
+Source: otrs2
+Version: 5.0.16-1+deb9u5
+Installed-Size: 219
+Maintainer: Patrick Matthäi <pmatthaei@debian.org>
+Architecture: all
+Depends: otrs2
+Description: Open Ticket Request System (OTRS 5)
+Homepage: http://www.otrs.org
+Description-md5: 8e0a7b6c0c591bed07ede62404238eb1
+Section: non-free/web
+Priority: optional
+Filename: pool/updates/non-free/o/otrs2/otrs_5.0.16-1+deb9u5_all.deb
+Size: 213366
+MD5sum: c44a669088541ea7c19c95fb823cbd0d
+SHA1: 9723265c3ecf03bc6ebaf4ef236cbe12e63cc87d
+SHA256: a64c3fb238d18cd647286777108291db6ebc76a8451032b35eec92032c78ca6b
+
+Package: otrs2
+Version: 5.0.16-1+deb9u5
+Installed-Size: 71676
+Maintainer: Patrick Matthäi <pmatthaei@debian.org>
+Architecture: all
+Replaces: otrs (<< 3.0)
+Depends: debconf (>= 0.5) | debconf-2.0, perl:any, apache2 | httpd-cgi, libapache2-reload-perl, libapache-dbi-perl, libauthen-sasl-perl, libcrypt-passwdmd5-perl, libdate-pcalc-perl, libemail-valid-perl, libio-stringy-perl, libmime-tools-perl, libmailtools-perl, libproc-daemon-perl, liblingua-translit-perl, libpod-strip-perl, libio-interactive-perl, libnet-sslglue-perl, libhtml-truncate-perl, libhtml-tagset-perl, libschedule-cron-events-perl, adduser, ucf, dbconfig-common (>= 1.8.24), libtext-diff-perl, libxml-parser-perl, libtext-csv-perl, libxml-feedpp-perl, liblinux-distribution-perl, libmail-pop3client-perl, libpdf-api2-perl, libxml-parser-lite-perl | libsoap-lite-perl (<< 1.08-1~), libnet-imap-simple-perl, libnet-imap-simple-ssl-perl, libnet-smtp-ssl-perl, libdbd-pg-perl | libdbd-mysql-perl, libgd-text-perl, libgd-graph-perl, libdbi-perl, libdigest-sha-perl, libjavascript-minifier-perl, libcss-minifier-perl, ttf-dejavu-extra, ttf-dejavu-core, fonts-font-awesome, libyaml-perl, libyaml-libyaml-perl, libsys-hostname-long-perl, libhtml-parser-perl, libgd-gd2-perl, libjson-xs-perl, libnet-smtp-tls-butmaintained-perl, libtext-csv-xs-perl, libcrypt-eksblowfish-perl, libencode-hanextra-perl, libnet-ldap-perl, libtemplate-perl, libmail-imapclient-perl (>= 3.31), libcgi-pm-perl, libexcel-writer-xlsx-perl, libxml-libxml-perl, libxml-libxslt-perl, libjson-perl
+Suggests: postgresql | default-mysql-server
+Breaks: otrs (<< 3.0)
+Description: Open Ticket Request System
+Homepage: http://www.otrs.org
+Description-md5: 15c1ce7c0b36727cc5b40be1d6c9f2b2
+Recommends: postgresql-client | default-mysql-client, procmail | maildrop, aspell | ispell
+Section: non-free/web
+Priority: optional
+Filename: pool/updates/non-free/o/otrs2/otrs2_5.0.16-1+deb9u5_all.deb
+Size: 7053374
+MD5sum: b86fd91322b9b20e0c63af700c04c2c9
+SHA1: 740088335612419e5026849aff4194a078c6844a
+SHA256: 5bf897596ecacf63ea746805f9615f897533ece292b5227e3d1101ea06b3297b
+

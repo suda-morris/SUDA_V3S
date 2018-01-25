@@ -1,0 +1,22 @@
+Package: otrs
+Description-md5: 8e0a7b6c0c591bed07ede62404238eb1
+Description-en: Open Ticket Request System (OTRS 5)
+ OTRS is an Open source Ticket Request System (also well known as
+ trouble ticket system) with many features to manage customer telephone
+ calls and e-mails. The system is built to allow your support, sales,
+ pre-sales, billing, internal IT, helpdesk, etc. department to react
+ quickly to inbound inquiries.
+ .
+ This package depends on the otrs2 5.x series package.
+
+Package: otrs2
+Description-md5: 15c1ce7c0b36727cc5b40be1d6c9f2b2
+Description-en: Open Ticket Request System
+ OTRS is an Open source Ticket Request System (also well known as
+ trouble ticket system) with many features to manage customer telephone
+ calls and e-mails. The system is built to allow your support, sales,
+ pre-sales, billing, internal IT, helpdesk, etc. department to react
+ quickly to inbound inquiries.
+ .
+ This package ships version 5 of OTRS.
+

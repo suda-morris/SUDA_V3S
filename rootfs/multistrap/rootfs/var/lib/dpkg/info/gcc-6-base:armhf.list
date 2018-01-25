@@ -1,0 +1,14 @@
+/.
+/usr
+/usr/lib
+/usr/lib/gcc
+/usr/lib/gcc/arm-linux-gnueabihf
+/usr/lib/gcc/arm-linux-gnueabihf/6
+/usr/share
+/usr/share/doc
+/usr/share/doc/gcc-6-base
+/usr/share/doc/gcc-6-base/README.Debian.armhf.gz
+/usr/share/doc/gcc-6-base/TODO.Debian
+/usr/share/doc/gcc-6-base/changelog.Debian.gz
+/usr/share/doc/gcc-6-base/copyright
+/usr/lib/gcc/arm-linux-gnueabihf/6.3.0

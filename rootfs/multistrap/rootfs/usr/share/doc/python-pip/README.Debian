@@ -1,0 +1,41 @@
+pip on Debian is a crazy mess due to upstream's vendorizing of several
+packages, which violates both the DFSG and Debian Policy.  To resolve this
+conflict, we package up these dependencies as PEP 427 wheels, essentially zip
+files containing importable pure-Python code and a metadata directory.  These
+wheels live in separate python-<pkg>-whl binary packages, and are installed
+into /usr/share/python-wheels.
+
+These wheels are not used when running pip outside of a virtual environment
+(venv).  In that case, it pip just uses the normal sys.path, on which it finds
+the dependencies installed into Debian's system Pythons in the normal way.
+However, an "outside-the-venv" pip cannot be used to install packages inside
+the venv, so the two main venv creation tools, virtualenv and pyvenv, make
+sure that the virtualenv has a pip executable, but of course in different
+ways.
+
+It gets trickier inside a venv, which by definition may be isolated from the
+system Python's sys.path.  In this case, Debian's inside-the-venv pip prepends
+the paths to the -whl files onto the front of sys.path, so that imports will
+Just Work and upgrades to the dependencies inside the venv won't break pip.
+(Yes, this can and has happened and we need to guard against it.)
+
+It's important to note that determining whether you are in a venv is a
+heuristic labyrinth, because the things you need to check are different
+between Python 2 and Python 3, and between virtualenv and pyvenv (Python
+3-only).  I think we've got it right <wink>.
+
+Python 3.4 introduced a module called "ensurepip" which is used - as its name
+describes - to ensure that there is a pip executable inside the pyvenv created
+venv.  ensurepip does this job by copying all of the dependent .whl files from
+/usr/share/python-wheels into the venv, where pip will look to put then on the
+front of sys.path.  The file /usr/share/python-wheels/pip.dependencies lists
+these dependent wheels, one-per-line, by project name, which is used as the
+prefix for a glob of .whl files (to avoid having to hard-code version numbers
+in the pip.dependencies and ensurepip/__init__.py files).
+
+/usr/share/python-wheels/pip.dependencies is owned by the python-pip-whl
+binary package.
+
+See Debian Python Policy $3.2 for additional details.
+
+ -- Barry Warsaw <barry@debian.org>, Tue,  3 Jun 2014 12:02:14 -0400

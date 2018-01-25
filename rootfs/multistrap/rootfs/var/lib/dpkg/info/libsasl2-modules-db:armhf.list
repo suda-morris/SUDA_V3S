@@ -1,0 +1,15 @@
+/.
+/usr
+/usr/lib
+/usr/lib/arm-linux-gnueabihf
+/usr/lib/arm-linux-gnueabihf/sasl2
+/usr/lib/arm-linux-gnueabihf/sasl2/libsasldb.so.2.0.25
+/usr/share
+/usr/share/doc
+/usr/share/doc/libsasl2-modules-db
+/usr/share/doc/libsasl2-modules-db/NEWS.Debian.gz
+/usr/share/doc/libsasl2-modules-db/changelog.Debian.gz
+/usr/share/doc/libsasl2-modules-db/changelog.gz
+/usr/share/doc/libsasl2-modules-db/copyright
+/usr/lib/arm-linux-gnueabihf/sasl2/libsasldb.so
+/usr/lib/arm-linux-gnueabihf/sasl2/libsasldb.so.2

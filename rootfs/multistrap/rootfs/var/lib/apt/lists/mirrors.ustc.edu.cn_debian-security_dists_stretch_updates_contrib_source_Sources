@@ -1,0 +1,32 @@
+Package: iortcw
+Binary: rtcw, rtcw-common, rtcw-server
+Version: 1.50a+dfsg1-3+deb9u1
+Maintainer: Debian Games Team <pkg-games-devel@lists.alioth.debian.org>
+Uploaders: Simon McVittie <smcv@debian.org>,
+Build-Depends: debhelper (>= 10), dh-apparmor [linux-any], dpkg-dev (>= 1.16.1), libcurl4-gnutls-dev, libfreetype6-dev, libjpeg-dev, libopenal-dev, libopus-dev, libopusfile-dev, libsdl2-dev (>= 2.0.0), libvorbis-dev
+Architecture: any
+Standards-Version: 3.9.8
+Format: 3.0 (quilt)
+Files:
+ 9543eddbbf8a2a38acf429ec0446fe6c 2275 iortcw_1.50a+dfsg1-3+deb9u1.dsc
+ 4990631c91ce3174ddb98746383046f1 3310804 iortcw_1.50a+dfsg1.orig.tar.xz
+ 193d64c9f800ed9e7a246620baf34d01 34628 iortcw_1.50a+dfsg1-3+deb9u1.debian.tar.xz
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-games/iortcw.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-games/iortcw.git
+Checksums-Sha1:
+ ac3656719712e4d8ccdda1d449f3146d667dc7cd 2275 iortcw_1.50a+dfsg1-3+deb9u1.dsc
+ 02db7fb3dcac03e61d8e76566559b5b65175955f 3310804 iortcw_1.50a+dfsg1.orig.tar.xz
+ 3329807b406b1909cba3ac7060639502a0c6ba2f 34628 iortcw_1.50a+dfsg1-3+deb9u1.debian.tar.xz
+Checksums-Sha256:
+ e961c6fcc11039429c6c08b9aa48ea37fc244830427cfbb2f3b85169db227d5a 2275 iortcw_1.50a+dfsg1-3+deb9u1.dsc
+ 3ce3b0c2b8c1f312074fbc0e13999e3fa6f0adb4446c30eb648ca0b8558af8f7 3310804 iortcw_1.50a+dfsg1.orig.tar.xz
+ eb3759edd69ba452b32da6d459750eee5a17340116fdf9801a12bd284612f333 34628 iortcw_1.50a+dfsg1-3+deb9u1.debian.tar.xz
+Homepage: https://github.com/iortcw/iortcw/
+Package-List: 
+ rtcw deb contrib/games optional arch=any
+ rtcw-common deb contrib/games optional arch=any
+ rtcw-server deb contrib/games optional arch=any
+Directory: pool/updates/contrib/i/iortcw
+Priority: source
+Section: contrib/misc
+

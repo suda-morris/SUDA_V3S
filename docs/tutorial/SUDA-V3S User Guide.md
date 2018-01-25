@@ -380,17 +380,17 @@ components=main contrib non-free
 
 [Net]
 #Basic packages to enable the networking
-packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh ca-certificates openssl
+packages=netbase net-tools ethtool udev iproute iputils-ping ifupdown isc-dhcp-client ssh apt-transport-https
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Utils]
 #General purpose utilities
-packages=locales adduser vim less wget dialog usbutils rsync git tree minicom
+packages=locales adduser vim less wget dialog usbutils rsync git
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Python]
 #Python Language
-packages=python python-serial python-pip
+packages=python python-pip
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Init]

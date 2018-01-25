@@ -1,0 +1,14 @@
+39408883544cb41dc133bc986158951b  usr/bin/lsusb
+d0c21738209a0daa203531065b5d1c28  usr/bin/usb-devices
+d888fd426026c9e55c0e57aa23288049  usr/bin/usbhid-dump
+95bd2a3a9a0aa50ba1f0fcf4cd13c6ac  usr/sbin/update-usbids
+fff004063808a07d3729e1d2a1362e4f  usr/share/doc/usbutils/README.Debian
+28b01547e6c06b3a8ede2b893a52c2dc  usr/share/doc/usbutils/changelog.Debian.armhf.gz
+8cb0379cb906b3cbe8ab63bccb0c867b  usr/share/doc/usbutils/changelog.Debian.gz
+9f3074bfd00b20b4244df1cfb021f31a  usr/share/doc/usbutils/changelog.gz
+9f9a3c99a5dc82cc3bda98706a83e12d  usr/share/doc/usbutils/copyright
+47574b5f1fc01ba9590d5c714a926a8b  usr/share/man/man1/usb-devices.1.gz
+331deb3884f5c88cb3e389363c72ec0a  usr/share/man/man8/lsusb.8.gz
+456ab28a76ddee48ff4960f84e51e382  usr/share/man/man8/update-usbids.8.gz
+996cefc54da97e09caa8217bbc998d17  usr/share/man/man8/usbhid-dump.8.gz
+fa5cdb9dc76d2592840224b5084b700a  usr/share/pkgconfig/usbutils.pc

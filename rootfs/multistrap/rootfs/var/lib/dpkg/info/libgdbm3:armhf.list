@@ -1,0 +1,14 @@
+/.
+/usr
+/usr/lib
+/usr/lib/arm-linux-gnueabihf
+/usr/lib/arm-linux-gnueabihf/libgdbm.so.3.0.0
+/usr/lib/arm-linux-gnueabihf/libgdbm_compat.so.3.0.0
+/usr/share
+/usr/share/doc
+/usr/share/doc/libgdbm3
+/usr/share/doc/libgdbm3/changelog.Debian.gz
+/usr/share/doc/libgdbm3/changelog.gz
+/usr/share/doc/libgdbm3/copyright
+/usr/lib/arm-linux-gnueabihf/libgdbm.so.3
+/usr/lib/arm-linux-gnueabihf/libgdbm_compat.so.3
