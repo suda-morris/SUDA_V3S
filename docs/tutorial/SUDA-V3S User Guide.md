@@ -810,11 +810,120 @@ jpegtopnm $1 | pnmquant 224 | pnmtoplainpnm > logo_linux_clut224.ppm
 
 
 
+
 ### 制作刷机包.img文件
 
-> 介绍如何将u-boot，boot.scr，zImage，dtbs，modules，rootfs整合在一起，制作成img刷机包，方便量产烧录
+> 介绍如何将u-boot，boot.scr，zImage，dtbs，modules，rootfs整合在一起，制作成.img刷机包，方便量产烧录
 
 ####直接从SD卡中导出
+
+```bash
+sudo dd if=/dev/sdc of=suda-v3s.img
+```
+
+#### 手动制作
+
+1. 制作一张空白的.img文件`sudo dd if=/dev/zero of=suda-v3s.img bs=1M count=1900`
+
+2. 挂载为回环设备`sudo losetup --show -f suda-v3s.img`，成功后会告知挂载的节点编号，这里假设为loop1回环设备
+
+3. 分区`sudo fdisk /dev/loop1`
+
+   ```bash
+   Welcome to fdisk (util-linux 2.27.1).
+   Changes will remain in memory only, until you decide to write them.
+   Be careful before using the write command.
+
+   Device does not contain a recognized partition table.
+   Created a new DOS disklabel with disk identifier 0xb8a0f051.
+
+   Command (m for help): n                                 # Type n
+   Partition type:
+      p   primary (0 primary, 0 extended, 4 free)
+      e   extended
+   Select (default p):                                     # Press Enter Key      
+   Using default response p
+   Partition number (1-4, default 1):                      # Press Enter Key 
+   Using default value 1
+   First sector (2048-3891199, default 2048): 4096         # Type 4096(2MB)
+   Last sector, +sectors or +size{K,M,G,T,P} (4096-3891199, default 3891199): +20M       
+
+   Created a new partition 1 of type 'Linux' and of size 20 MiB.
+
+   Command (m for help): n                                 # Type n
+   Partition type:                                           
+      p   primary (1 primary, 0 extended, 3 free)
+      e   extended
+   Select (default p):                                     # Press Enter Key
+   Using default response p
+   Partition number (1-4, default 2):                      # Press Enter Key
+   Using default value 2
+   First sector (2048-3891199, default 2048): 45056        # Type 45056(22MB)
+   Last sector, +sectors or +size{K,M,G,T,P} (45056-3891199, default 3891199):  # Press Enter Key
+
+   Created a new partition 2 of type 'Linux' and of size 1.9 GiB.
+
+   Command (m for help): w                                 # Type w
+   The partition table has been altered!
+
+
+   Calling ioctl() to re-read partition table.
+   WARNING: Re-reading the partition table failed with error 22: Invalid argument.
+   The kernel still uses the old table. The new table will be used at
+   the next reboot or after you run partprobe(8) or kpartx(8)
+   Syncing disks.
+   ```
+
+4. 挂载带分区表的镜像文件，使分区同步到.img文件`sudo kpartx -av /dev/loop1`
+
+5. 格式化.img文件的分区
+
+   ```bash
+   sudo mkfs.vfat /dev/mapper/loop1p1
+   sudo mkfs.ext4 /dev/mapper/loop1p2
+   ```
+
+6. 烧写u-boot
+
+   ```bash
+   sudo dd if=/dev/zero of=/dev/loop1 bs=1k count=4094 seek=8
+   sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/loop1 bs=1024 seek=8
+   ```
+
+7. 拷贝文件到第一个分区
+
+   ```bash
+   sudo mount /dev/mapper/loop1p1 /mnt
+   sudo cp zImage /mnt
+   sudo cp boot.scr /mnt
+   sudo cp sun8i-v3s-suda.dtb /mnt
+   sudo umount /mnt
+   ```
+
+8. 拷贝根文件系统到第二个分区
+
+   ```bash
+   sudo mount /dev/mapper/loop1p2 /mnt
+   sudo rsync -axHAX --progress rootfs/ /mnt
+   sudo umount /mnt
+   ```
+
+9. 替换内核模块
+
+   ```bash
+   sudo mount /dev/mapper/loopXp1 /mnt
+   sudo mkdir -p /mnt/lib/modules
+   sudo rm -rf /mnt/lib/modules/
+   sudo cp -r ${lib_dir}/lib /mnt/
+   sudo umount /mnt
+   ```
+
+10. 卸载.img文件
+
+    ```bash
+    sudo kpartx -d /dev/loop1
+    sudo losetup -d /dev/loop1
+    ```
 
 
 
