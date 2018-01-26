@@ -320,6 +320,7 @@ EOT
 apt-get install openssh-server
 apt-get install dialog locales
 dpkg-reconfigure locales
+dpkg-reconfigure tzdata
 ```
 
 10. 设置root密码`passwd`
@@ -494,18 +495,24 @@ echo deb https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contr
 echo deb-src https://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free >> $filename
 ```
 
-8. 设置密码及其他操作
+8. 设置密码及安装额外需要的软件包（如桌面系统）
 
 ```bash
 sudo chroot rootfs passwd
-sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install packagename
+sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install xorg plasma-desktop konsole qupzilla dolphin plasma-nm sudo
 ```
 
 9. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
-10. 修改交换分区的大小，在`/etc/dphys-swapfile `文件中修改`CONF_SWAPSIZE=128`
-11. 将文件系统同步至SD卡的第二个分区
 
 ```bash
+sed -i "s/^PermitRootLogin without-password/PermitRootLogin yes/" rootfs/etc/ssh/sshd_config
+```
+
+10. 修改交换分区的大小，在`/etc/dphys-swapfile `文件中修改`CONF_SWAPSIZE=128`
+11. 清理辅助文件，并将文件系统同步至SD卡的第二个分区
+
+```bash
+sudo rm rootfs/usr/bin/qemu-arm-static 
 sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/
 ```
 
@@ -803,11 +810,11 @@ jpegtopnm $1 | pnmquant 224 | pnmtoplainpnm > logo_linux_clut224.ppm
 
 
 
-### 制作刷机包
+### 制作刷机包.img文件
 
 > 介绍如何将u-boot，boot.scr，zImage，dtbs，modules，rootfs整合在一起，制作成img刷机包，方便量产烧录
 
-
+####直接从SD卡中导出
 
 
 

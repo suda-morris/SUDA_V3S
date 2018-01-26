@@ -58,3 +58,4 @@ official-images/
 tarballs/
 toolchains/
 kernel/*/out
+rootfs/multistrap/rootfs/

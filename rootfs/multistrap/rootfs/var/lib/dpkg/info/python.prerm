@@ -1,9 +1,0 @@
-#! /bin/sh
-set -e
-
-case "$1" in
-    remove)
-	rm -f /usr/share/python/pyversions.py[co]
-esac
-
-

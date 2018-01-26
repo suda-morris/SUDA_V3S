@@ -1,3 +1,0 @@
-This is a case study for various ways to implement a "next" command
-inside one of the Error.pm clauses, which itself will be inside an 
-inner loop inside Error.pm.

@@ -1,6 +1,0 @@
-#! /bin/sh
-set -e
-
-find /usr/share/python/ -name '*.py[oc]' -delete
-
-
