@@ -505,7 +505,7 @@ sudo LC_ALL=C LANGUAGE=C LANG=C chroot rootfs apt-get install xorg plasma-deskto
 9. 修改 rootfs/etc/ssh/sshd_config来使能root登录`PermitRootLogin yes`
 
 ```bash
-sed -i "s/^PermitRootLogin without-password/PermitRootLogin yes/" rootfs/etc/ssh/sshd_config
+sudo sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/" rootfs/etc/ssh/sshd_config
 ```
 
 10. 修改交换分区的大小，在`/etc/dphys-swapfile `文件中修改`CONF_SWAPSIZE=128`
@@ -823,7 +823,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 #### 手动制作
 
-1. 制作一张空白的.img文件`sudo dd if=/dev/zero of=suda-v3s.img bs=1M count=1900`
+1. 制作一张空白的.img文件`dd if=/dev/zero of=suda-v3s.img bs=1M count=1800`
 
 2. 挂载为回环设备`sudo losetup --show -f suda-v3s.img`，成功后会告知挂载的节点编号，这里假设为loop1回环设备
 
@@ -886,7 +886,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 6. 烧写u-boot
 
    ```bash
-   sudo dd if=/dev/zero of=/dev/loop1 bs=1k count=4094 seek=8
+   sudo dd if=/dev/zero of=/dev/loop1 bs=1k count=2000 seek=8
    sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/loop1 bs=1024 seek=8
    ```
 
@@ -911,7 +911,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 9. 替换内核模块
 
    ```bash
-   sudo mount /dev/mapper/loopXp1 /mnt
+   sudo mount /dev/mapper/loop1p2 /mnt
    sudo mkdir -p /mnt/lib/modules
    sudo rm -rf /mnt/lib/modules/
    sudo cp -r ${lib_dir}/lib /mnt/
@@ -988,6 +988,11 @@ fs4412-beep{
 
 - **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
 - **reg**，描述寄存器基址和长度，可以有多个
+
+
+
+
+### EtherCAT Master IgH移植
 
 
 
