@@ -386,7 +386,7 @@ source=https://mirrors.ustc.edu.cn/debian/
 
 [Utils]
 #General purpose utilities
-packages=locales adduser vim less wget dialog usbutils rsync git dphys-swapfile 
+packages=locales adduser vim less wget dialog usbutils rsync git sqlite3 libsqlite3-dev dphys-swapfile 
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Python]
@@ -515,6 +515,26 @@ sudo sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/" rootfs/e
 sudo rm rootfs/usr/bin/qemu-arm-static 
 sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/
 ```
+
+
+
+### Debian下如何更新动态链接库
+
+1. 方法1（推荐）
+
+   * ```bash
+     #修改/etc/ld.so.conf，然后刷新
+      echo "where is your library" >> /etc/ld.so.conf
+      sudo ldconfig
+     ```
+
+2. 方法2
+
+   * ```bash
+     #修改LD_LIBRARY_PATH，然后刷新
+      export LD_LIBRARY_PATH=/where/you/install/lib:$LD_LIBRARY_PATH
+      sudo ldconfig
+     ```
 
 
 
@@ -865,6 +885,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
    Command (m for help): w                                 # Type w
    The partition table has been altered!
+   ```
 
 
    Calling ioctl() to re-read partition table.
@@ -920,10 +941,10 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 10. 卸载.img文件
 
-    ```bash
-    sudo kpartx -d /dev/loop1
-    sudo losetup -d /dev/loop1
-    ```
+   ```bash
+   sudo kpartx -d /dev/loop1
+   sudo losetup -d /dev/loop1
+   ```
 
 
 
@@ -993,6 +1014,98 @@ fs4412-beep{
 
 
 ### EtherCAT Master IgH移植
+
+1. [下载IgH源码](https://github.com/synapticon/Etherlab_EtherCAT_Master/releases/)
+
+2. 解压后，进入源码顶层目录，进行编译前的配置，需要指定内核源码的路径和目标平台架构
+
+   ```bash
+   ./configure --with-linux-dir=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/ --prefix=/home/morris/SUDA_V3S/3rdpart/ethercat-1.5.2-sncn-5/out --enable-8139too=no --host=arm-linux-gnueabihf CC=arm-linux-gnueabihf-gcc AR=arm-linux-gnueabihf-ar LD=arm-linux-gnueabihf-ld RANLIB=arm-linux-gnueabihf-ranlib AS=arm-linux-gnueabihf-as NM=arm-linux-gnueabihf-nm
+   ```
+
+3. 编译源码`make`
+
+4. 安装用户空间的程序到out目录下`make install`
+
+5. 编译模块，需要指定交叉编译工具`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules`
+
+   1. 报错*error: ‘struct vm_fault’ has no member named ‘virtual_address’*
+
+      * ```c
+        //在eccdev_vma_fault函数中修改
+        +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,10,0))
+        +            " offset = %lu, page = %p\n", (void*)vmf->address, offset, page);
+        +#else
+                     " offset = %lu, page = %p\n", vmf->virtual_address, offset, page);
+        +#endif
+        ```
+
+   2. 报错*error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]  .fault = eccdev_vma_fault*
+
+      * ```c
+        //将函数原型==> 
+        eccdev_vma_fault(struct vm_area_struct* vma, struct vm_fault* vmf);
+        //替换为==>
+        eccdev_vma_fault(struct vm_fault* vmf);
+        ```
+
+      * ```c
+        //在eccdev_vma_fault函数中，重新获取vma变量（原来的函数原型中，vma是传入的参数）
+        struct vm_area_struct* vma = vmf->vma;
+        ```
+
+   3. 报错`error: storage size of ‘param’ isn’t known  struct sched_param param = { .sched_priority = 0 };`
+
+      * ```c
+        //在该.c文件中增加头文件
+        #include <uapi/linux/sched/types.h>
+        ```
+
+6. 安装内核模块到**内核目录**的out文件夹下`make INSTALL_MOD_PATH=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/out/ modules_install`
+
+7. 进入开发板进行配置
+
+   1. 配置规则文件`99-EtherCAT.rules`
+
+      * ```bash
+        ethercatUserGroup:=$(shell whoami)
+        echo "KERNEL==\"EtherCAT[0-9]*\",MODE=\"0664\",GROUP=\"$(ethercatUserGroup)\"">99-EtherCAT.rules
+        ```
+
+   2. 目录下各文件目录的内容复制到板子根文件系统根目录下相应目录下
+
+   ​
+
+### 修改内核printk等级
+
+1. 查看当前控制台的打印级别`cat /proc/sys/kernel/printk`
+
+   * 比如返回的是：7 4 1 7
+   * 其中第一个数字7表示内核打印函数printk的打印级别，只有级别比他高的信息才能在控制台上打印出来，既 0－6级别的信息
+
+2. 修改打印级别
+
+   * **echo "新的打印级别  4    1    7" >/proc/sys/kernel/printk**
+
+3. 不够打印级别的信息会被写到日志中，可通过dmesg 命令来查看
+
+4. printk的打印级别
+
+   ```c
+   #define KERN_EMERG  		"<0>" /* system is unusable */
+   #define KERN_ALERT         	"<1>" /* action must be taken immediately */
+   #define KERN_CRIT           "<2>" /* critical conditions */
+   #define KERN_ERR            "<3>" /* error conditions */
+   #define KERN_WARNING   		"<4>" /* warning conditions */
+   #define KERN_NOTICE       	"<5>" /* normal but significant condition */
+   #define KERN_INFO           "<6>" /* informational */
+   #define KERN_DEBUG       	"<7>" /* debug-level messages */
+   ```
+
+5. printk函数的使用
+
+   * printk(打印级别  “要打印的信息”)
+   * 打印级别就是上面定义的几个宏
 
 
 
