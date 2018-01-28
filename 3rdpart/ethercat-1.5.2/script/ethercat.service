@@ -1,0 +1,15 @@
+#
+# EtherCAT Master Kernel Modules
+#
+
+[Unit]
+Description=EtherCAT Master Kernel Modules
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/home/morris/SUDA_V3S/rootfs/multistrap/rootfs/opt/ethercat/sbin/ethercatctl start
+ExecStop=/home/morris/SUDA_V3S/rootfs/multistrap/rootfs/opt/ethercat/sbin/ethercatctl stop
+
+[Install]
+WantedBy=multi-user.target

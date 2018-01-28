@@ -941,10 +941,10 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 10. 卸载.img文件
 
-   ```bash
-   sudo kpartx -d /dev/loop1
-   sudo losetup -d /dev/loop1
-   ```
+  ```bash
+  sudo kpartx -d /dev/loop1
+  sudo losetup -d /dev/loop1
+  ```
 
 
 
@@ -1015,24 +1015,50 @@ fs4412-beep{
 
 ### EtherCAT Master IgH移植
 
-1. [下载IgH源码](https://github.com/synapticon/Etherlab_EtherCAT_Master/releases/)
+1. [下载IgH源码](http://www.etherlab.org/download/ethercat/ethercat-1.5.2.tar.bz2)
 
 2. 解压后，进入源码顶层目录，进行编译前的配置，需要指定内核源码的路径和目标平台架构
 
    ```bash
-   ./configure --with-linux-dir=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/ --prefix=/home/morris/SUDA_V3S/3rdpart/ethercat-1.5.2-sncn-5/out --enable-8139too=no --host=arm-linux-gnueabihf CC=arm-linux-gnueabihf-gcc AR=arm-linux-gnueabihf-ar LD=arm-linux-gnueabihf-ld RANLIB=arm-linux-gnueabihf-ranlib AS=arm-linux-gnueabihf-as NM=arm-linux-gnueabihf-nm
+   ./configure --with-linux-dir=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/ --prefix=/home/morris/SUDA_V3S/rootfs/multistrap/rootfs/opt/ethercat --enable-8139too=no --host=arm-linux-gnueabihf CC=arm-linux-gnueabihf-gcc AR=arm-linux-gnueabihf-ar LD=arm-linux-gnueabihf-ld RANLIB=arm-linux-gnueabihf-ranlib AS=arm-linux-gnueabihf-as NM=arm-linux-gnueabihf-nm
    ```
 
 3. 编译源码`make`
 
-4. 安装用户空间的程序到out目录下`make install`
+4. 安装用户空间的程序到根文件系统下`sudo make install`
 
-5. 编译模块，需要指定交叉编译工具`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules`
+5. 进入根文件系统配置动态库路径
 
-   1. 报错*error: ‘struct vm_fault’ has no member named ‘virtual_address’*
+   * 新增配置项`sudo vim /etc/ld.so.conf.d/ethercat.conf`
+   * 填入配置内容（动态链接库的路径）：**/opt/ethercat/lib**
+   * 保存后执行：`sudo chroot rootfs/ ldconfig`
+
+6. 编译模块，需要指定交叉编译工具`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules`
+
+   1. 报错*error: macro "alloc_netdev" requires 4 arguments, but only 3 given*
 
       * ```c
-        //在eccdev_vma_fault函数中修改
+        //修改device/generic.c
+        dev->netdev = alloc_netdev(sizeof(ec_gen_device_t *), &null, ether_setup);
+        //修改成
+        dev->netdev = alloc_netdev(sizeof(ec_gen_device_t *), &null, NET_NAME_UNKNOWN, ether_setup);
+        ```
+
+   2. 报错*error: too few arguments to function ‘sock_create_kern’*
+
+      * ```c
+        //修改device/generic.c
+        ret = sock_create_kern(PF_PACKET, SOCK_RAW, htons(ETH_P_ETHERCAT),
+                    &dev->socket);
+        //修改为
+        ret = sock_create_kern(&init_net, PF_PACKET, SOCK_RAW, htons(ETH_P_ETHERCAT),
+                    &dev->socket);
+        ```
+
+   3. 报错*error: ‘struct vm_fault’ has no member named ‘virtual_address’*
+
+      * ```c
+        //在master/cdev.c文件的eccdev_vma_fault函数中修改
         +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,10,0))
         +            " offset = %lu, page = %p\n", (void*)vmf->address, offset, page);
         +#else
@@ -1040,9 +1066,10 @@ fs4412-beep{
         +#endif
         ```
 
-   2. 报错*error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]  .fault = eccdev_vma_fault*
+   4. 报错*error: initialization from incompatible pointer type [-Werror=incompatible-pointer-types]  .fault = eccdev_vma_fault*
 
       * ```c
+        //修改master/cdev.c文件
         //将函数原型==> 
         eccdev_vma_fault(struct vm_area_struct* vma, struct vm_fault* vmf);
         //替换为==>
@@ -1054,25 +1081,39 @@ fs4412-beep{
         struct vm_area_struct* vma = vmf->vma;
         ```
 
-   3. 报错`error: storage size of ‘param’ isn’t known  struct sched_param param = { .sched_priority = 0 };`
+   5. 报错`error: storage size of ‘param’ isn’t known  struct sched_param param = { .sched_priority = 0 };`
 
       * ```c
-        //在该.c文件中增加头文件
+        //在master/master.c文件中增加头文件
         #include <uapi/linux/sched/types.h>
         ```
 
-6. 安装内核模块到**内核目录**的out文件夹下`make INSTALL_MOD_PATH=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/out/ modules_install`
+7. 安装内核模块到**内核目录**的out文件夹下`make INSTALL_MOD_PATH=/home/morris/SUDA_V3S/kernel/linux-zero-4.13.y/out/ modules_install`
 
-7. 进入开发板进行配置
+   * 总共有三个.ko文件：/devices/ec_generic.ko，examples/mini/ec_mini.ko， master/ec_master.ko
 
-   1. 配置规则文件`99-EtherCAT.rules`
+8. 进入根文件系统配置ethercat的服务
 
-      * ```bash
-        ethercatUserGroup:=$(shell whoami)
-        echo "KERNEL==\"EtherCAT[0-9]*\",MODE=\"0664\",GROUP=\"$(ethercatUserGroup)\"">99-EtherCAT.rules
-        ```
+   ```bash
+   #!/bin/sh
+   #配置rules，创建设备号
+   sudo echo "KERNEL==\"EtherCAT[0-9]*\", MODE=\"0664\", GROUP=\"root\"" > rootfs/etc/udev/rules.d/99-EtherCAT.rules
+   #创建软链接
+   sudo chroot rootfs ln -s /opt/ethercat/etc/init.d/ethercat /etc/init.d/ethercat
+   sudo chroot rootfs ln -s /opt/ethercat/bin/ethercat /usr/bin/ethercat
+   #配置网卡参数
+   sudo mkdir -p rootfs/etc/sysconfig/
+   sudo cp rootfs/opt/ethercat/etc/sysconfig/ethercat rootfs/etc/sysconfig/ethercat
+   sudo sed -i 's/DEVICE_MODULES=\"\"/DEVICE_MODULES=\"generic\"/g' rootfs/etc/sysconfig/ethercat
+   sudo sed -i 's/MASTER0_DEVICE=\"\"/MASTER0_DEVICE=\"00:04:25:12:34:56\"/g' rootfs/etc/sysconfig/ethercat
+   ```
 
-   2. 目录下各文件目录的内容复制到板子根文件系统根目录下相应目录下
+9. 配置开机自启
+
+   ```bash
+   sudo update-rc.d ethercat defaults
+   sudo /etc/init.d/ethercat start
+   ```
 
    ​
 
