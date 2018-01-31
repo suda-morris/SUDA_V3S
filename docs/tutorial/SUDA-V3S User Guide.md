@@ -1096,7 +1096,7 @@ fs4412-beep{
 
    ```bash
    #!/bin/sh
-   #配置rules，创建设备号
+   #运行程序时，要打开/dev/EtherCAT0文件需要root权限，为了不每次都手动修改权限，所以要设置rules
    sudo echo "KERNEL==\"EtherCAT[0-9]*\", MODE=\"0664\", GROUP=\"root\"" > rootfs/etc/udev/rules.d/99-EtherCAT.rules
    #创建软链接
    sudo chroot rootfs ln -s /opt/ethercat/etc/init.d/ethercat /etc/init.d/ethercat
@@ -1108,14 +1108,16 @@ fs4412-beep{
    sudo sed -i 's/MASTER0_DEVICE=\"\"/MASTER0_DEVICE=\"00:04:25:12:34:56\"/g' rootfs/etc/sysconfig/ethercat
    ```
 
-9. 配置开机自启
+9. 配置开机自启（用自启动脚本控制命令：**update-rc.d**）
 
    ```bash
    sudo update-rc.d ethercat defaults
    sudo /etc/init.d/ethercat start
    ```
 
-   ​
+10. 分析可加载模块的依赖性，生成modules.dep文件和映射文件（在目标板上操作）`depmod`
+
+
 
 ### 修改内核printk等级
 
@@ -1124,7 +1126,7 @@ fs4412-beep{
    * 比如返回的是：7 4 1 7
    * 其中第一个数字7表示内核打印函数printk的打印级别，只有级别比他高的信息才能在控制台上打印出来，既 0－6级别的信息
 
-2. 修改打印级别
+2. 修改打印级别(一般设置为"4 4 1 7")
 
    * **echo "新的打印级别  4    1    7" >/proc/sys/kernel/printk**
 
@@ -1147,6 +1149,7 @@ fs4412-beep{
 
    * printk(打印级别  “要打印的信息”)
    * 打印级别就是上面定义的几个宏
+
 
 
 
