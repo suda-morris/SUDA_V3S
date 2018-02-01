@@ -421,6 +421,99 @@ int main(void) {
 
 
 
+#### Tab View
+
+> 是一种容器，以标签的形式管理内容。选中某一个标签主要有三种方法：点击标签头部，水平滑动，显式调用`lv_tabview_set_tab_act(tabview, id, anim_en)`
+>
+> 1. 创建tabview对象lv_obj_t * lv_tabview_create(lv_obj_t * par, lv_obj_t * copy);
+> 2. 往容器中添加新的标签lv_obj_t * lv_tabview_add_tab(lv_obj_t * tabview, const char * name);
+> 3. 设置某个标签为选中状态 void lv_tabview_set_tab_act(lv_obj_t * tabview, uint16_t id, bool anim_en);
+> 4. 设置标签被加载后的回调函数 void lv_tabview_set_tab_load_action(lv_obj_t *tabview, lv_tabview_action_t action);这样的话可以实现按需加载显示的界面
+>    * 回调函数的原型为：`void callback(lv_obj_t * tabview, uint16_t act_id)`
+> 5. 是否使能水平滑动来切换标签 void lv_tabview_set_sliding(lv_obj_t * tabview, bool en);
+> 6. 设置标签切换动画时常(单位毫秒) void lv_tabview_set_anim_time(lv_obj_t * tabview, uint16_t anim_time);
+> 7. 设置样式 void lv_tabview_set_style(lv_obj_t *tabview, lv_tabview_style_t type, lv_style_t *style);
+> 8. 获取当前活动状态的标签id uint16_t lv_tabview_get_tab_act(lv_obj_t * tabview);
+> 9.  获取标签总数uint16_t lv_tabview_get_tab_count(lv_obj_t * tabview);
+> 10. 根据标签id获取标签页面对象 lv_obj_t * lv_tabview_get_tab(lv_obj_t * tabview, uint16_t id);
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <time.h>
+#include "lvgl/lvgl.h"
+#include "lv_drivers/display/fbdev.h"
+
+static lv_obj_t * chart_temp = NULL;
+static lv_chart_series_t * ch1ser1 = NULL;
+
+void sigalrm_fn(int sig) {
+	lv_chart_set_next(chart_temp, ch1ser1, rand() % 100);
+	alarm(1);
+}
+
+static void hal_disp_init(void) {
+	/* 初始化Linux Frame Buffer设备 */
+	fbdev_init();
+	/* 注册显示器驱动 */
+	lv_disp_drv_t disp_drv;
+	lv_disp_drv_init(&disp_drv);
+	disp_drv.disp_flush = fbdev_flush; /* 将内部图像缓存刷新到显示器上 */
+	lv_disp_drv_register(&disp_drv);
+}
+
+int main(void) {
+	/* 初始化LittlevGL库 */
+	lv_init();
+	/* 初始化显示器底层硬件 */
+	hal_disp_init();
+
+	/* 创建一个屏幕 */
+	lv_obj_t *scr = lv_obj_create(NULL, NULL);
+	lv_scr_load(scr);
+
+	/* 初始化alien主题 */
+	lv_theme_t *th = lv_theme_alien_init(100, NULL);
+	lv_theme_set_current(th);
+
+	/*Create a Tab view object*/
+	lv_obj_t *tabview = lv_tabview_create(lv_scr_act(), NULL);
+
+	/*Add 3 tabs (the tabs are page (lv_page) and can be scrolled*/
+	lv_obj_t *tab1 = lv_tabview_add_tab(tabview, SYMBOL_HOME);
+	lv_obj_t *tab2 = lv_tabview_add_tab(tabview, SYMBOL_IMAGE);
+	lv_obj_t *tab3 = lv_tabview_add_tab(tabview, SYMBOL_SETTINGS);
+
+	/* 创建图表容器 */
+	chart_temp = lv_chart_create(tab1, NULL);
+	lv_obj_set_size(chart_temp, 400, 200);
+	lv_obj_align(chart_temp, NULL, LV_ALIGN_CENTER, 0, 0);
+	lv_chart_set_type(chart_temp, LV_CHART_TYPE_POINT | LV_CHART_TYPE_LINE);
+	lv_chart_set_series_opa(chart_temp, LV_OPA_70);
+	lv_chart_set_series_width(chart_temp, 4);
+	lv_chart_set_range(chart_temp, 0, 100);
+
+	/* 向图表容器中插入数据 */
+	ch1ser1 = lv_chart_add_series(chart_temp, LV_COLOR_RED);
+
+	srand(time(NULL));
+	signal(SIGALRM, sigalrm_fn);
+	alarm(1);
+
+	while (1) {
+		lv_tick_inc(1);
+		lv_task_handler();
+		usleep(1000);
+	}
+
+	return 0;
+}
+```
+
+
+
 #### chart
 
 > 用来展示基本的图表，包括折线图，柱状图，散点图。
@@ -445,8 +538,120 @@ int main(void) {
 > 14. 刷新数据界面 void lv_chart_refresh(lv_obj_t * chart);
 
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "lvgl/lvgl.h"
+#include "lv_drivers/display/fbdev.h"
 
+static void hal_disp_init(void) {
+	/* 初始化Linux Frame Buffer设备 */
+	fbdev_init();
+	/* 注册显示器驱动 */
+	lv_disp_drv_t disp_drv;
+	lv_disp_drv_init(&disp_drv);
+	disp_drv.disp_flush = fbdev_flush; /* 将内部图像缓存刷新到显示器上 */
+	lv_disp_drv_register(&disp_drv);
+}
+
+int main(void) {
+	/* 初始化LittlevGL库 */
+	lv_init();
+	/* 初始化显示器底层硬件 */
+	hal_disp_init();
+
+	/* 创建一个屏幕 */
+	lv_obj_t *scr = lv_obj_create(NULL, NULL);
+	lv_scr_load(scr);
+
+	/* 初始化alien主题 */
+	lv_theme_t *th = lv_theme_alien_init(268, NULL);
+
+	/* 创建图表容器 */
+	lv_obj_t * chart;
+	chart = lv_chart_create(lv_scr_act(), NULL);
+	lv_obj_set_size(chart, 200, 150);
+	lv_obj_set_style(chart, th->chart);
+	lv_obj_align(chart, NULL, LV_ALIGN_IN_LEFT_MID, 10, 0);
+	lv_chart_set_type(chart, LV_CHART_TYPE_POINT | LV_CHART_TYPE_LINE);
+	lv_chart_set_series_opa(chart, LV_OPA_70);
+	lv_chart_set_series_width(chart, 4);
+
+	lv_chart_set_range(chart, 0, 100);
+
+	/* 想图表容器中插入数据 */
+	lv_chart_series_t * ch1ser1 = lv_chart_add_series(chart, LV_COLOR_RED);
+	lv_chart_series_t * ch1ser2 = lv_chart_add_series(chart, LV_COLOR_GREEN);
+
+	lv_chart_set_next(chart, ch1ser1, 10);
+	lv_chart_set_next(chart, ch1ser1, 70);
+	lv_chart_set_next(chart, ch1ser1, 50);
+	lv_chart_set_next(chart, ch1ser1, 90);
+
+	ch1ser2->points[0] = 90;
+	ch1ser2->points[1] = 70;
+	ch1ser2->points[2] = 65;
+	ch1ser2->points[3] = 65;
+	ch1ser2->points[4] = 65;
+	ch1ser2->points[5] = 65;
+
+	/* 刷新数据 */
+	lv_chart_refresh(chart);
+
+	while (1) {
+		lv_tick_inc(1);
+		lv_task_handler();
+		usleep(1000);
+	}
+
+	return 0;
+}
 ```
+
+
+
+#### Gauge
+
+> 仪表盘可以展示多个指针，仪表盘默认的角度为220°，分6栏，临界值默认设置为80。
+>
+> 1. 创建表盘 lv_obj_t * lv_gauge_create(lv_obj_t * par, lv_obj_t * copy);
+> 2. 设置表针数量void lv_gauge_set_needle_count(lv_obj_t * gauge, uint8_t needle_cnt, const lv_color_t * colors);
+> 3. 设置表针数据 void lv_gauge_set_value(lv_obj_t * gauge, uint8_t needle_id, int16_t value);
+> 4. 设置仪表盘数据范围 void lv_gauge_set_range(lv_obj_t *gauge, int16_t min, int16_t max);
+> 5. 设置临界值 void lv_gauge_set_critical_value(lv_obj_t * gauge, int16_t value)
+> 6. 设置仪表盘的刻度 void lv_gauge_set_scale(lv_obj_t * gauge, uint16_t angle, uint8_t line_cnt, uint8_t label_cnt);
+> 7. 设置仪表盘的样式 void lv_gauge_set_style(lv_obj_t *gauge, lv_style_t *bg)
+
+```c
+/*Create a style*/
+static lv_style_t style;
+lv_style_copy(&style, &lv_style_pretty_color);
+style.body.main_color = LV_COLOR_HEX3(0x666);     /*Line color at the beginning*/
+style.body.grad_color =  LV_COLOR_HEX3(0x666);    /*Line color at the end*/
+style.body.padding.hor = 10;                      /*Scale line length*/
+style.body.padding.inner = 8 ;                    /*Scale label padding*/
+style.body.border.color = LV_COLOR_HEX3(0x333);   /*Needle middle circle color*/
+style.line.width = 3;
+style.text.color = LV_COLOR_HEX3(0x333);
+style.line.color = LV_COLOR_RED;                  /*Line color after the critical value*/
+
+
+/*Describe the color for the needles*/
+static lv_color_t needle_colors[] = {LV_COLOR_BLUE, LV_COLOR_ORANGE, LV_COLOR_PURPLE};
+
+/*Create a gauge*/
+lv_obj_t * gauge1 = lv_gauge_create(lv_scr_act(), NULL);
+lv_gauge_set_style(gauge1, &style);
+lv_gauge_set_needle_count(gauge1, 3, needle_colors);
+lv_obj_align(gauge1, NULL, LV_ALIGN_CENTER, 0, 20);
+
+/*Set the values*/
+lv_gauge_set_value(gauge1, 0, 10);
+lv_gauge_set_value(gauge1, 1, 20);
+lv_gauge_set_value(gauge1, 2, 30);
+```
+
+
 
 
 
