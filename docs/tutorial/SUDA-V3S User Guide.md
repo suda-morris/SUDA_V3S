@@ -16,11 +16,19 @@
 > * 全志(Allwinner)公司的很多SoC产品代号都是sunxi，比如A10(sun4i)，A13(sun5i)，A20(sun7i)，[详细信息可以查看全志SoC家族产品](https://sunxi.org/Allwinner_SoC_Family)，我们将要使用的V3s属于sun8i.
 > * sunxi也是一个专门负责推广和支持全志SoC平台开源硬件的社区，但是全志本身并没有加入这个社区.
 
-### 系统引导流程
+### 上电引导流程
 
 ![引导流程](imgs/boot-sequence.png)
 
 * 其中的BSP(boot select pin)引脚为PC0，短接PC0和GND后上电即可进入USB引导模式(可以通过sunxi-tool工具来烧写程序到SPI Flash中)
+
+
+
+### Linux系统启动流程
+
+![Linux系统启动流程](imgs/linux-start-sequence.png)
+
+
 
 ### 安装交叉编译器arm-linux-gnueabihf
 
@@ -888,13 +896,6 @@ sudo dd if=/dev/sdc of=suda-v3s.img
    ```
 
 
-   Calling ioctl() to re-read partition table.
-   WARNING: Re-reading the partition table failed with error 22: Invalid argument.
-   The kernel still uses the old table. The new table will be used at
-   the next reboot or after you run partprobe(8) or kpartx(8)
-   Syncing disks.
-   ```
-
 4. 挂载带分区表的镜像文件，使分区同步到.img文件`sudo kpartx -av /dev/loop1`
 
 5. 格式化.img文件的分区
@@ -903,6 +904,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
    sudo mkfs.vfat /dev/mapper/loop1p1
    sudo mkfs.ext4 /dev/mapper/loop1p2
    ```
+
 
 6. 烧写u-boot
 
@@ -945,70 +947,6 @@ sudo dd if=/dev/sdc of=suda-v3s.img
   sudo kpartx -d /dev/loop1
   sudo losetup -d /dev/loop1
   ```
-
-
-
-### 设备树简介
-
-> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
->
-> 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
-
-```bash
-/ {  
-    node1 {  
-        a-string-property = "A string";  
-        a-string-list-property = "first string", "second string";  
-        a-byte-data-property = [0x01 0x23 0x34 0x56];  
-        child-node1 {  
-            first-child-property;  
-            second-child-property = <1>;  
-            a-string-property = "Hello, world";  
-        };  
-        child-node2 {  
-        };  
-    };  
-    node2 {  
-        an-empty-property;  
-        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
-        child-node1 {  
-        };  
-    };  
-};
-```
-
-- deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
-
-#### 设备树与驱动的配合
-
-1. 驱动代码
-
-```c
-static struct of_device_id beep_table[] = {  
-    {.compatible = "fs4412,beep"},  
-};  
-static struct platform_driver beep_driver=  
-{  
-    .probe = beep_probe,  
-    .remove = beep_remove,  
-    .driver={  
-        .name = "bigbang",  
-        .of_match_table = beep_table,  
-    },  
-};
-```
-
-1. 设备树描述
-
-```c
-fs4412-beep{  
-         compatible = "fs4412,beep";  
-         reg = <0x114000a0 0x4 0x139D0000 0x14>;  
-};  
-```
-
-- **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
-- **reg**，描述寄存器基址和长度，可以有多个
 
 
 
@@ -1150,6 +1088,209 @@ fs4412-beep{
    * printk(打印级别  “要打印的信息”)
    * 打印级别就是上面定义的几个宏
 
+
+
+
+### Shell脚本简介
+
+#### Shell变量
+
+> 对Shell来讲，所有变量的取值都是一个字符。
+
+1. Shell系统变量
+
+   * $#：程序命令行参数的数目(不包括程序名本身)
+   * $?：前一个命令的返回值
+   * $0：当前程序名
+   * $*：以”\$1 \$2...“的形式保存所有输入的命令行参数
+   * $@：以”\$1“"\$2"...的形式保存所有输入的命令行参数
+   * $n：命令行的第n个参数
+
+2. Shell环境变量
+
+   * PATH：决定了Shell将到哪些目录中寻找命令或者程序
+   * HOME：当前用户主目录的绝对路径名
+   * HISTSIZE：历史纪录数
+   * LOGNAME：当前用户的登录名
+   * HOSTNAME：主机的名称
+   * SHELL：Shell路径名
+   * PS1：主提示符，对于root用户是#，对于普通用户是$
+   * PS2：辅助提示符，默认是>
+   * TERM：终端的类型
+   * PWD：当前工作目录的绝对路径名
+
+3. Shell用户变量
+
+   > 使用任何不包含空格的字符串作为变量名，定义变量时，变量名前面不应该加$符号，并且**等号两边一定不能留空格**。
+   >
+   > 变量的引用，要在变量前加$符号
+
+#### 流程控制
+
+1. if语句
+
+   ```shell
+   if [表达式]
+   then
+   commands1
+   else
+   commands2
+   fi
+   ```
+
+2. case语句
+
+   ```shell
+   case 字符串 in
+   模式1) command
+   模式2) command
+   ...
+   *) command
+   esac
+   ```
+
+3. while语句
+
+   ```shell
+   while 表达式
+   do
+   command
+   done
+   ```
+
+4. for语句
+
+   ```shell
+   for 变量名 in 列表
+   do
+       command1
+       command2
+   done
+   ```
+
+#### 正则表达式
+
+> 正则表达式是一种可以用于模式匹配和替换的有效工具。正则表达式描述了一种字符串匹配的模式，可以用来检查一个字符串是否包含某种子串、讲匹配的子串做替换或者从某个串中取出复合某个条件的子串等。Linux系统自带的所有文本过滤工具在某种模式下都支持正则表达式，正则表达式可以匹配行首与行尾、数据集、字母和数字以及一定范围内的字符串集合。
+
+**特殊字符及其含义**
+
+* ^：只匹配行首
+* $：只匹配行尾
+* \*：单字符后面跟\*将匹配0个或者多个此字符
+* []：匹配[]内的字符，既可以是单个字符也可以是字符序列
+* \：转移字符，用来屏蔽一个字符的特殊含义
+* .：用来匹配任意的单字符（除了换行）
+* Pattern\\{n\\}：用来匹配pattern在前面出现的次数，n即为次数
+* Pattern\\{n,\\}：用来匹配前面pattern出现的次数，次数最少为n
+* Pattern\\{n,m\\}：用来匹配前面pattern出现的次数，次数在n和m之间
+
+**常用的正则表达式**
+
+* 仅匹配行首：^
+* 仅匹配行尾：$
+* 匹配以STR作为开头的行：^STR
+* 匹配只包含USER的行：^USER$
+* 匹配对用户、用户组和其他用户组成员都有可执行权限的目录：^d..x..x..x
+
+
+
+### GDB调试
+
+> 需要gbd调试的程序，在编译的时候需要传入-g参数，即gcc -g
+>
+> gdb [参数] filename
+>
+> * -help
+> * -s file：读出文件file的所有符号
+> * -c：程序非法执行后core dump后产生的文件
+> * -d：加入一个源文件的搜索路径。默认搜索路径是环境变量中PATH所定义的路径
+> * -q：不显示GDB的介绍和版权信息
+
+#### GDB调试命令
+
+| 命令         | 说明                   |
+| ---------- | -------------------- |
+| file       | 指定要调试的可执行程序          |
+| kill       | 终止正在调试的可执行程序         |
+| next       | 执行一行源代码，并不进入函数内部     |
+| step       | 执行一行源代码，会进入函数内部      |
+| run        | 全速执行，直到遇到断点或者程序退出    |
+| quit       | 结束GDB调试任务            |
+| watch      | 检查一个变量的值而不管它何时被改变    |
+| print      | 打印表达式的值到标准输出         |
+| break N    | 在指定的第N行源代码设置断点       |
+| clear N    | 清除在第N行的断点            |
+| info break | 显示当前断点清单，包括到达断点处的次数等 |
+| info files | 显示被调试文件的详细信息         |
+| info local | 显示当前函数中的局部变量信息       |
+| info var   | 系那是所有的全局和静态变量名称      |
+| shell      | 在不退出GDB的情况下运行shell命令 |
+| continue   | 继续执行正在调试的程序          |
+| list       | 查看源代码                |
+
+
+
+### 设备树简介
+
+> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
+>
+> 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
+
+```bash
+/ {  
+    node1 {  
+        a-string-property = "A string";  
+        a-string-list-property = "first string", "second string";  
+        a-byte-data-property = [0x01 0x23 0x34 0x56];  
+        child-node1 {  
+            first-child-property;  
+            second-child-property = <1>;  
+            a-string-property = "Hello, world";  
+        };  
+        child-node2 {  
+        };  
+    };  
+    node2 {  
+        an-empty-property;  
+        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
+        child-node1 {  
+        };  
+    };  
+};
+```
+
+- deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
+
+#### 设备树与驱动的配合
+
+1. 驱动代码
+
+```c
+static struct of_device_id beep_table[] = {  
+    {.compatible = "fs4412,beep"},  
+};  
+static struct platform_driver beep_driver=  
+{  
+    .probe = beep_probe,  
+    .remove = beep_remove,  
+    .driver={  
+        .name = "bigbang",  
+        .of_match_table = beep_table,  
+    },  
+};
+```
+
+1. 设备树描述
+
+```c
+fs4412-beep{  
+         compatible = "fs4412,beep";  
+         reg = <0x114000a0 0x4 0x139D0000 0x14>;  
+};  
+```
+
+- **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
+- **reg**，描述寄存器基址和长度，可以有多个
 
 
 

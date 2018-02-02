@@ -1,90 +1,115 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
 #include <time.h>
-#include "lvgl/lvgl.h"
-#include "lv_drivers/display/fbdev.h"
-#include "sqlite3.h"
 #include "ecrt.h"
 #include "ecat-master.h"
 
-static lv_obj_t * chart_temp = NULL;
-static lv_chart_series_t * ch1ser1 = NULL;
-static lv_chart_series_t * ch1ser2 = NULL;
+static ec_master_t *master = NULL; /* ethercat master对象，管理从站，域以及IOmanage slaves, domains and io */
+static ec_master_state_t master_state = { }; /* restore the current state of master */
 
-void sigalrm_fn(int sig) {
-	lv_chart_set_next(chart_temp, ch1ser1, rand() % 100);
-	lv_chart_set_next(chart_temp, ch1ser2, rand() % 100);
-	alarm(1);
-}
+static ec_domain_t *domain = NULL; /* handles process data of a certain group of slaves */
+static ec_domain_state_t domain_state = { }; /* restore the latest state of domain */
 
-static void hal_disp_init(void) {
-	/* 初始化Linux Frame Buffer设备 */
-	fbdev_init();
-	/* 注册显示器驱动 */
-	lv_disp_drv_t disp_drv;
-	lv_disp_drv_init(&disp_drv);
-	disp_drv.disp_flush = fbdev_flush; /* 将内部图像缓存刷新到显示器上 */
-	lv_disp_drv_register(&disp_drv);
-}
+static uint8_t *domain_pd = NULL; /* domain process date pointer */
 
-int main(void) {
-	/* 初始化LittlevGL库 */
-	lv_init();
-	/* 初始化显示器底层硬件 */
-	hal_disp_init();
+static unsigned int off_sensors_in0; /* offsets for PDO entries: sensor input0 */
+static unsigned int off_leds_out0; /* offsets for PDO entries: leds output0 */
+static unsigned int off_sensors_in1; /* offsets for PDO entries: sensor input1 */
+static unsigned int off_leds_out1; /* offsets for PDO entries: leds output1 */
 
-	/* 创建一个屏幕 */
-	lv_obj_t *scr = lv_obj_create(NULL, NULL);
-	lv_scr_load(scr);
+static unsigned int counter = 0; /* local counter for 1s */
+static unsigned int blink = 0; /* led control value */
+static unsigned int sync_ref_counter = 0; /* counter for sync to reference clock */
+const struct timespec cycletime = { 0, PERIOD_NS }; /* period in linux timespec format */
 
-	/* 初始化alien主题 */
-	lv_theme_t *th = lv_theme_alien_init(100, NULL);
-	lv_theme_set_current(th);
+//////////////////Following parameters are result of command: [ethercat cstruct]//////////////////
+/* Master 0, Slave 0
+ * Vendor ID:       0x0000034e
+ * Product code:    0x00000000
+ * Revision number: 0x00000000
+ */
+/* PDO entry configuration information */
+static ec_pdo_entry_info_t xmc_pdo_entries[] = {
+/* {entry index, entry subindex, size of entry in bit} */
+{ 0x7000, 0x01, 1 }, /* LED1 */
+{ 0x7000, 0x02, 1 }, /* LED2 */
+{ 0x7000, 0x03, 1 }, /* LED3 */
+{ 0x7000, 0x04, 1 }, /* LED4 */
+{ 0x7000, 0x05, 1 }, /* LED5 */
+{ 0x7000, 0x06, 1 }, /* LED6 */
+{ 0x7000, 0x07, 1 }, /* LED7 */
+{ 0x7000, 0x08, 1 }, /* LED8 */
+{ 0x6000, 0x01, 16 }, /* Sensor1 */
+};
 
-	/*Create a Tab view object*/
-	lv_obj_t *tabview = lv_tabview_create(lv_scr_act(), NULL);
+/* PDO configuration information */
+static ec_pdo_info_t xmc_pdos[] = {
+/* PDO index, number of PDO entries, array of PDO entries */
+{ 0x1600, 8, xmc_pdo_entries + 0 }, /* LED process data mapping */
+{ 0x1a00, 1, xmc_pdo_entries + 8 }, /* Sensor process data mapping */
+};
 
-	/*Add 3 tabs (the tabs are page (lv_page) and can be scrolled*/
-	lv_obj_t *tab1 = lv_tabview_add_tab(tabview, SYMBOL_HOME);
-	lv_obj_t *tab2 = lv_tabview_add_tab(tabview, SYMBOL_IMAGE);
-	lv_obj_t *tab3 = lv_tabview_add_tab(tabview, SYMBOL_SETTINGS);
+/* Sync manager configuration information */
+static ec_sync_info_t xmc_syncs[] = {
+/* sync manager index, sync manager direction, number of PDOs, array of PDOs to assign, watchdog mode */
+{ 0, EC_DIR_OUTPUT, 0, NULL, EC_WD_DISABLE }, { 1, EC_DIR_INPUT, 0, NULL,
+		EC_WD_DISABLE }, { 2, EC_DIR_OUTPUT, 1, xmc_pdos + 0, EC_WD_ENABLE }, {
+		3, EC_DIR_INPUT, 1, xmc_pdos + 1, EC_WD_DISABLE }, { 0xff } };
 
-	/* 创建charts */
-	chart_temp = lv_chart_create(tab1, NULL);
-	lv_obj_set_size(chart_temp, 400, 200);
-	lv_obj_align(chart_temp, NULL, LV_ALIGN_CENTER, 0, 0);
-	lv_chart_set_type(chart_temp, LV_CHART_TYPE_POINT | LV_CHART_TYPE_LINE);
-	lv_chart_set_series_opa(chart_temp, LV_OPA_70);
-	lv_chart_set_series_width(chart_temp, 4);
-	lv_chart_set_range(chart_temp, 0, 100);
-	/* 向charts中插入数据 */
-	ch1ser1 = lv_chart_add_series(chart_temp, LV_COLOR_RED);
-	ch1ser2 = lv_chart_add_series(chart_temp, LV_COLOR_BLUE);
+inline struct timespec timespec_add(struct timespec time1,
+		struct timespec time2) {
+	struct timespec result;
 
-	/* 创建仪表盘 */
-	static lv_color_t needle_colors[] = { LV_COLOR_RED, LV_COLOR_BLUE };
-	lv_obj_t * gauge = lv_gauge_create(tab2, NULL);
-	lv_gauge_set_needle_count(gauge,
-			sizeof(needle_colors) / sizeof(needle_colors[0]), needle_colors);
-	lv_obj_align(gauge, NULL, LV_ALIGN_CENTER, 0, 0);
-	/* 设置仪表盘指针的数据 */
-	lv_gauge_set_value(gauge, 0, 10);
-	lv_gauge_set_value(gauge, 1, 20);
-
-	lv_tabview_set_tab_act(tabview, 1, false);
-
-	srand(time(NULL));
-	signal(SIGALRM, sigalrm_fn);
-	alarm(1);
-
-	while (1) {
-		lv_tick_inc(1);
-		lv_task_handler();
-		sleep(1);
+	if ((time1.tv_nsec + time2.tv_nsec) >= NSEC_PER_SEC) {
+		result.tv_sec = time1.tv_sec + time2.tv_sec + 1;
+		result.tv_nsec = time1.tv_nsec + time2.tv_nsec - NSEC_PER_SEC;
+	} else {
+		result.tv_sec = time1.tv_sec + time2.tv_sec;
+		result.tv_nsec = time1.tv_nsec + time2.tv_nsec;
 	}
 
-	return 0;
+	return result;
 }
 
+void check_domain_state(void) {
+	ec_domain_state_t ds;
+
+	/* read the state of a domain, process data exchange can be monitored in realtime */
+	ecrt_domain_state(domain, &ds);
+	/* check if change happened in working counter */
+	if (ds.working_counter != domain_state.working_counter) {
+		printf("domain: WC %u.\n", ds.working_counter);
+	}
+	/* Working counter interpretation */
+	if (ds.wc_state != domain_state.wc_state) {
+		printf("domain: State %u.\n", ds.wc_state);
+	}
+	/* restore the latest domain state */
+	domain_state = ds;
+}
+
+void check_master_state(void) {
+	ec_master_state_t ms;
+	/* Read the current master state */
+	ecrt_master_state(master, &ms);
+	/* check sum of responding slaves on all Ethernet devices */
+	if (ms.slaves_responding != master_state.slaves_responding) {
+		printf("%u slave(s).\n", ms.slaves_responding);
+	}
+	/**
+	 * check Application-layer states of all slaves. The states are coded in the lower 4 bits.
+	 * If a bit is set, it means that at least one slave in the bus is in the corresponding state.
+	 * Bit 0: INIT
+	 * Bit 1: PREOP
+	 * Bit 2: SAFEOP
+	 * Bit 3: OP
+	 */
+	if (ms.al_states != master_state.al_states) {
+		printf("AL states: 0x%02X.\n", ms.al_states);
+	}
+	/* check if at least one link is up */
+	if (ms.link_up != master_state.link_up) {
+		printf("Link is %s.\n", ms.link_up ? "up" : "down");
+	}
+	/* restore the current state of master */
+	master_state = ms;
+}
