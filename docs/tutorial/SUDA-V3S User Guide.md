@@ -28,6 +28,12 @@
 
 ![Linux系统启动流程](imgs/linux-start-sequence.png)
 
+### zImage生成过程
+
+![Linux系统启动流程](imgs/zImage-make-process.png)
+
+> 按照特定的顺序编译链接目标代码，在内核源码顶层目录生成vmlinux(因为Linux内核运行在虚拟地址空间，所以名字附加vm)。讲vmlinux内核主体通过objcopy工具将ELF格式文件转换成二进制格式的文件Image(去掉了符号、标记和注释等)。通过gzip工具讲Image进行压缩，生成piggy.gz的压缩文件，该压缩文件作为一段汇编代码中的一段数据，再讲该汇编代码编译后生成一个piggy.o目标文件。将这个目标文件同其他文件的一些目标文件(主要包括加压缩和设备树操作的相关代码)一起进行链接又形成一个vmlinux文件，最后通过objcopy把刚才生成的ELF格式的vmlinux文件转换成zImage二进制格式的文件。
+
 
 
 ### 安装交叉编译器arm-linux-gnueabihf
@@ -1057,6 +1063,7 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 
 
+
 ### 修改内核printk等级
 
 1. 查看当前控制台的打印级别`cat /proc/sys/kernel/printk`
@@ -1232,34 +1239,95 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 ### 设备树简介
 
-> Device Tree是一种描述硬件的数据结构。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。
+> Device Tree是一种描述硬件的数据结构，它并没有什么神奇的地方，也不能把所有硬件配置问题都解决掉，它只是提供了一种语言，将硬件配置从Linux内核源码中提取出来。通过将dts(device tree source)文件编译成dtb二进制文件，供Linux操作系统内核识别目标板卡上的硬件信息。设备树最初是由开放固件(Open Firmware)使用，用来向一个客户程序(通常是一个操作系统)传递数据的通信方法中的一部分内容。客户程序通过设备树在运行时发现设备的拓扑结构，这样就不需要把硬件信息硬编码到程序中。理论上这可以带来较少的代码重复率，使得单个内核镜像能够支持很多硬件平台。
+>
+> Linux使用设备树的三个主要原因是：
+>
+> 1. 平台识别。内核使用设备树中的数据去识别特定的机器。
+>
+>    在机器识别的过程中，setup_arch会调用setup_machine_fdt，后者通过遍历machine_desc链表，选择最匹配设备树数据的machine_desc结构体。这是通过查找设备树根节点的compatible属性，并把它和machine_desc中dt_compat列表中的各项进行比较来决定哪一个machine_desc结构体是最适合的。
+>
+>    ```c
+>    //arch/arm/mach-sunxi/sunxi.c
+>    static const char * const sun8i_board_dt_compat[] = {
+>    	"allwinner,sun8i-a23",
+>    	"allwinner,sun8i-a33",
+>    	"allwinner,sun8i-a83t",
+>    	"allwinner,sun8i-h2-plus",
+>    	"allwinner,sun8i-h3",
+>    	"allwinner,sun8i-v3s",
+>    	NULL,
+>    };
+>    //arch/arm/boot/dts/sun8i-v3s-suda.dts
+>    / {
+>    	model = "SUDA-V3S";
+>    	compatible = "allwinner,sun8i-v3s";
+>    ```
+>
+> 2. 实时配置。大多数情况下，设备树是古剑与内核之间进行数据通信的唯一方式，所以也用于传递实时的或者配置数据给内核，比如内核参数、initrd镜像的地址等。大多数这种数据被包含在设备树的**chosen**节点中。在早期的初始化阶段，页表建立之前，体系结构初始化相关的代码会多次联合使用不同的辅助回调函数去调用of_scan_flat_dt来解析设备树数据。of_scan_flat_dt遍历设备树并利用辅助函数来提取需要的信息。通常，early_init_dt_scan_chosen辅助函数用于解析包括内核参数的chosen节点；early_init_dt_scan_root辅助函数用于初始化设备树的地址空间模型；而early_init_scan_memory辅助函数用于决定可用内存的大小和地址。在ARM平台，setup_machine_fdt函数负责在选取到正确的machine_desc结构体之后进行早期的设备树遍历。
+>
+>    ```c
+>    chosen{
+>      bootargs = "console=ttyS0,115200 loglevel=8";
+>      initrd-start = <0xc8000000>;
+>      initrd-end = <0xc8200000>;
+>    };
+>    ```
+>
+> 3. 设备植入。内核进一步初始化过程中会讲设备树数据转换成一种更有效的实时的形式。
+>
+> 在Linux中，设备树文件的类型有.dts、.dtsi、.dtb，其中dtsi是被包含的设备树源文件，类似于C语言中的头文件；dts是设备树源文件，可以包含其他dtsi文件；通过dtc工具可以讲dts文件编译为dtb文件。
 >
 > 在系统起来之后，可以在**/sys/firmware/devicetree**中查看实际使用的设备树。
 
-```bash
-/ {  
-    node1 {  
-        a-string-property = "A string";  
-        a-string-list-property = "first string", "second string";  
-        a-byte-data-property = [0x01 0x23 0x34 0x56];  
+```c
+/* 设备树是一个包含节点和属性的简单树状结构，属性就是键值对，而节点可以同时包含属性和子节点 */
+/ {/* 根节点 */
+    node1 {/* 子节点node1 */
+        a-string-property = "A string";/* 文本字符串属性 */
+        a-string-list-property = "first string", "second string";/* 字符串列表 */ 
+        a-byte-data-property = [0x01 0x23 0x34 0x56];/* 二进制数据 */
         child-node1 {  
             first-child-property;  
-            second-child-property = <1>;  
+            second-child-property = <1>;/* 元组属性，32位无符号整数 */
             a-string-property = "Hello, world";  
         };  
         child-node2 {  
         };  
     };  
-    node2 {  
+    node2 {/* 子节点node2 */
         an-empty-property;  
-        a-cell-property = <1 2 3 4>; /* each number (cell) is a uint32 */  
+        a-cell-property = <1 2 3 4>;
+        mixed-property = "a string", [0x01 0x23 0x45 0x67], <0x12345678>;/* 混合属性 */
         child-node1 {  
         };  
     };  
 };
 ```
 
-- deviec tree由节点和属性组成，节点下面可以包含子节点，属性通过键值对来描述。
+```c
+soc {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		i2c0: i2c@01c2ac00 {/* 节点名称是一个<名称>[@<设备地址>]的形式，设备地址通常是访问该设备的主地址 */
+			compatible = "allwinner,sun6i-a31-i2c";/* 系统根据该属性来决定使用哪一个设备驱动来绑定到一个设备上，格式为“<制造商>，<型号>” */
+			reg = <0x01c2ac00 0x400>;/* 每个可编址设备都有一个reg属性，它是一个元组表，形如：reg=<地址1 长度1 [地址2 长度2] [地址3 长度3]...由于地址和长度字段都是可变大小的变量，需要有父节点的#address-cells和#size-cells属性来声明各个字段的cell的数量 */
+			interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&ccu CLK_BUS_I2C0>;
+			resets = <&ccu RST_BUS_I2C0>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2c0_pins>;
+			status = "disabled";
+			#address-cells = <1>;
+			#size-cells = <0>;
+		};
+}
+```
+
+* 需要注意，正确解释一个reg属性，还需要用到**父节点**的**#address-cells**和**#size-cells**的值
 
 #### 设备树与驱动的配合
 
