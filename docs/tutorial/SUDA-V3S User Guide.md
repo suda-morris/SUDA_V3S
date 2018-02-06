@@ -1,4 +1,4 @@
-# SUDA-V3S User Guide
+#  SUDA-V3S User Guide
 
 ### 简介
 
@@ -24,15 +24,39 @@
 
 
 
-### Linux系统启动流程
-
-![Linux系统启动流程](imgs/linux-start-sequence.png)
 
 ### zImage生成过程
 
 ![Linux系统启动流程](imgs/zImage-make-process.png)
 
 > 按照特定的顺序编译链接目标代码，在内核源码顶层目录生成vmlinux(因为Linux内核运行在虚拟地址空间，所以名字附加vm)。讲vmlinux内核主体通过objcopy工具将ELF格式文件转换成二进制格式的文件Image(去掉了符号、标记和注释等)。通过gzip工具讲Image进行压缩，生成piggy.gz的压缩文件，该压缩文件作为一段汇编代码中的一段数据，再讲该汇编代码编译后生成一个piggy.o目标文件。将这个目标文件同其他文件的一些目标文件(主要包括加压缩和设备树操作的相关代码)一起进行链接又形成一个vmlinux文件，最后通过objcopy把刚才生成的ELF格式的vmlinux文件转换成zImage二进制格式的文件。
+
+
+
+### Linux系统启动流程
+
+![Linux系统启动流程](imgs/linux-start-sequence.png)
+
+> 内核的zImage镜像开始执行时，首先解压缩后面所跟的piggy.gz到指定的位置。但解压后的内容可能会覆盖当前正在运行的代码或数据，于是解压代码先判断是否会发生覆盖，如果是，则先要将自己重定位到另外一个位置，然后再进行解压。加压完成后跳转到解压后的起始地址执行代码，即Linux内核的而主体代码开始运行。Linux内核的主体代码将会执行一系列复杂的初始化过程，然后去挂载根文件系统，最后执行用户空间的第一个初始化程序，从而完成整个内核的启动过程。
+>
+> zImage的第一条指令所在的文件是自引导程序中的head.S，位于arch/arm/boot/compressed/head.S。解压内核调用的函数decompress_kernel使用C语言编写，位于arch/arm/boot/compressed/misc.c。在解压完内核主体后，关闭MMU和cache，保存machine ID的值到寄存器r1中，保存atags的地址或者dtb的地址到寄存器r2中，然后调用_enter_kernel进入到内核主体代码中执行。
+>
+>  _enter_kernel位于arch/arm/kernel/head.S，会判断是否支持该处理器，判断r2中的内容是atags还是dtb，判断处理器是否是对称多处理器(SMP)，创建临时页表(存放在物理内存前16KB)，使能MMU，调用\_mmap_switched函数。
+>
+> _mmap_switchde函数位于arch/arm/kernel/head-common.S，主要工作是复制数据段，清除BSS段，保存处理器ID，机器ID，atags或dtb地址和控制寄存器的值后，调用了内核的公共入口函数**start_kernel**，从而开启了内核的初始化过程。
+>
+> start_kernel函数负责初始化内核各子系统，其中调用了一个很重要的函数setup_arch，该函数位于arch/arm/kernel/setup.c，主要是针对体系结构的相关信息进行设置包括调用unflatten_device_tree函数，将设备树转化成设备节点。
+>
+> start_kernel函数的最后调用了rest_init函数，创建并调度了一个叫做**kernel_init**的内核线程，其pid为1，创建另一个线程**kthreadd**，其pid为2，作用是管理和调度其他内核线程。需要注意的是，kernel_init线程需要等待kthreadd的创建完成后才能被调度，否则会产生OOPs。
+>
+> kernel_init线程负责完成初始化设备驱动、挂载根文件系统和启动用户空间的init进程等重要工作，用户空间的init进程可以通过comand_line传递给内核，比如`init=/linuxrc`，如果没有指定，则会依次执行`/sbin/init`,`/etc/init`,`/bin/init`,`/bin/sh`，直到成功为止。
+>
+> 在kernel_init线程中，调用了kernel_init_freeable函数，而kernel_init_freeable函数调用了do_basic_setup函数，在这个函数中调用了一些初始化函数，其中的driver_init就是在这里调用的。driver_init函数创建Linux驱动模型中的kobject、kset等，并注册到sysfs文件系统中，然后在这基础上注册平台总线和一些关键的子系统，从而初始化了Linux驱动模型。此外do_basic_setup函数又调用了do_initcalls函数，该函数会按照预定的顺序依次调用链接在一个特殊段中的初始化函数，这其中包含了驱动程序的模块初始化函数的调用，这样就初始化了各个驱动。
+>
+> 根文件系统的挂载大致分两步
+>
+> 1. 创建并挂载一个虚拟的根文件系统，通过start_kernel函数调用vfs_caches_init函数来完成
+> 2. 挂载一个真实的根文件系统，kernel_init调用了kernel_init_freeable函数，kernel_init_freeable调用了do_basic_setup函数，而do_basic_setup函数又调用了do_initcalls函数，如果内核配置了"Initial RAM filesystem and RAM disk(initramfs/initrd) support"选项，那么在do_initcalls函数中会调用populate_rootfs函数，该函数负责initramfs或者initrd的处理。要么把initramfs解压到rootfs(第一步挂载的根文件系统)中，要么把cpio格式的initrd解压到rootfs中，要么把image格式的initrd保存到/initrd.image中，要么出错。如果是后两种情况，在do_basic_setup函数之后，会调用prepare_namespace函数，尝试从其他设备上挂载文件系统。从其他设备成功挂载好根文件系统后，接着首先挂载一个devtmpfs的文件系统，然后将第二步挂载的文件系统改为根文件系统，这样根文件系统就挂载好了。
 
 
 
@@ -1064,6 +1088,21 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 
 
+### 内核打印函数
+
+1. 内核镜像解压前的串口输出函数putstr
+   * 需要在配置内核时打开这个选项：`Kernel hacking->Kernel low=level debugging functions`
+   * 该函数需要U-Boot将串口正确初始化(这是内核对U-Boot的一个要求)
+   * putstr函数只局限于内核解压时使用，内核解压后调用不了该函数
+2. 内核镜像解压后的串口输出函数
+   * 内核解压完成后，跳转到vmlinux镜像入口，这时还没有初始化控制台设备，所以不能使用printk
+   * 但是可以使用arch/arm/kernel/debug.S中的printascii，printhex等子程序
+   * 同样，这需要在配置内核是打开这个选项：`Kernel hacking->Kernel low=level debugging functions`
+   * 在printascii子程序中，调用了宏(macro)：addruart、waituart、senduart、busyuart，这些宏都来自于CONFIG_DEBUG_LL_INCLUDE指定的文件中，必要的时候需要自己去实现
+3. printk是Linux系统内核的标准打印函数，具有极好的健壮性，不受内核运行条件的限制，在系统运行期间都可以使用。printk不是直接向控制台设备或者串口直接打印信息，而是把打印信息先写到缓冲区里面。在控制台初始化之前，printk函数的输出只能先保存在日志缓存中，所以在控制台初始化之前若系统崩溃，将不会在控制台上看到printk函数的打印输出。
+
+
+
 ### 修改内核printk等级
 
 1. 查看当前控制台的打印级别`cat /proc/sys/kernel/printk`
@@ -1075,19 +1114,19 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
    * **echo "新的打印级别  4    1    7" >/proc/sys/kernel/printk**
 
-3. 不够打印级别的信息会被写到日志中，可通过dmesg 命令来查看
+3. 如果要查看完整的控制台打印信息，可以使用命令：`dmesg`
 
 4. printk的打印级别
 
    ```c
-   #define KERN_EMERG  		"<0>" /* system is unusable */
-   #define KERN_ALERT         	"<1>" /* action must be taken immediately */
-   #define KERN_CRIT           "<2>" /* critical conditions */
-   #define KERN_ERR            "<3>" /* error conditions */
-   #define KERN_WARNING   		"<4>" /* warning conditions */
-   #define KERN_NOTICE       	"<5>" /* normal but significant condition */
-   #define KERN_INFO           "<6>" /* informational */
-   #define KERN_DEBUG       	"<7>" /* debug-level messages */
+   #define KERN_EMERG  		"<0>" /* 紧急情况，系统可能会死掉 */
+   #define KERN_ALERT         	"<1>" /* 需要立即响应问题 */
+   #define KERN_CRIT           "<2>" /* 重要情况 */
+   #define KERN_ERR            "<3>" /* 错误信息 */
+   #define KERN_WARNING   		"<4>" /* 警告信息 */
+   #define KERN_NOTICE       	"<5>" /* 普通但是可能有用的信息 */
+   #define KERN_INFO           "<6>" /* 情报信息 */
+   #define KERN_DEBUG       	"<7>" /* 调试信息 */
    ```
 
 5. printk函数的使用
@@ -1095,6 +1134,97 @@ sudo dd if=/dev/sdc of=suda-v3s.img
    * printk(打印级别  “要打印的信息”)
    * 打印级别就是上面定义的几个宏
 
+6. 其实console端的打印等级可以再内核中进行配置："Kernel hacking"->"printk and dmesg options"->Default console loglevel，也可以在内核的启动参数传递“loglevel=<x>”进行设定。
+
+
+
+
+### 获取内核信息
+
+1. 系统请求键(Alt+SysRq)
+
+   * 需要在内核配置中打开：`Kernel hacking->Magic SysRq key`选项
+
+   * 如果不能使用复合键，可以通过/proc文件系统进入系统请求状态，比如：`echo t > /proc/sysrq-trigger`
+
+   * 常用的系统请求命令
+
+     | 键命令     | 说明                      |
+     | ------- | ----------------------- |
+     | SysRq-b | 重启机器                    |
+     | SysRq-e | 给init之外的所有进程发送SIGTERM信号 |
+     | SysRq-h | 在控制台上显示SysRq帮助          |
+     | SysRq-i | 给init之外的所有进程发送SIGKILL信号 |
+     | SysRq-k | 安全访问键：杀掉这个控制台上所有的进程     |
+     | SysRq-l | 给包括init的所有进程发送SIGKILL信号 |
+     | SysRq-m | 在控制台上显示内存信息             |
+     | SysRq-o | 关闭机器                    |
+     | SysRq-p | 在控制台上显示寄存器              |
+     | SysRq-r | 关闭键盘的原始模式               |
+     | SysRq-s | 同步所有挂接的磁盘               |
+     | SysRq-t | 在控制台上显示所有的任务信息          |
+     | SysRq-u | 卸载所有已经挂载的磁盘             |
+
+2. 通过/proc接口
+
+   * proc文件系统是一种伪文件系统，它并不占用存储空间，而是系统运行时在内存中建立的内核状态映射，可以瞬间提供系统的状态信息。在用户空间可以作为文件系统挂接到/proc目录下，提供用户访问
+   * 在用户空间中，可以直接访问/proc目录下的条目，读取信息或者写入命令，但是不能使用编辑器打开并修改/proc条目，因为**在编辑过程中，同步保存的数据将是不完整的命令**
+   * 命令行下使用echo命令，从命令行将输出重定向到/proc下指定的条目中，例如关闭系统请求键功能：`echo 0 > /proc/sys/kernel/sysrq`
+   * 命令行下使用cat命令，查看/proc目下的条目信息，例如`cat /proc/cpuinfo`
+   * 另外，/proc接口的条目可以作为普通的文件打开访问，这些文件也有访问权限的限制，大部分条目是只读的，少数用于系统控制的条目具有写操作属性。在应用程序中，可以通过open,read,write等函数操作
+
+3. 通过/sys接口
+
+   * sysfs和kobject是紧密结合的，成为驱动程序模型的组成部分。当注册kobject时，注册函数除了把kobject插入到kset链表中，还要在sysfs中创建对应的目录。反过来，当注销kobject时，注销函数也会删除sysfs中相应的目录
+   * sysfs的编程接口：
+     * 属性。属性能够以文件系统的正常文件形式输出到用户空间。sysfs文件系统间接调用属性定义的函数操作，提供读/写内核属性的方法。
+     * 子系统操作函数。当子系统定义了一个属性类型时，必须实现一些sysfs操作函数。当应用程序调用read/write函数时，通过这些子系统函数显示或者保存属性值。读写属性，需要声明和实现show和store函数。
+
+
+
+### 内核源码调试
+
+> KGDB是Linux内核调试的一种机制，它使用远程主机上的GDB调试目标板上的Linux内核。KGDB是内核的功能扩展，它在内核中使用插桩(stub)的机制。内核在启动时等待远程调试器的连接，相当于实现了gdbserver的功能。然后远程主机的调试器GDB负责读取内核符号表和源代码，并且建立连接。接下来就可以在内核源代码中设置断点、检查数据，并进行其他操作。
+>
+> ![待分区的SD卡](imgs/kgdb-model.png)
+>
+> 配置内核，需要开启：`Kernel hacking->Compile-time checks and compile options->Compile the kernel with debug info`和`Kernel hacking->KGDB:kernel debugger->KGDB:use kgdb over the serial console`
+>
+> 启动开发板，在U-Boot中重新设备bootargs环境变量，添加如下启动参数：
+>
+> `kgdboc=ttyS0,115200 kgdbwait`
+>
+> 其中kgdboc(kgdb over console)表示串口进行连接，另外kgdboe表示通过以太网口进行连接。kgdbwait表示内核的串口驱动加载成功后，将会等待主机的gdb连接。
+>
+> 当控制台显示“kgdb:Waiting for connection from remote dgb..."后，需要关闭串口终端软件，否则将会和GDB产生冲突。
+>
+> 在内核源码顶层目录下，新建.gdbinit文件，内容如下：
+>
+> ```bash
+> #.gdbinit
+> set remotebaud 115200
+> symbol-file vmlinux
+> target remote /dev/ttyUSB0
+> set output-radix 16
+> ```
+>
+> 启动交叉编译工具链的gdb工具`arm-linux-gnueabihf-gdb`，.gdbinit脚本将在gdb启动过程中自动执行。
+
+
+
+### 处理内核出错信息
+
+1. oops消息包含了系统错误的详细信息，包括当前进程的栈回溯和CPU寄存器的内容，当系统奔溃，会将oops消息发送到系统控制台。oops信息是机器指令级的，ksymoops工具可以将机器指令转换为代码，并将堆栈值映射到内核符号。将oops消息复制保存在一个文件中，通过ksymoops工具转换它。
+
+   ```bash
+   ksymoops -m System.map < oops.txt
+   ```
+
+   除了使用ksymoops工具外，另外还可以配置内核打开CONFIG_KALLSYMS开关，这样符号表也会被编译到内核中，内核可以直接跟踪回溯函数的名称，而不再是难懂的机器码了。
+
+2. panic。当系统发生严重错误的时候，将会调用panic函数。panic函数首先尽可能把出错信息打印出来，再拉响警报，然后清理现场，等得一段时间让系统重启。
+
+3. ioctl。ioctl是对一个文件描述符响应的系统调用，它可以实现特殊命令操作。ioctl可以替代/proc文件系统，实现一些调试的命令。大多数时候，ioctl是获取信息的最好方法，因为它比读/proc运行得快。假如数据必须在打印到屏幕上之前处理，以二进制格式获取数据将比读一个文本文件效率更高。另外，ioctl不需要把数据分割成小于一个页的碎片。
 
 
 
@@ -1310,11 +1440,11 @@ soc {
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
-		ranges;
+		ranges;/* 子节点使用和父节点一样的地址域 */
 
 		i2c0: i2c@01c2ac00 {/* 节点名称是一个<名称>[@<设备地址>]的形式，设备地址通常是访问该设备的主地址 */
 			compatible = "allwinner,sun6i-a31-i2c";/* 系统根据该属性来决定使用哪一个设备驱动来绑定到一个设备上，格式为“<制造商>，<型号>” */
-			reg = <0x01c2ac00 0x400>;/* 每个可编址设备都有一个reg属性，它是一个元组表，形如：reg=<地址1 长度1 [地址2 长度2] [地址3 长度3]...由于地址和长度字段都是可变大小的变量，需要有父节点的#address-cells和#size-cells属性来声明各个字段的cell的数量 */
+			reg = <0x01c2ac00 0x400>;/* 每个可编址设备都有一个reg属性，它是一个元组表，形如：reg=<地址1 长度1 [地址2 长度2] [地址3 长度3]...由于地址和长度字段都是可变大小的变量，需要由父节点的#address-cells和#size-cells属性来声明各个字段的cell的数量 */
 			interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&ccu CLK_BUS_I2C0>;
 			resets = <&ccu RST_BUS_I2C0>;
@@ -1328,6 +1458,56 @@ soc {
 ```
 
 * 需要注意，正确解释一个reg属性，还需要用到**父节点**的**#address-cells**和**#size-cells**的值
+* 按照惯例，如果一个节点有reg属性，那么该节点的名字就必须包含设备地址，这个设备地址就是reg属性里第一个地址值
+* 关于设备地址：
+  1. 内存映射设备：内存映射的设备应该有地址范围，对于32位的地址可以用1个cell来指定地址值，用1个cell来指定范围。而对于64位的地址就应该用2个cell来指定地址值。还有一种内存映射设备的地址表示方式，就是基地址、偏移和长度，这种方式中，地址也是用2个cell来表示。
+  2. 非内存映射设备：有些设备没有被映射到CPU的存储器总线上，虽然这些设备可以有一个地址范围，但他们并不是由CPU直接访问。取而代之的是，父设备的驱动程序会代表CPU执行间接访问。这类设备的典型例子有I2C设备，NAND Flash设备等。
+  3. 范围(地址转换)：根节点的地址空间是从CPU的视角进行描述的，根节点的直接子节点使用的也是这个地址域，比如chipid@10000000，但是非根节点的直接子节点就没有使用这个地址域，于是需要把这个地址进行转换。**ranges**属性就用于此目的。
+
+```c
+gic: interrupt-controller@01c81000 {
+			compatible = "arm,cortex-a7-gic", "arm,cortex-a15-gic";
+			reg = <0x01c81000 0x1000>,
+			      <0x01c82000 0x1000>,
+			      <0x01c84000 0x2000>,
+			      <0x01c86000 0x2000>;
+			interrupt-controller;/* 表示该设备是一个中断控制器 */
+			#interrupt-cells = <3>;
+			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
+};
+
+dma: dma-controller@01c02000 {
+			compatible = "allwinner,sun8i-v3s-dma";
+			reg = <0x01c02000 0x1000>;
+			interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;/* GIC_SPI表示共享的外设中断，即这个中断由外设产生，可以连接到一个SoC中的多个ARM核；GIC_PPI表示私有的外设中断，即这个中断由外设产生，但只能连接到一个SoC中的一个特定的ARM核。这里的50表示中断号，IRQ_TYPE_LEVEL_HIGH表示中断的触发类型 */
+			clocks = <&ccu CLK_BUS_DMA>;
+			resets = <&ccu RST_BUS_DMA>;
+			#dma-cells = <1>;
+};
+```
+
+* 描述中断连接需要4个属性：
+  1. interrupt-controller:一个空的属性，用来定义该节点是一个接收中断的设备，即是一个中断控制器
+  2. \#interrupt-cells:声明该中断控制器的中断指示符中cell的个数
+  3. interrupt-parent:指向设备所连接的中断控制器，如果这个设备节点没有该属性，那么该节点继承父节点的这个属性
+  4. interrupts:包含一个中断指示符的列表，对应该设备上的每个中断输出信号
+
+```c
+/ {
+	model = "SUDA-V3S";
+	compatible = "allwinner,sun8i-v3s";
+
+	aliases {/* aliases节点用于指定节点的别名，因为引用一个节点要使用全路径，当子节点离根节点越远时，这样节点名就会显得比较冗长，定义一个别名则比较方便 */
+		serial0 = &uart0;
+		ethernet0 = &emac;
+	};
+
+	chosen {/* chosen节点并不代表一个真正的设备，只是作为一个为古剑和操作系统之间传递数据的地方，比如引导参数 */
+		stdout-path = "serial0:115200n8";
+	};
+```
+
+
 
 #### 设备树与驱动的配合
 
@@ -1358,7 +1538,8 @@ fs4412-beep{
 ```
 
 - **compatible**，关键属性，驱动中使用of_match_table，即of_device_id列表，其中就使用compatible字段来匹配设备。简单地说就是，内核启动后会把设备树加载到树状结构体中，当insmod的时候，就会在树中查找匹配的设备节点来加载
-- **reg**，描述寄存器基址和长度，可以有多个
+
+
 
 
 
@@ -1367,6 +1548,12 @@ fs4412-beep{
 
 
 ### SDIO WiFi的移植与使用
+
+
+
+### USB主机控制器的移植与使用
+
+> 在嵌入式系统中常见的USB主机控制器实现规范有OHCI、UHCI和EHCI，其中OHCI和UHCI是满足USB1.1标准的主机控制器实现规范，而EHCI是满足USB2.0标准的主机控制器实现规范。
 
 
 
