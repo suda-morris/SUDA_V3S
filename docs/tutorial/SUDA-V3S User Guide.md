@@ -212,6 +212,10 @@ Linux主机安装minicom，使用命令：`sudo apt-get install minicom`
 
 ### 根文件系统之buildroot
 
+> 文件系统是操作系统用于明确磁盘或分区上文件的组织和访问的方法。文件系统的存在，使得数据可以被有效而透明地存取访问。
+>
+> 根文件系统是内核启动时直接挂载在根目录下的一个文件系统，它包含了Linux系统运行所必须的一些工具、库、脚本、配置文件和设备文件等。
+>
 > buildroot可用于构建小型的linux根文件系统，大小最小可低至2M
 >
 > buildroot中可以方便地加入第三方软件包，省去了手工交叉编译的烦恼
@@ -433,7 +437,7 @@ packages=python python-pip
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Init]
-#Init system
+#Init system,select init or systemd
 packages=init systemd
 source=https://mirrors.ustc.edu.cn/debian/
 ```
@@ -574,6 +578,96 @@ sudo rsync -axHAX --progress rootfs/ /media/morris/rootfs/
       sudo ldconfig
      ```
 
+
+
+
+### 制作image格式的initrd根文件系统镜像(未验证)
+
+> 在ramfs性质的文件系统上做的任何修改在下一次开机后都恢复原
+
+1. 进入rootfs目录的父目录中，使用以下命令制作一个大小为16MB的ramdisk镜像文件(此时是空文件)
+
+   ```bash
+   sudo dd if=/dev/zero of=ramdisk bs=1k count=16384
+   ```
+
+2. 将镜像文件格式化为ext2格式
+
+   ```bash
+   sudo mkfs.ext2 -F ramdisk
+   ```
+
+3. 挂载该镜像文件到/mnt目录
+
+   ```bash
+   sudo mount -t ext2 ramdisk /mnt
+   ```
+
+4. 将rootfs目录下的所有内容复制到/mnt目录
+
+   ```bash
+   sudo cp -a rootfs/* /mnt/
+   ```
+
+5. 取消挂载
+
+   ```bash
+   sudo umount /mnt
+   ```
+
+6. 将镜像文件进行压缩
+
+   ```bash
+   sudo gzip --best -c ramdisk > ramdisk.gz
+   ```
+
+7. 使用mkimage工具生成U-Boot能识别的ramdisk镜像
+
+   ```bash
+   sudo mkimage -n "ramdisk" -A arm -O linux -T ramdisk -C gzip -d ramdisk.gz ramdisk.img
+   ```
+
+8. 重新配置内核，选择ramdisk的支持并指定大小，需要和实际的大小(这里是16M)一致
+
+   ```bash
+   File systems --->
+   		<*> Second extended fs support
+   Device Drivers
+   		SCSI device support --->
+   			<*> SCSI disk support
+   		Block devices --->
+   			<*>RAM block device support
+   			(16)Default number of RAM disks
+   			(16384)Default RAM disk size(kbytes)
+   General setup --->
+   		[*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
+   ```
+
+9. 在U-Boot中设置bootcmd环境变量
+
+   ```bash
+   setenv bootcmd tftp 41000000 uImage\;tftp 42000000 exynos4412-fs4412.dtb\;tftp 43000000 ramdisk.img\;bootm 41000000 43000000 42000000
+   ```
+
+
+
+### init系统初始化过程
+
+> 所谓的init进程，是一个由内核启动的用户进程，也是系统上运行的所有其他进程的父进程，它会观察其子进程，并在需要的时候启动、停止、重新启动它们，主要用来完成系统的各项配置。init程序通常在/sbin或者/bin目录下，它负责在系统启动时运行一系列程序和脚本文件，而init进程也是所有进程的发起者和控制者。
+>
+> 目前init进程的实现方式主要有两种，一种是System V init，另外一种是Systemd。这里主要介绍一下System V init的启动过程。
+>
+> System V init的主要思想是定义了不同的”运行级别(runlevel)“，所谓的运行级就是操作系统当前正在运行的功能级别。通过配置文件/etc/inittab，定义了系统引导时的运行级别，进入或者切换到一个运行级别时做什么。每个运行级别对应一个子目录/etc/rcn.d(n表示运行级别0~6)，例如rc0.d便是runlevel0启动脚本存放的目录。rcn.d中的脚本并不是各自独立的，它们是以字母”S“开头和”K“开头的符号链接，指向/etc/rc.d/init.d中的脚本。S开头的表示Start启动之意，需要以start为参数调用该脚本；以K开头的表示stop停止，需要以stop为参数调用该脚本。这样就使得init可以启动和停止服务。事实上也可以通过手动执行的方式来启动或者停止相关服务，例如：`/etc/init.d/nfs start` `/etc/init.d/nfs stop`分别可以启动和停止NFS服务。
+>
+> 运行级别的定义：
+>
+> 0. 停机
+> 1. 单用户模式
+> 2. 多用户模式，但是没有NFS
+> 3. 完全多用户模式
+> 4. 没有使用
+> 5. X-windows模式
+> 6. 系统重新启动
 
 
 
