@@ -335,3 +335,125 @@ MODULE_ALIAS("virtual-serial");
 
 ### 一个驱动支持多个设备
 
+> 1. 首先要向内核注册多个设备号
+> 2. 其次就是在添加cdev对象的时候指明该cdev对象管理了多个设备，或者添加多个cdev对象，每个cdev对象管理一个设备
+> 3. 最麻烦的在于读写操作的时候区分对哪个设备进行操作。open接口中的inode形参中包含了对应设备的设备号以及所对应的cdev对象的地址。因此可以在open接口函数中读取这些信息，并存放在file结构体对象的某个成员中，再在读写的接口函数中获取该file结构的成员，从而可以区分出对哪个设备进行操作
+
+#### 使用一个cdev实现对多个设备的支持
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/kfifo.h>
+
+#define VSER_MAJOR      256
+#define VSER_MINOR      0
+#define VSER_DEV_CNT    2   //本驱动支持两个设备
+#define VSER_DEV_NAME   "vser"
+
+static struct cdev vsdev;
+DEFINE_KFIFO(vsfifo0,char,32);
+DEFINE_KFIFO(vsfifo1,char,32);
+
+static int vser_open(struct inode* inode,struct file* filp){
+    /* 根据次设备号来区分具体的设备 */
+    switch(MINOR(inode->i_rdev)){
+        default:
+        case 0:
+            filp->private_data = &vsfifo0;
+            break;
+        case 1:
+            filp->private_data = &vsfifo1;
+            break;
+    }
+    return 0;
+}
+
+static int vser_release(struct inode* inode,struct file* filp){
+    return 0;
+}
+
+static ssize_t vser_read(struct file* filp,char __user* buf,size_t count,loff_t* pos){
+    unsigned int copied = 0;
+    /* 将内核FIFO中的数据取出，复制到用户空间 */
+    struct kfifo* vsfifo = filp->private_data;
+    int ret = kfifo_to_user(vsfifo,buf,count,&copied);
+    if(ret){
+        return ret;
+    }
+    return copied;
+}
+
+static ssize_t vser_write(struct file* filp,const char __user* buf,size_t count,loff_t* pos){
+    unsigned int copied = 0;
+    /* 将用户空间的数据放入内核FIFO中 */
+    struct kfifo* vsfifo = filp->private_data;
+    int ret = kfifo_from_user(vsfifo,buf,count,&copied);
+    if(ret){
+        return ret;
+    }
+    return copied;
+}
+
+static struct file_operations vser_ops = {
+    .owner = THIS_MODULE,
+    .open = vser_open,
+    .release = vser_release,
+    .read = vser_read,
+    .write = vser_write,
+};
+
+/* 模块初始化函数 */
+static int __init vser_init(void){
+    int ret;
+    dev_t dev;
+
+    dev = MKDEV(VSER_MAJOR,VSER_MINOR);
+    /* 向内核注册设备号，静态方式 */
+    ret = register_chrdev_region(dev,VSER_DEV_CNT,VSER_DEV_NAME);
+    if(ret){
+        goto reg_err;
+    }
+    /* 初始化cdev对象，绑定ops */
+    cdev_init(&vsdev,&vser_ops);
+    vsdev.owner = THIS_MODULE;
+    /* 添加到内核中的cdev_map散列表中 */
+    ret = cdev_add(&vsdev,dev,VSER_DEV_CNT);
+    if(ret){
+        goto add_err;
+    }
+    return 0;
+
+add_err:
+    unregister_chrdev_region(dev,VSER_DEV_CNT);
+reg_err:
+    return ret;
+}
+
+/* 模块清理函数 */
+static void __exit vser_exit(void){
+    dev_t dev;
+    dev = MKDEV(VSER_MAJOR,VSER_MINOR);
+    cdev_del(&vsdev);
+    unregister_chrdev_region(dev,VSER_DEV_CNT);
+}
+
+/* 为模块初始化函数和清理函数取别名 */
+module_init(vser_init);
+module_exit(vser_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("suda-morris <362953310@qq.com>");
+MODULE_DESCRIPTION("A simple module");
+MODULE_ALIAS("virtual-serial");
+```
+
+#### 将每一个cdev对象对应到一个设备
+
+```c
+
+```
+

@@ -7,13 +7,24 @@
 
 #define VSER_MAJOR      256
 #define VSER_MINOR      0
-#define VSER_DEV_CNT    1
+#define VSER_DEV_CNT    2   //本驱动支持两个设备
 #define VSER_DEV_NAME   "vser"
 
 static struct cdev vsdev;
-DEFINE_KFIFO(vsfifo,char,32);/* 定义并初始化一个内核FIFO，元素个数必须是2的幂 */
+DEFINE_KFIFO(vsfifo0,char,32);
+DEFINE_KFIFO(vsfifo1,char,32);
 
 static int vser_open(struct inode* inode,struct file* filp){
+    /* 根据次设备号来区分具体的设备 */
+    switch(MINOR(inode->i_rdev)){
+        default:
+        case 0:
+            filp->private_data = &vsfifo0;
+            break;
+        case 1:
+            filp->private_data = &vsfifo1;
+            break;
+    }
     return 0;
 }
 
@@ -24,7 +35,8 @@ static int vser_release(struct inode* inode,struct file* filp){
 static ssize_t vser_read(struct file* filp,char __user* buf,size_t count,loff_t* pos){
     unsigned int copied = 0;
     /* 将内核FIFO中的数据取出，复制到用户空间 */
-    int ret = kfifo_to_user(&vsfifo,buf,count,&copied);
+    struct kfifo* vsfifo = filp->private_data;
+    int ret = kfifo_to_user(vsfifo,buf,count,&copied);
     if(ret){
         return ret;
     }
@@ -34,7 +46,8 @@ static ssize_t vser_read(struct file* filp,char __user* buf,size_t count,loff_t*
 static ssize_t vser_write(struct file* filp,const char __user* buf,size_t count,loff_t* pos){
     unsigned int copied = 0;
     /* 将用户空间的数据放入内核FIFO中 */
-    int ret = kfifo_from_user(&vsfifo,buf,count,&copied);
+    struct kfifo* vsfifo = filp->private_data;
+    int ret = kfifo_from_user(vsfifo,buf,count,&copied);
     if(ret){
         return ret;
     }
