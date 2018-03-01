@@ -454,6 +454,393 @@ MODULE_ALIAS("virtual-serial");
 #### 将每一个cdev对象对应到一个设备
 
 ```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/kfifo.h>
 
+#define VSER_MAJOR 256
+#define VSER_MINOR 0
+#define VSER_DEV_CNT 2 //本驱动支持两个设备
+#define VSER_DEV_NAME "vser"
+
+static DEFINE_KFIFO(vsfifo0, char, 32);
+static DEFINE_KFIFO(vsfifo1, char, 32);
+
+struct vser_dev
+{
+    struct cdev cdev;
+    struct kfifo *fifo;
+};
+
+static struct vser_dev vsdev[2];
+
+static int vser_open(struct inode *inode, struct file *filp)
+{
+    struct vser_dev *vsdev = container_of(inode->i_cdev, struct vser_dev, cdev);
+    filp->private_data = vsdev->fifo;
+    return 0;
+}
+
+static int vser_release(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
+static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    /* 将内核FIFO中的数据取出，复制到用户空间 */
+    struct kfifo *vsfifo = filp->private_data;
+    int ret = kfifo_to_user(vsfifo, buf, count, &copied);
+    if (ret)
+    {
+        return ret;
+    }
+    return copied;
+}
+
+static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    /* 将用户空间的数据放入内核FIFO中 */
+    struct kfifo *vsfifo = filp->private_data;
+    int ret = kfifo_from_user(vsfifo, buf, count, &copied);
+    if (ret)
+    {
+        return ret;
+    }
+    return copied;
+}
+
+static struct file_operations vser_ops = {
+    .owner = THIS_MODULE,
+    .open = vser_open,
+    .release = vser_release,
+    .read = vser_read,
+    .write = vser_write,
+};
+
+/* 模块初始化函数 */
+static int __init vser_init(void)
+{
+    int ret;
+    dev_t dev;
+    int i;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    /* 向内核注册设备号，静态方式 */
+    ret = register_chrdev_region(dev, VSER_DEV_CNT, VSER_DEV_NAME);
+    if (ret)
+    {
+        goto reg_err;
+    }
+    /* 初始化cdev对象，绑定ops */
+    for (i = 0; i < VSER_DEV_CNT; i++)
+    {
+        cdev_init(&vsdev[i].cdev, &vser_ops);
+        vsdev[i].cdev.owner = THIS_MODULE;
+        vsdev[i].fifo = i == 0 ? (struct kfifo *)&vsfifo0 : (struct kfifo *)&vsfifo1;
+        /* 添加到内核中的cdev_map散列表中 */
+        ret = cdev_add(&vsdev[i].cdev, dev + i, 1);
+        if (ret)
+        {
+            goto add_err;
+        }
+    }
+    return 0;
+
+add_err:
+    for (--i; i > 0; --i)
+    {
+        cdev_del(&vsdev[i].cdev);
+    }
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+reg_err:
+    return ret;
+}
+
+/* 模块清理函数 */
+static void __exit vser_exit(void)
+{
+    dev_t dev;
+    int i;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    for (i = 0; i < VSER_DEV_CNT; i++)
+    {
+        cdev_del(&vsdev[i].cdev);
+    }
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+}
+
+/* 为模块初始化函数和清理函数取别名 */
+module_init(vser_init);
+module_exit(vser_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("suda-morris <362953310@qq.com>");
+MODULE_DESCRIPTION("A simple module");
+MODULE_ALIAS("virtual-serial");
+```
+
+
+
+### 高级IO操作
+
+#### ioctl设备操作
+
+> 为了处理设备非数据的操作(这些可以通过read、write接口来实现)，内核将对设备的控制操作委派给ioctl接口，ioctl也是一个系统调用，其函数原型为：`int ioctl(int fd,int request,...)`，与之对应的驱动接口函数是unlocked_ioctl和compat_ioctl，compat_ioctl是为了处理32位程序和64位内核兼容的一个函数接口，和体系结构相关。`long (*unlocked_ioctl)(struct file*,unsigned int,unsigned long)`
+>
+> 系统调用的过程：sys_ioctl首先调用了security_file_ioctl，然后调用了do_vfs_ioctl，在do_vfs_ioctl中先对一些特殊的命令进行了处理，再调用vfs_ioctl，在vfs_ioctl中最后调用了驱动的unblocked_ioctl。所以，**如果我们的命令定义和这些特殊的命令一样，那么我们驱动中的unblocked_ioctl就永远不会得到调用了**，这些特殊的命令有：FIOCLEX,FIONCLEX,FIONBIO,FIOASYNC,FIOQSIZE,FIFREEZE,FITHAW,FS_IOC_FIEMAP,FIGETBSZ
+
+##### 命令编码规范
+
+在内核文档Documentation/ioctl/ioctl-decoding.txt中有说明ioctl命令由四部分组成，内核提供了一组宏来定义、提取命令中的字段信息。
+
+| 比特位   | 含义                                       |
+| ----- | ---------------------------------------- |
+| 31-30 | 00：命令不带参数；10：命令需要从驱动中获取数据，读方向；01：命令需要把数据写入驱动，写方向；11：命令既要写入数据又要获取数据，读写双向 |
+| 29-16 | 如果命令带参数，则指定参数作战用的内存空间的大小                 |
+| 15-8  | 每个驱动全局唯一的幻数(魔数)                          |
+| 7-0   | 命令码                                      |
+
+* 头文件(保存相关命令)
+
+```c
+#pragma once
+
+struct option
+{
+    unsigned int datab;
+    unsigned int parity;
+    unsigned int stopb;
+};
+
+#define VS_MAGIC 's'
+
+#define VS_SET_BAUD _IOW(VS_MAGIC, 0, unsigned int)
+#define VS_GET_BAUD _IOR(VS_MAGIC, 1, unsigned int)
+#define VS_SET_FMT _IOW(VS_MAGIC, 2, struct option)
+#define VS_GET_FMT _IOR(VS_MAGIC, 3, struct option)
+```
+
+* 驱动源文件
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/kfifo.h>
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+
+#include "vser.h"
+
+#define VSER_MAJOR 256
+#define VSER_MINOR 0
+#define VSER_DEV_CNT 1
+#define VSER_DEV_NAME "vser"
+
+static DEFINE_KFIFO(vsfifo, char, 32);
+
+struct vser_dev
+{
+    struct cdev cdev;
+    unsigned int baud;
+    struct option opt;
+};
+
+static struct vser_dev vsdev;
+
+static int vser_open(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
+static int vser_release(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
+static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    /* 将内核FIFO中的数据取出，复制到用户空间 */
+    int ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+
+    return ret == 0 ? copied : ret;
+}
+
+static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    /* 将用户空间的数据放入内核FIFO中 */
+    int ret = kfifo_from_user(&vsfifo, buf, count, &copied);
+
+    return ret == 0 ? copied : ret;
+}
+
+static long vser_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+    if (_IOC_TYPE(cmd) != VS_MAGIC)
+    {
+        return -ENOTTY; /* 参数不对 */
+    }
+    switch (cmd)
+    {
+    case VS_SET_BAUD: /* 设置波特率 */
+        vsdev.baud = *(unsigned int *)arg;
+        break;
+    case VS_GET_BAUD:
+        *(unsigned int *)arg = vsdev.baud;
+        break;
+    case VS_SET_FMT: /* 设置帧格式 */
+        /* 返回未复制成功的字节数，该函数可能会使进程睡眠 */
+        if (copy_from_user(&vsdev.opt, (struct option __user *)arg, sizeof(struct option)))
+        {
+            return -EFAULT;
+        }
+        break;
+    case VS_GET_FMT:
+        /* 返回未复制成功的字节数，该函数可能会使进程睡眠 */
+        if (copy_to_user((struct option __user *)arg, &vsdev.opt, sizeof(struct option)))
+        {
+            return -EFAULT;
+        }
+        break;
+    default:
+        return -ENOTTY;
+    }
+    return 0;
+}
+
+static struct file_operations vser_ops = {
+    .owner = THIS_MODULE,
+    .open = vser_open,
+    .release = vser_release,
+    .read = vser_read,
+    .write = vser_write,
+    .unlocked_ioctl = vser_ioctl,
+};
+
+/* 模块初始化函数 */
+static int __init vser_init(void)
+{
+    int ret;
+    dev_t dev;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    /* 向内核注册设备号，静态方式 */
+    ret = register_chrdev_region(dev, VSER_DEV_CNT, VSER_DEV_NAME);
+    if (ret)
+    {
+        goto reg_err;
+    }
+    /* 初始化cdev对象，绑定ops */
+    cdev_init(&vsdev.cdev, &vser_ops);
+    vsdev.cdev.owner = THIS_MODULE;
+    vsdev.baud = 115200;
+    vsdev.opt.datab = 8;
+    vsdev.opt.stopb = 1;
+    vsdev.opt.parity = 0;
+    /* 添加到内核中的cdev_map散列表中 */
+    ret = cdev_add(&vsdev.cdev, dev, VSER_DEV_CNT);
+    if (ret)
+    {
+        goto add_err;
+    }
+    return 0;
+
+add_err:
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+reg_err:
+    return ret;
+}
+
+/* 模块清理函数 */
+static void __exit vser_exit(void)
+{
+    dev_t dev;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    cdev_del(&vsdev.cdev);
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+}
+
+/* 为模块初始化函数和清理函数取别名 */
+module_init(vser_init);
+module_exit(vser_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("suda-morris <362953310@qq.com>");
+MODULE_DESCRIPTION("A simple module");
+MODULE_ALIAS("virtual-serial");
+```
+
+* 应用层测试源文件
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+
+#include "vser.h"
+
+int main()
+{
+    int fd;
+    int ret;
+    unsigned int baud = 9600;
+    struct option opt = {8, 1, 1};
+
+    fd = open("/dev/vser0", O_RDWR);
+    if (fd == -1)
+    {
+        goto fail;
+    }
+
+    ret = ioctl(fd, VS_SET_BAUD, &baud);
+    if (ret == -1)
+    {
+        goto fail;
+    }
+    ret = ioctl(fd, VS_SET_FMT, &opt);
+    if (ret == -1)
+    {
+        goto fail;
+    }
+    baud = 0;
+    opt.datab = 0;
+    opt.stopb = 0;
+    opt.parity = 0;
+    ret = ioctl(fd, VS_GET_BAUD, &baud);
+    if (ret == -1)
+    {
+        goto fail;
+    }
+    ret = ioctl(fd, VS_GET_FMT, &opt);
+    if (ret == -1)
+    {
+        goto fail;
+    }
+
+    printf("baud rate:%d\n", baud);
+    printf("frame format:%d%c%d\n", opt.datab, opt.parity == 0 ? 'N' : opt.parity == 1 ? 'O' : 'E', opt.stopb);
+
+    close(fd);
+    exit(EXIT_SUCCESS);
+fail:
+    exit(EXIT_FAILURE);
+}
 ```
 
