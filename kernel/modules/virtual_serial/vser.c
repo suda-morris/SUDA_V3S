@@ -38,8 +38,18 @@ static int vser_release(struct inode *inode, struct file *filp)
 static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
 {
     unsigned int copied = 0;
+    int ret = 0;
+    /* 判断fifo是否为空 */
+    if (kfifo_is_empty(&vsfifo))
+    {
+        /* 如果是以非阻塞的方式打开 */
+        if (filp->f_flags & O_NONBLOCK)
+        {
+            return -EAGAIN;
+        }
+    }
     /* 将内核FIFO中的数据取出，复制到用户空间 */
-    int ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+    ret = kfifo_to_user(&vsfifo, buf, count, &copied);
 
     return ret == 0 ? copied : ret;
 }
@@ -47,8 +57,17 @@ static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff
 static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
 {
     unsigned int copied = 0;
+    int ret = 0;
+    /* 判断fifo是否满 */
+    if (kfifo_is_full(&vsfifo))
+    {
+        if (filp->f_flags & O_NONBLOCK)
+        {
+            return -EAGAIN;
+        }
+    }
     /* 将用户空间的数据放入内核FIFO中 */
-    int ret = kfifo_from_user(&vsfifo, buf, count, &copied);
+    ret = kfifo_from_user(&vsfifo, buf, count, &copied);
 
     return ret == 0 ? copied : ret;
 }

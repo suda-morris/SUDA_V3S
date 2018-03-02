@@ -15,40 +15,30 @@ int main()
     int ret;
     unsigned int baud = 9600;
     struct option opt = {8, 1, 1};
+    char rbuf[32] = {0};
+    char wbuf[32] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-    fd = open("/dev/vser0", O_RDWR);
+    fd = open("/dev/vser0", O_RDWR | O_NONBLOCK);
     if (fd == -1)
     {
         goto fail;
     }
 
-    ret = ioctl(fd, VS_SET_BAUD, &baud);
-    if (ret == -1)
+    ret = read(fd, rbuf, sizeof(rbuf));
+    if (ret < 0)
     {
-        goto fail;
+        perror("read");
     }
-    ret = ioctl(fd, VS_SET_FMT, &opt);
-    if (ret == -1)
+    ret = write(fd, wbuf, sizeof(wbuf));
+    if (ret < 0)
     {
-        goto fail;
+        perror("first write");
     }
-    baud = 0;
-    opt.datab = 0;
-    opt.stopb = 0;
-    opt.parity = 0;
-    ret = ioctl(fd, VS_GET_BAUD, &baud);
-    if (ret == -1)
+    ret = write(fd, wbuf, sizeof(wbuf));
+    if (ret < 0)
     {
-        goto fail;
+        perror("second write");
     }
-    ret = ioctl(fd, VS_GET_FMT, &opt);
-    if (ret == -1)
-    {
-        goto fail;
-    }
-
-    printf("baud rate:%d\n", baud);
-    printf("frame format:%d%c%d\n", opt.datab, opt.parity == 0 ? 'N' : opt.parity == 1 ? 'O' : 'E', opt.stopb);
 
     close(fd);
     exit(EXIT_SUCCESS);
