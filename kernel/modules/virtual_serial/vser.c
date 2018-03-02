@@ -6,6 +6,7 @@
 #include <linux/kfifo.h>
 #include <linux/ioctl.h>
 #include <linux/uaccess.h>
+#include <linux/wait.h>
 
 #include "vser.h"
 
@@ -21,6 +22,8 @@ struct vser_dev
     struct cdev cdev;
     unsigned int baud;
     struct option opt;
+    wait_queue_head_t rwqh; /* 读 等待队列头 */
+    wait_queue_head_t wwqh; /* 写 等待队列头 */
 };
 
 static struct vser_dev vsdev;
@@ -47,9 +50,22 @@ static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff
         {
             return -EAGAIN;
         }
+        /* 如果是阻塞方式打开 */
+        /* 进程睡眠，直到fifo不为空或者进程被信号唤醒 */
+        if (wait_event_interruptible(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
+        {
+            /* 被信号唤醒 */
+            return -ERESTARTSYS;
+        }
     }
     /* 将内核FIFO中的数据取出，复制到用户空间 */
     ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+
+    /* 如果fifo不满，唤醒等待的写进程 */
+    if (!kfifo_is_full(&vsfifo))
+    {
+        wake_up_interruptible(&vsdev.wwqh);
+    }
 
     return ret == 0 ? copied : ret;
 }
@@ -65,10 +81,22 @@ static ssize_t vser_write(struct file *filp, const char __user *buf, size_t coun
         {
             return -EAGAIN;
         }
+        /* 如果是阻塞方式打开 */
+        /* 进程睡眠，直到fifo不为满或者进程被信号唤醒 */
+        if (wait_event_interruptible(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
+        {
+            /* 被信号唤醒 */
+            return -ERESTARTSYS;
+        }
     }
     /* 将用户空间的数据放入内核FIFO中 */
     ret = kfifo_from_user(&vsfifo, buf, count, &copied);
 
+    /* 如果fifo不空，唤醒等待的读进程 */
+    if (!kfifo_is_empty(&vsfifo))
+    {
+        wake_up_interruptible(&vsdev.rwqh);
+    }
     return ret == 0 ? copied : ret;
 }
 
@@ -135,6 +163,9 @@ static int __init vser_init(void)
     vsdev.opt.datab = 8;
     vsdev.opt.stopb = 1;
     vsdev.opt.parity = 0;
+    /* 初始化等待队列头 */
+    init_waitqueue_head(&vsdev.rwqh);
+    init_waitqueue_head(&vsdev.wwqh);
     /* 添加到内核中的cdev_map散列表中 */
     ret = cdev_add(&vsdev.cdev, dev, VSER_DEV_CNT);
     if (ret)
