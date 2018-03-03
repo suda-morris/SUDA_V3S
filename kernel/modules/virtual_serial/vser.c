@@ -1,12 +1,17 @@
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/kfifo.h>
+
 #include <linux/ioctl.h>
 #include <linux/uaccess.h>
+
 #include <linux/wait.h>
+#include <linux/sched.h>
+#include <linux/poll.h>
 
 #include "vser.h"
 
@@ -134,6 +139,26 @@ static long vser_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
     return 0;
 }
 
+static unsigned int vser_poll(struct file *filp, struct poll_table_struct *p)
+{
+    unsigned int mask = 0;
+
+    /* 将系统调用中构造的等待队列节点加入到相应的等待队列中 */
+    poll_wait(filp, &vsdev.rwqh, p);
+    poll_wait(filp, &vsdev.wwqh, p);
+
+    /* 根据资源的情况返回设置mask的值并返回 */
+    if (!kfifo_is_empty(&vsfifo))
+    {
+        mask |= POLLIN | POLLRDNORM;
+    }
+    if (!kfifo_is_full(&vsfifo))
+    {
+        mask |= POLLOUT | POLLWRNORM;
+    }
+    return mask;
+}
+
 static struct file_operations vser_ops = {
     .owner = THIS_MODULE,
     .open = vser_open,
@@ -141,6 +166,7 @@ static struct file_operations vser_ops = {
     .read = vser_read,
     .write = vser_write,
     .unlocked_ioctl = vser_ioctl,
+    .poll = vser_poll,
 };
 
 /* 模块初始化函数 */
