@@ -1048,7 +1048,7 @@ MODULE_ALIAS("virtual-serial");
 
 #### 非阻塞型IO
 
-> 如果应用程序以非阻塞的方式打开设备文件，当资源不可用时，驱动就应该立即返回，并用一个错误码EAGAIN来通知应用程序此时资源不可用，应用程序应该稍后再尝试。
+> 如果应用程序以非阻塞的方式打开设备文件，当资源不可用时，驱动就应该立即返回，并用一个错误码EAGAIN来通知应用程序此时资源不可用，应用程序应该稍后再尝试。对于大多数时间内资源都不可用的设备(如鼠标、键盘)，这种尝试将会白白消耗CPU大量的时间。
 
 * 驱动源码
 
@@ -1496,7 +1496,7 @@ MODULE_ALIAS("virtual-serial");
 
 #### IO多路复用
 
-> 阻塞型IO有助于提高整个系统的效率，但是其缺点比较明显，那就是进程阻塞后，不能做其他的操作，这在一个进程要同时对多个设备进行操作时显得非常不方便。比如一个进程既要读取键盘的数据，又要读取串口的数据，那么如果都是用阻塞的方式进行操作的话，如果因为读取键盘而使进程阻塞，即便串口收到了数据，也不能及时获取。解决这个问题的方法有多种，比如：多进程、多线程和IO多路复用
+> 可以同时监听多个设备的状态，如果被监听的所有设备都没有关心的事件产生，那么**系统调用被阻塞**。当被监听的任何一个设备有对应关心的事件发生，将会唤醒系统调用，系统调用将再次遍历所监听的设备，获取其事件信息，然后系统调用返回。之后可以对设备发起非阻塞的读或者写操作。
 
 * poll系统调用
 
@@ -1814,6 +1814,710 @@ int main()
     exit(EXIT_SUCCESS);
 fail:
     perror("poll test");
+    exit(EXIT_FAILURE);
+}
+```
+
+
+
+#### 异步IO(在Linux4.x的版本中发生重大变化，下面只介绍了旧的版本)
+
+> 异步IO是POSIX定义的一组标准接口，调用者只是发起IO操作的请求，然后立即返回，程序可以去做别的事情。具体的IO操作在驱动中完成，驱动中可能会被阻塞，也可能不会被阻塞。当驱动的IO操作完成后，调用者将会得到通知，通常是内核向调用者发送信号或者自动调用调用者注册的回调函数，通知操作是由内核完成，而不是驱动本身。
+
+* 驱动部分
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/kfifo.h>
+
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+
+#include <linux/wait.h>
+#include <linux/sched.h>
+#include <linux/poll.h>
+#include <linux/aio.h>
+
+#include "vser.h"
+
+#define VSER_MAJOR 256
+#define VSER_MINOR 0
+#define VSER_DEV_CNT 1
+#define VSER_DEV_NAME "vser"
+
+struct vser_dev
+{
+	unsigned int baud;
+	struct option opt;
+	struct cdev cdev;
+	wait_queue_head_t rwqh;
+	wait_queue_head_t wwqh;
+};
+
+DEFINE_KFIFO(vsfifo, char, 32);
+static struct vser_dev vsdev;
+
+static int vser_open(struct inode *inode, struct file *filp)
+{
+	return 0;
+}
+
+static int vser_release(struct inode *inode, struct file *filp)
+{
+	return 0;
+}
+
+static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+	int ret;
+	unsigned int copied = 0;
+
+	if (kfifo_is_empty(&vsfifo))
+	{
+		if (filp->f_flags & O_NONBLOCK)
+			return -EAGAIN;
+
+		if (wait_event_interruptible_exclusive(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
+			return -ERESTARTSYS;
+	}
+
+	ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+
+	if (!kfifo_is_full(&vsfifo))
+		wake_up_interruptible(&vsdev.wwqh);
+
+	return ret == 0 ? copied : ret;
+}
+
+static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+
+	int ret;
+	unsigned int copied = 0;
+
+	if (kfifo_is_full(&vsfifo))
+	{
+		if (filp->f_flags & O_NONBLOCK)
+			return -EAGAIN;
+
+		if (wait_event_interruptible_exclusive(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
+			return -ERESTARTSYS;
+	}
+
+	ret = kfifo_from_user(&vsfifo, buf, count, &copied);
+
+	if (!kfifo_is_empty(&vsfifo))
+		wake_up_interruptible(&vsdev.rwqh);
+
+	return ret == 0 ? copied : ret;
+}
+
+static long vser_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	if (_IOC_TYPE(cmd) != VS_MAGIC)
+		return -ENOTTY;
+
+	switch (cmd)
+	{
+	case VS_SET_BAUD:
+		vsdev.baud = arg;
+		break;
+	case VS_GET_BAUD:
+		arg = vsdev.baud;
+		break;
+	case VS_SET_FFMT:
+		if (copy_from_user(&vsdev.opt, (struct option __user *)arg, sizeof(struct option)))
+			return -EFAULT;
+		break;
+	case VS_GET_FFMT:
+		if (copy_to_user((struct option __user *)arg, &vsdev.opt, sizeof(struct option)))
+			return -EFAULT;
+		break;
+	default:
+		return -ENOTTY;
+	}
+
+	return 0;
+}
+
+static unsigned int vser_poll(struct file *filp, struct poll_table_struct *p)
+{
+	int mask = 0;
+
+	poll_wait(filp, &vsdev.rwqh, p);
+	poll_wait(filp, &vsdev.wwqh, p);
+
+	if (!kfifo_is_empty(&vsfifo))
+		mask |= POLLIN | POLLRDNORM;
+	if (!kfifo_is_full(&vsfifo))
+		mask |= POLLOUT | POLLWRNORM;
+
+	return mask;
+}
+
+static ssize_t vser_aio_read(struct kiocb *iocb, const struct iovec *iov, unsigned long nr_segs, loff_t pos)
+{
+	size_t read = 0;
+	unsigned long i;
+	ssize_t ret;
+
+	/* 分多次来读，每次读iov_len长度，分别将读到的数据放入分散的内存区域中iov_base */
+	for (i = 0; i < nr_segs; i++)
+	{
+		/* 异步IO可以在驱动中阻塞，但是上层的操作却是非阻塞的 */
+		ret = vser_read(iocb->ki_filp, iov[i].iov_base, iov[i].iov_len, &pos);
+		if (ret < 0)
+			break;
+		read += ret;
+	}
+
+	return read ? read : -EFAULT;
+}
+
+static ssize_t vser_aio_write(struct kiocb *iocb, const struct iovec *iov, unsigned long nr_segs, loff_t pos)
+{
+	size_t written = 0;
+	unsigned long i;
+	ssize_t ret;
+
+	for (i = 0; i < nr_segs; i++)
+	{
+		ret = vser_write(iocb->ki_filp, iov[i].iov_base, iov[i].iov_len, &pos);
+		if (ret < 0)
+			break;
+		written += ret;
+	}
+
+	return written ? written : -EFAULT;
+}
+
+static struct file_operations vser_ops = {
+	.owner = THIS_MODULE,
+	.open = vser_open,
+	.release = vser_release,
+	.read = vser_read,
+	.write = vser_write,
+	.unlocked_ioctl = vser_ioctl,
+	.poll = vser_poll,
+	.aio_read = vser_aio_read,
+	.aio_write = vser_aio_write,
+};
+
+static int __init vser_init(void)
+{
+	int ret;
+	dev_t dev;
+
+	dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+	ret = register_chrdev_region(dev, VSER_DEV_CNT, VSER_DEV_NAME);
+	if (ret)
+		goto reg_err;
+
+	cdev_init(&vsdev.cdev, &vser_ops);
+	vsdev.cdev.owner = THIS_MODULE;
+	vsdev.baud = 115200;
+	vsdev.opt.datab = 8;
+	vsdev.opt.parity = 0;
+	vsdev.opt.stopb = 1;
+
+	ret = cdev_add(&vsdev.cdev, dev, VSER_DEV_CNT);
+	if (ret)
+		goto add_err;
+
+	init_waitqueue_head(&vsdev.rwqh);
+	init_waitqueue_head(&vsdev.wwqh);
+
+	return 0;
+
+add_err:
+	unregister_chrdev_region(dev, VSER_DEV_CNT);
+reg_err:
+	return ret;
+}
+
+static void __exit vser_exit(void)
+{
+
+	dev_t dev;
+
+	dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+
+	cdev_del(&vsdev.cdev);
+	unregister_chrdev_region(dev, VSER_DEV_CNT);
+}
+
+module_init(vser_init);
+module_exit(vser_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kevin Jiang <jiangxg@farsight.com.cn>");
+MODULE_DESCRIPTION("A simple character device driver");
+MODULE_ALIAS("virtual-serial");
+```
+
+* 驱动测试(编译链接是加上**-lrt**选项)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <aio.h>
+
+#include "vser.h"
+
+static void aiow_complete_handler(sigval_t sigval)
+{
+    int ret;
+    struct aiocb *req = (struct aiocb *)sigval.sival_ptr;
+    /* 获取io操作的错误码 */
+    if (aio_error(req) == 0)
+    {
+        /* 获取io操作的返回值 */
+        ret = aio_return(req);
+        printf("aio write %d bytes\n", ret);
+    }
+    return;
+}
+
+static void aior_complete_handler(sigval_t sigval)
+{
+    int ret;
+    struct aiocb *req = (struct aiocb *)sigval.sival_ptr;
+    if (aio_error(req) == 0)
+    {
+        ret = aio_return(req);
+        if (ret)
+        {
+            printf("aio read:%s\n", (char *)req->aio_buf);
+        }
+    }
+    return;
+}
+
+int main()
+{
+    int ret;
+    int fd;
+    /* 定义读和写的异步IO控制块 */
+    struct aiocb aiow, aior;
+
+    fd = open("/dev/vser0", O_RDWR);
+    if (fd == -1)
+    {
+        goto fail;
+    }
+
+    memset(&aior, 0, sizeof(aior));
+    memset(&aiow, 0, sizeof(aiow));
+
+    /* 初始化两个控制块 */
+    aiow.aio_fildes = fd;
+    aiow.aio_buf = malloc(32);
+    strcpy((char *)aiow.aio_buf, "aio test");
+    aiow.aio_nbytes = strlen((char *)aiow.aio_buf) + 1;
+    aiow.aio_offset = 0;
+    aiow.aio_sigevent.sigev_notify = SIGEV_THREAD;
+    aiow.aio_sigevent.sigev_notify_function = aiow_complete_handler;
+    aiow.aio_sigevent.sigev_notify_attributes = NULL;
+    aiow.aio_sigevent.sigev_value.sival_ptr = &aiow;
+
+    aior.aio_fildes = fd;
+    aior.aio_buf = malloc(32);
+    aior.aio_nbytes = 32;
+    aior.aio_offset = 0;
+    aior.aio_sigevent.sigev_notify = SIGEV_THREAD;
+    aior.aio_sigevent.sigev_notify_function = aior_complete_handler;
+    aior.aio_sigevent.sigev_notify_attributes = NULL;
+    aior.aio_sigevent.sigev_value.sival_ptr = &aior;
+
+    while (1)
+    {
+        /* 发起异步写操作，函数会立即返回，具体的写操作会在底层的驱动中完成 */
+        if (aio_write(&aiow) == -1)
+        {
+            goto fail;
+        }
+        if (aio_read(&aior) == -1)
+        {
+            goto fail;
+        }
+        sleep(1);
+    }
+    exit(EXIT_SUCCESS);
+fail:
+    perror("async io test");
+    exit(EXIT_FAILURE);
+}
+```
+
+
+
+####异步通知
+
+> 异步通知类似于异步IO，只是当设备资源可用时它是向应用层发信号，而不能直接调用应用层注册的回调函数，并且发信号的操作也是驱动程序自己来完成。这种机制和中断非常相似(信号其实相当于应用层的中断).
+>
+> 1. 注册信号处理函数，这相当于注册中断处理函数
+> 2. 打开设备文件，设置文件属主，目的是使驱动根据打开文件的file结构，找到对应的进程，从而向该进程发送信号
+> 3. 设置设备资源可用时驱动向进程发送的信号
+> 4. 设置文件的FASYNC标志，使能异步通知机制，这相当于打开中断使能位
+
+* 内核中关于异步通知的处理
+
+> fcntl系统调用对应的内核函数是do_fcntl，do_fcntl会判断要执行的命令，如果是F_SETFL，则调用setfl函数，setfl函数会判断传递进来的flag是否包含FASYNC标志，如果是则调用驱动中的fasync接口函数，并传递FASYNC标志是否被设置。驱动中的fasync接口函数会调用fasync_helper函数，fasync_helper函数根据FASYNC标志是否被设置来决定在链表中添加一个struct fasync_struct节点还是删除一个节点。当资源可用时，驱动调用kill_fasync函数发送信号，该函数会遍历struct fasync_struct链表，从而找到所有要接收信号的进程，并调用send_sigio依次发送信号
+
+* 驱动程序端
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/cdev.h>
+#include <linux/kfifo.h>
+
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+
+#include <linux/wait.h>
+#include <linux/sched.h>
+#include <linux/poll.h>
+
+#include "vser.h"
+
+#define VSER_MAJOR 256
+#define VSER_MINOR 0
+#define VSER_DEV_CNT 1
+#define VSER_DEV_NAME "vser"
+
+static DEFINE_KFIFO(vsfifo, char, 32);
+
+struct vser_dev
+{
+    struct cdev cdev;
+    unsigned int baud;
+    struct option opt;
+    wait_queue_head_t rwqh;     /* 读 等待队列头 */
+    wait_queue_head_t wwqh;     /* 写 等待队列头 */
+    struct fasync_struct *fapp; /* fasync_struct链表头 */
+};
+
+static struct vser_dev vsdev;
+static int vser_fasync(int fd, struct file *filp, int on);
+static int vser_open(struct inode *inode, struct file *filp)
+{
+    return 0;
+}
+
+static int vser_release(struct inode *inode, struct file *filp)
+{
+    /* 将节点从链表删除，这样进程不会再收到信号 */
+    vser_fasync(-1, filp, 0);
+    return 0;
+}
+
+static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    int ret = 0;
+    /* 判断fifo是否为空 */
+    if (kfifo_is_empty(&vsfifo))
+    {
+        /* 如果是以非阻塞的方式打开 */
+        if (filp->f_flags & O_NONBLOCK)
+        {
+            return -EAGAIN;
+        }
+        /* 如果是阻塞方式打开 */
+        /* 进程睡眠，直到fifo不为空或者进程被信号唤醒 */
+        if (wait_event_interruptible_exclusive(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
+        {
+            /* 被信号唤醒 */
+            return -ERESTARTSYS;
+        }
+    }
+    /* 将内核FIFO中的数据取出，复制到用户空间 */
+    ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+
+    /* 如果fifo不满，唤醒等待的写进程 */
+    if (!kfifo_is_full(&vsfifo))
+    {
+        wake_up_interruptible(&vsdev.wwqh);
+        /* 发送信号SIGIO，并设置资源的可用类型是可写 */
+        kill_fasync(&vsdev.fapp, SIGIO, POLL_OUT);
+    }
+
+    return ret == 0 ? copied : ret;
+}
+
+static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
+{
+    unsigned int copied = 0;
+    int ret = 0;
+    /* 判断fifo是否满 */
+    if (kfifo_is_full(&vsfifo))
+    {
+        if (filp->f_flags & O_NONBLOCK)
+        {
+            return -EAGAIN;
+        }
+        /* 如果是阻塞方式打开 */
+        /* 进程睡眠，直到fifo不为满或者进程被信号唤醒 */
+        if (wait_event_interruptible_exclusive(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
+        {
+            /* 被信号唤醒 */
+            return -ERESTARTSYS;
+        }
+    }
+    /* 将用户空间的数据放入内核FIFO中 */
+    ret = kfifo_from_user(&vsfifo, buf, count, &copied);
+
+    /* 如果fifo不空，唤醒等待的读进程 */
+    if (!kfifo_is_empty(&vsfifo))
+    {
+        wake_up_interruptible(&vsdev.rwqh);
+        /* 发送信号SIGIO，并设置资源的可用类型是可读 */
+        kill_fasync(&vsdev.fapp, SIGIO, POLL_IN);
+    }
+    return ret == 0 ? copied : ret;
+}
+
+static long vser_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+    if (_IOC_TYPE(cmd) != VS_MAGIC)
+    {
+        return -ENOTTY; /* 参数不对 */
+    }
+    switch (cmd)
+    {
+    case VS_SET_BAUD: /* 设置波特率 */
+        vsdev.baud = *(unsigned int *)arg;
+        break;
+    case VS_GET_BAUD:
+        *(unsigned int *)arg = vsdev.baud;
+        break;
+    case VS_SET_FMT: /* 设置帧格式 */
+        /* 返回未复制成功的字节数，该函数可能会使进程睡眠 */
+        if (copy_from_user(&vsdev.opt, (struct option __user *)arg, sizeof(struct option)))
+        {
+            return -EFAULT;
+        }
+        break;
+    case VS_GET_FMT:
+        /* 返回未复制成功的字节数，该函数可能会使进程睡眠 */
+        if (copy_to_user((struct option __user *)arg, &vsdev.opt, sizeof(struct option)))
+        {
+            return -EFAULT;
+        }
+        break;
+    default:
+        return -ENOTTY;
+    }
+    return 0;
+}
+
+static unsigned int vser_poll(struct file *filp, struct poll_table_struct *p)
+{
+    unsigned int mask = 0;
+
+    /* 将系统调用中构造的等待队列节点加入到相应的等待队列中 */
+    poll_wait(filp, &vsdev.rwqh, p);
+    poll_wait(filp, &vsdev.wwqh, p);
+
+    /* 根据资源的情况返回设置mask的值并返回 */
+    if (!kfifo_is_empty(&vsfifo))
+    {
+        mask |= POLLIN | POLLRDNORM;
+    }
+    if (!kfifo_is_full(&vsfifo))
+    {
+        mask |= POLLOUT | POLLWRNORM;
+    }
+    return mask;
+}
+
+static int vser_fasync(int fd, struct file *filp, int on)
+{
+    /* 调用fasync_helper来构造struct fasync_struct节点，并加入到链表 */
+    return fasync_helper(fd, filp, on, &vsdev.fapp);
+}
+
+static struct file_operations vser_ops = {
+    .owner = THIS_MODULE,
+    .open = vser_open,
+    .release = vser_release,
+    .read = vser_read,
+    .write = vser_write,
+    .unlocked_ioctl = vser_ioctl,
+    .poll = vser_poll,
+    .fasync = vser_fasync,
+};
+
+/* 模块初始化函数 */
+static int __init vser_init(void)
+{
+    int ret;
+    dev_t dev;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    /* 向内核注册设备号，静态方式 */
+    ret = register_chrdev_region(dev, VSER_DEV_CNT, VSER_DEV_NAME);
+    if (ret)
+    {
+        goto reg_err;
+    }
+    /* 初始化cdev对象，绑定ops */
+    cdev_init(&vsdev.cdev, &vser_ops);
+    vsdev.cdev.owner = THIS_MODULE;
+    vsdev.baud = 115200;
+    vsdev.opt.datab = 8;
+    vsdev.opt.stopb = 1;
+    vsdev.opt.parity = 0;
+    /* 初始化等待队列头 */
+    init_waitqueue_head(&vsdev.rwqh);
+    init_waitqueue_head(&vsdev.wwqh);
+    /* 添加到内核中的cdev_map散列表中 */
+    ret = cdev_add(&vsdev.cdev, dev, VSER_DEV_CNT);
+    if (ret)
+    {
+        goto add_err;
+    }
+    return 0;
+
+add_err:
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+reg_err:
+    return ret;
+}
+
+/* 模块清理函数 */
+static void __exit vser_exit(void)
+{
+    dev_t dev;
+
+    dev = MKDEV(VSER_MAJOR, VSER_MINOR);
+    cdev_del(&vsdev.cdev);
+    unregister_chrdev_region(dev, VSER_DEV_CNT);
+}
+
+/* 为模块初始化函数和清理函数取别名 */
+module_init(vser_init);
+module_exit(vser_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("suda-morris <362953310@qq.com>");
+MODULE_DESCRIPTION("A simple module");
+MODULE_ALIAS("virtual-serial");
+```
+
+* 应用程序端
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <poll.h>
+#include <signal.h>
+
+#include "vser.h"
+
+int fd;
+
+static void sigio_handler(int signum, siginfo_t *siginfo, void *act)
+{
+    int ret;
+    char buf[32];
+    if (signum == SIGIO)
+    {
+        /* si_band记录着资源是可读还是可写 */
+        if (siginfo->si_band & POLLIN)
+        {
+            printf("FIFO is not empty\n");
+            ret = read(fd, buf, sizeof(buf));
+            if (ret != -1)
+            {
+                buf[ret] = '\0';
+                puts(buf);
+            }
+        }
+        if (siginfo->si_band & POLLOUT)
+        {
+            printf("FIFO is not full\n");
+        }
+    }
+}
+
+int main()
+{
+    int ret;
+    int flag;
+
+    struct sigaction newact, oldact;
+
+    /* sigaction比signal更高级，主要是信号阻塞和提供信号信息这两方面 */
+    /* 设置信号处理函数中要屏蔽的信号，防止嵌套 */
+    sigemptyset(&newact.sa_mask);
+    sigaddset(&newact.sa_mask, SIGIO);
+    /* 注册信号函数 */
+    newact.sa_flags = SA_SIGINFO;
+    newact.sa_sigaction = sigio_handler;
+    if (sigaction(SIGIO, &newact, &oldact) == -1)
+    {
+        goto fail;
+    }
+
+    fd = open("/dev/vser0", O_RDWR | O_NONBLOCK);
+    if (fd == -1)
+    {
+        goto fail;
+    }
+    /* 设置文件属主，从而驱动可以根据file结构来找到对应的进程 */
+    if (fcntl(fd, F_SETOWN, getpid()) == -1)
+    {
+        goto fail;
+    }
+    /* F_SETSIG不是POSIX标准，需要在编译时候加上-D_GNU_SOURCE */
+    /* 当设备资源可用时，向进程发送SIGIO信号 */
+    if (fcntl(fd, F_SETSIG, SIGIO) == -1)
+    {
+        goto fail;
+    }
+    /* 使能异步通知机制 */
+    flag = fcntl(fd, F_GETFL);
+    if (flag == -1)
+    {
+        goto fail;
+    }
+    /* 会触发调用驱动中的fasync接口函数 */
+    if (fcntl(fd, F_SETFL, flag | FASYNC) == -1)
+    {
+        goto fail;
+    }
+
+    while (1)
+    {
+        sleep(1);
+    }
+    exit(EXIT_SUCCESS);
+fail:
+    perror("fasync test");
     exit(EXIT_FAILURE);
 }
 ```

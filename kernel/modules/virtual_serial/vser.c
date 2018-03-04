@@ -27,12 +27,13 @@ struct vser_dev
     struct cdev cdev;
     unsigned int baud;
     struct option opt;
-    wait_queue_head_t rwqh; /* 读 等待队列头 */
-    wait_queue_head_t wwqh; /* 写 等待队列头 */
+    wait_queue_head_t rwqh;     /* 读 等待队列头 */
+    wait_queue_head_t wwqh;     /* 写 等待队列头 */
+    struct fasync_struct *fapp; /* fasync_struct链表头 */
 };
 
 static struct vser_dev vsdev;
-
+static int vser_fasync(int fd, struct file *filp, int on);
 static int vser_open(struct inode *inode, struct file *filp)
 {
     return 0;
@@ -40,6 +41,8 @@ static int vser_open(struct inode *inode, struct file *filp)
 
 static int vser_release(struct inode *inode, struct file *filp)
 {
+    /* 将节点从链表删除，这样进程不会再收到信号 */
+    vser_fasync(-1, filp, 0);
     return 0;
 }
 
@@ -57,7 +60,7 @@ static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff
         }
         /* 如果是阻塞方式打开 */
         /* 进程睡眠，直到fifo不为空或者进程被信号唤醒 */
-        if (wait_event_interruptible(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
+        if (wait_event_interruptible_exclusive(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
         {
             /* 被信号唤醒 */
             return -ERESTARTSYS;
@@ -70,6 +73,8 @@ static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff
     if (!kfifo_is_full(&vsfifo))
     {
         wake_up_interruptible(&vsdev.wwqh);
+        /* 发送信号SIGIO，并设置资源的可用类型是可写 */
+        kill_fasync(&vsdev.fapp, SIGIO, POLL_OUT);
     }
 
     return ret == 0 ? copied : ret;
@@ -88,7 +93,7 @@ static ssize_t vser_write(struct file *filp, const char __user *buf, size_t coun
         }
         /* 如果是阻塞方式打开 */
         /* 进程睡眠，直到fifo不为满或者进程被信号唤醒 */
-        if (wait_event_interruptible(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
+        if (wait_event_interruptible_exclusive(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
         {
             /* 被信号唤醒 */
             return -ERESTARTSYS;
@@ -101,6 +106,8 @@ static ssize_t vser_write(struct file *filp, const char __user *buf, size_t coun
     if (!kfifo_is_empty(&vsfifo))
     {
         wake_up_interruptible(&vsdev.rwqh);
+        /* 发送信号SIGIO，并设置资源的可用类型是可读 */
+        kill_fasync(&vsdev.fapp, SIGIO, POLL_IN);
     }
     return ret == 0 ? copied : ret;
 }
@@ -159,6 +166,12 @@ static unsigned int vser_poll(struct file *filp, struct poll_table_struct *p)
     return mask;
 }
 
+static int vser_fasync(int fd, struct file *filp, int on)
+{
+    /* 调用fasync_helper来构造struct fasync_struct节点，并加入到链表 */
+    return fasync_helper(fd, filp, on, &vsdev.fapp);
+}
+
 static struct file_operations vser_ops = {
     .owner = THIS_MODULE,
     .open = vser_open,
@@ -167,6 +180,7 @@ static struct file_operations vser_ops = {
     .write = vser_write,
     .unlocked_ioctl = vser_ioctl,
     .poll = vser_poll,
+    .fasync = vser_fasync,
 };
 
 /* 模块初始化函数 */

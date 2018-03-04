@@ -6,75 +6,91 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <poll.h>
 #include <errno.h>
-#include <linux/input.h>
+#include <poll.h>
+#include <signal.h>
 
 #include "vser.h"
+
+int fd;
+
+static void sigio_handler(int signum, siginfo_t *siginfo, void *act)
+{
+    int ret;
+    char buf[32];
+    if (signum == SIGIO)
+    {
+        /* si_band记录着资源是可读还是可写 */
+        if (siginfo->si_band & POLLIN)
+        {
+            printf("FIFO is not empty\n");
+            ret = read(fd, buf, sizeof(buf));
+            if (ret != -1)
+            {
+                buf[ret] = '\0';
+                puts(buf);
+            }
+        }
+        if (siginfo->si_band & POLLOUT)
+        {
+            printf("FIFO is not full\n");
+        }
+    }
+}
 
 int main()
 {
     int ret;
-    struct pollfd fds[2];
-    char rbuf[32];
-    char wbuf[32];
-    struct input_event key;
+    int flag;
 
-    fds[0].fd = open("/dev/vser0", O_RDWR | O_NONBLOCK);
-    if (fds[0].fd == -1)
+    struct sigaction newact, oldact;
+
+    /* sigaction比signal更高级，主要是信号阻塞和提供信号信息这两方面 */
+    /* 设置信号处理函数中要屏蔽的信号，防止嵌套 */
+    sigemptyset(&newact.sa_mask);
+    sigaddset(&newact.sa_mask, SIGIO);
+    /* 注册信号函数 */
+    newact.sa_flags = SA_SIGINFO;
+    newact.sa_sigaction = sigio_handler;
+    if (sigaction(SIGIO, &newact, &oldact) == -1)
     {
         goto fail;
     }
-    fds[0].events = POLLIN;
-    fds[0].revents = 0;
 
-    /* 通过cat /proc/bus/input/devices来查看/dev/input目录下的event对应的设备 */
-    /* 这里选择键盘 */
-    fds[1].fd = open("/dev/input/event8", O_RDWR | O_NONBLOCK);
-    if (fds[1].fd == -1)
+    fd = open("/dev/vser0", O_RDWR | O_NONBLOCK);
+    if (fd == -1)
     {
         goto fail;
     }
-    fds[1].events = POLLIN;
-    fds[1].revents = 0;
+    /* 设置文件属主，从而驱动可以根据file结构来找到对应的进程 */
+    if (fcntl(fd, F_SETOWN, getpid()) == -1)
+    {
+        goto fail;
+    }
+    /* F_SETSIG不是POSIX标准，需要在编译时候加上-D_GNU_SOURCE */
+    /* 当设备资源可用时，向进程发送SIGIO信号 */
+    if (fcntl(fd, F_SETSIG, SIGIO) == -1)
+    {
+        goto fail;
+    }
+    /* 使能异步通知机制 */
+    flag = fcntl(fd, F_GETFL);
+    if (flag == -1)
+    {
+        goto fail;
+    }
+    /* 会触发调用驱动中的fasync接口函数 */
+    if (fcntl(fd, F_SETFL, flag | FASYNC) == -1)
+    {
+        goto fail;
+    }
 
     while (1)
     {
-        /* 第三个参数是毫秒的超时值，负数表示一直监听，直到被监听的文件描述符集合中的任意一个设备发生了事件才会返回 */
-        ret = poll(fds, sizeof(fds), -1);
-        if (ret == -1)
-        {
-            goto fail;
-        }
-        if (fds[0].revents & POLLIN)
-        {
-            ret = read(fds[0].fd, rbuf, sizeof(rbuf));
-            if (ret < 0)
-            {
-                goto fail;
-            }
-            puts(rbuf);
-        }
-        if (fds[1].revents & POLLIN)
-        {
-            ret = read(fds[1].fd, &key, sizeof(key));
-            if (ret < 0)
-            {
-                goto fail;
-            }
-            if (key.type == EV_KEY)
-            {
-                sprintf(wbuf, "%#x\n", key.code);
-                ret = write(fds[0].fd, wbuf, strlen(wbuf) + 1);
-                if (ret < 0)
-                {
-                    goto fail;
-                }
-            }
-        }
+        sleep(1);
     }
     exit(EXIT_SUCCESS);
 fail:
-    perror("poll test");
+    perror("fasync test");
     exit(EXIT_FAILURE);
 }
