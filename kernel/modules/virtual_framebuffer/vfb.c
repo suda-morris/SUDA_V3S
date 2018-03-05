@@ -48,10 +48,43 @@ static int vfb_mmap(struct file *filp, struct vm_area_struct *vma)
 static ssize_t vfb_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
 {
     int ret = 0;
-    size_t len = (count > PAGE_SIZE) ? PAGE_SIZE : count;
+    size_t len = count;
+    /* 越界调整 */
+    if (*pos + len > PAGE_SIZE)
+    {
+        len = PAGE_SIZE - *pos;
+    }
     /* copy_to_user返回未复制成功的字节数 */
-    ret = copy_to_user(buf, vfbdev.buf, len);
+    ret = copy_to_user(buf, vfbdev.buf + *pos, len);
+    *pos += len - ret;
     return len - ret;
+}
+
+static loff_t vfb_llseek(struct file *filp, loff_t off, int whence)
+{
+    loff_t newpos;
+    switch (whence)
+    {
+    case SEEK_SET:
+        newpos = off;
+        break;
+    case SEEK_CUR:
+        newpos = filp->f_pos + off;
+        break;
+    case SEEK_END:
+        newpos = PAGE_SIZE + off;
+        break;
+    default:
+        return -EINVAL;
+    }
+    /* 判断新位置是否合法 */
+    if (newpos < 0 || newpos > PAGE_SIZE)
+    {
+        return -EINVAL;
+    }
+    /* 更新文件的位置值 */
+    filp->f_pos = newpos;
+    return newpos;
 }
 
 static struct file_operations vfb_ops = {
@@ -60,6 +93,7 @@ static struct file_operations vfb_ops = {
     .release = vfb_release,
     .read = vfb_read,
     .mmap = vfb_mmap,
+    .llseek = vfb_llseek,
 };
 
 /* 模块初始化函数 */

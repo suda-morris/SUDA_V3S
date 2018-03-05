@@ -38,10 +38,16 @@ int main()
     }
     *(start + i) = '\0';
 
-    if (read(fd, buf, 27) == -1)
+    if (lseek(fd, 3, SEEK_SET) == -1)
     {
         goto fail;
     }
+
+    if (read(fd, buf, 10) == -1)
+    {
+        goto fail;
+    }
+    buf[10] = '\0';
     puts(buf);
 
     munmap(start, 32);

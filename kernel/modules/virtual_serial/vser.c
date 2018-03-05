@@ -13,12 +13,20 @@
 #include <linux/sched.h>
 #include <linux/poll.h>
 
+#include <linux/interrupt.h>
+#include <linux/random.h>
+#include <linux/delay.h>
+#include <linux/ktime.h>
+#include <linux/hrtimer.h>
+
 #include "vser.h"
 
 #define VSER_MAJOR 256
 #define VSER_MINOR 0
 #define VSER_DEV_CNT 1
 #define VSER_DEV_NAME "vser"
+
+#define VSER_IRQ_NR 37
 
 static DEFINE_KFIFO(vsfifo, char, 32);
 
@@ -30,6 +38,7 @@ struct vser_dev
     wait_queue_head_t rwqh;     /* 读 等待队列头 */
     wait_queue_head_t wwqh;     /* 写 等待队列头 */
     struct fasync_struct *fapp; /* fasync_struct链表头 */
+    struct hrtimer timer;       /* 高分辨率定时器对象 */
 };
 
 static struct vser_dev vsdev;
@@ -172,6 +181,31 @@ static int vser_fasync(int fd, struct file *filp, int on)
     return fasync_helper(fd, filp, on, &vsdev.fapp);
 }
 
+static enum hrtimer_restart vser_timer(struct hrtimer *timer)
+{
+    char data;
+
+    get_random_bytes(&data, sizeof(data));
+    data %= 26;
+    data += 'A';
+    if (!kfifo_is_full(&vsfifo))
+    {
+        if (!kfifo_in(&vsfifo, &data, sizeof(data)))
+        {
+            printk(KERN_ERR "vser: kfifo_in failure\n");
+        }
+    }
+    if (!kfifo_is_empty(&vsfifo))
+    {
+        wake_up_interruptible(&vsdev.rwqh);
+        kill_fasync(&vsdev.fapp, SIGIO, POLL_IN);
+    }
+    /* 重新设置定时值 */
+    hrtimer_forward_now(timer, ktime_set(1, 1000));
+    /* HRTIMER_RESTART表示要重新启动定时器 */
+    return HRTIMER_RESTART;
+}
+
 static struct file_operations vser_ops = {
     .owner = THIS_MODULE,
     .open = vser_open,
@@ -212,6 +246,12 @@ static int __init vser_init(void)
     {
         goto add_err;
     }
+    /* 初始化定时器 */
+    /* CLOCK_MONOTONIC时钟类型表示自系统开机以来的单调递增时间,HRTIMER_MODE_REL表示相对时间模式 */
+    hrtimer_init(&vsdev.timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+    vsdev.timer.function = vser_timer;
+    /* 启动定时器 */
+    hrtimer_start(&vsdev.timer, ktime_set(1, 1000), HRTIMER_MODE_REL);
     return 0;
 
 add_err:
@@ -225,6 +265,8 @@ static void __exit vser_exit(void)
 {
     dev_t dev;
 
+    /* 关闭定时器 */
+    hrtimer_cancel(&vsdev.timer);
     dev = MKDEV(VSER_MAJOR, VSER_MINOR);
     cdev_del(&vsdev.cdev);
     unregister_chrdev_region(dev, VSER_DEV_CNT);
