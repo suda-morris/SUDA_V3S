@@ -25,10 +25,8 @@
 #define VSER_MINOR 0
 #define VSER_DEV_CNT 1
 #define VSER_DEV_NAME "vser"
-
-#define VSER_IRQ_NR 37
-
-static DEFINE_KFIFO(vsfifo, char, 32);
+#define VSRE_FIFO_SIZE 32
+static DEFINE_KFIFO(vsfifo, char, VSRE_FIFO_SIZE);
 
 struct vser_dev
 {
@@ -36,89 +34,84 @@ struct vser_dev
     unsigned int baud;
     struct option opt;
     wait_queue_head_t rwqh;     /* 读 等待队列头 */
-    wait_queue_head_t wwqh;     /* 写 等待队列头 */
     struct fasync_struct *fapp; /* fasync_struct链表头 */
     struct hrtimer timer;       /* 高分辨率定时器对象 */
+    atomic_t available;         /* 当前串口是否可用 */
 };
 
 static struct vser_dev vsdev;
 static int vser_fasync(int fd, struct file *filp, int on);
 static int vser_open(struct inode *inode, struct file *filp)
 {
-    return 0;
+    if (atomic_dec_and_test(&vsdev.available))
+    {
+        /* 首次被打开 */
+        return 0;
+    }
+    else
+    {
+        /* 竞争失败的进程应该要将available的值加回来，否则以后串口将永远无法打开 */
+        atomic_inc(&vsdev.available);
+        return -EBUSY;
+    }
 }
 
 static int vser_release(struct inode *inode, struct file *filp)
 {
     /* 将节点从链表删除，这样进程不会再收到信号 */
     vser_fasync(-1, filp, 0);
+    /* 使用完串口之后要把available加回来，使串口又可用 */
+    atomic_inc(&vsdev.available);
     return 0;
 }
 
 static ssize_t vser_read(struct file *filp, char __user *buf, size_t count, loff_t *pos)
 {
-    unsigned int copied = 0;
-    int ret = 0;
+    int len;
+    int ret;
+    char rbuf[VSRE_FIFO_SIZE];
+    /* 修正读取数据的大小 */
+    len = count > sizeof(rbuf) ? sizeof(rbuf) : count;
+    /* 使用等待队列中自带的自旋锁进行加锁操作，保护共享资源fifo */
+    /* 在持有锁期间，不能调度调度器 */
+    spin_lock(&vsdev.rwqh.lock);
     /* 判断fifo是否为空 */
     if (kfifo_is_empty(&vsfifo))
     {
         /* 如果是以非阻塞的方式打开 */
         if (filp->f_flags & O_NONBLOCK)
         {
+            spin_unlock(&vsdev.rwqh.lock);
             return -EAGAIN;
         }
         /* 如果是阻塞方式打开 */
         /* 进程睡眠，直到fifo不为空或者进程被信号唤醒 */
-        if (wait_event_interruptible_exclusive(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
+        /* wait_event_interruptible_locked会在进程休眠前自动释放自旋锁，醒来后又将重新获得自旋锁 */
+        if (wait_event_interruptible_locked(vsdev.rwqh, !kfifo_is_empty(&vsfifo)))
         {
+            spin_unlock(&vsdev.rwqh.lock);
             /* 被信号唤醒 */
             return -ERESTARTSYS;
         }
     }
-    /* 将内核FIFO中的数据取出，复制到用户空间 */
-    ret = kfifo_to_user(&vsfifo, buf, count, &copied);
+    /* 将内核FIFO中的数据取出，复制到临时缓冲区 */
+    len = kfifo_out(&vsfifo, rbuf, len);
+    /* 释放自旋锁 */
+    spin_unlock(&vsdev.rwqh.lock);
 
-    /* 如果fifo不满，唤醒等待的写进程 */
-    if (!kfifo_is_full(&vsfifo))
-    {
-        wake_up_interruptible(&vsdev.wwqh);
-        /* 发送信号SIGIO，并设置资源的可用类型是可写 */
-        kill_fasync(&vsdev.fapp, SIGIO, POLL_OUT);
-    }
+    ret = copy_to_user(buf, rbuf, len);
 
-    return ret == 0 ? copied : ret;
+    return len - ret;
 }
 
 static ssize_t vser_write(struct file *filp, const char __user *buf, size_t count, loff_t *pos)
 {
-    unsigned int copied = 0;
-    int ret = 0;
-    /* 判断fifo是否满 */
-    if (kfifo_is_full(&vsfifo))
-    {
-        if (filp->f_flags & O_NONBLOCK)
-        {
-            return -EAGAIN;
-        }
-        /* 如果是阻塞方式打开 */
-        /* 进程睡眠，直到fifo不为满或者进程被信号唤醒 */
-        if (wait_event_interruptible_exclusive(vsdev.wwqh, !kfifo_is_full(&vsfifo)))
-        {
-            /* 被信号唤醒 */
-            return -ERESTARTSYS;
-        }
-    }
-    /* 将用户空间的数据放入内核FIFO中 */
-    ret = kfifo_from_user(&vsfifo, buf, count, &copied);
-
-    /* 如果fifo不空，唤醒等待的读进程 */
-    if (!kfifo_is_empty(&vsfifo))
-    {
-        wake_up_interruptible(&vsdev.rwqh);
-        /* 发送信号SIGIO，并设置资源的可用类型是可读 */
-        kill_fasync(&vsdev.fapp, SIGIO, POLL_IN);
-    }
-    return ret == 0 ? copied : ret;
+    int ret;
+    int len;
+    char *tbuf[VSRE_FIFO_SIZE];
+    len = count > sizeof(tbuf) ? sizeof(tbuf) : count;
+    ret = copy_from_user(tbuf, buf, len);
+    return len - ret;
 }
 
 static long vser_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
@@ -161,17 +154,14 @@ static unsigned int vser_poll(struct file *filp, struct poll_table_struct *p)
 
     /* 将系统调用中构造的等待队列节点加入到相应的等待队列中 */
     poll_wait(filp, &vsdev.rwqh, p);
-    poll_wait(filp, &vsdev.wwqh, p);
 
+    spin_lock(&vsdev.rwqh.lock);
     /* 根据资源的情况返回设置mask的值并返回 */
     if (!kfifo_is_empty(&vsfifo))
     {
         mask |= POLLIN | POLLRDNORM;
     }
-    if (!kfifo_is_full(&vsfifo))
-    {
-        mask |= POLLOUT | POLLWRNORM;
-    }
+    spin_unlock(&vsdev.rwqh.lock);
     return mask;
 }
 
@@ -183,11 +173,12 @@ static int vser_fasync(int fd, struct file *filp, int on)
 
 static enum hrtimer_restart vser_timer(struct hrtimer *timer)
 {
-    char data;
+    unsigned char data;
 
     get_random_bytes(&data, sizeof(data));
     data %= 26;
     data += 'A';
+    spin_lock(&vsdev.rwqh.lock);
     if (!kfifo_is_full(&vsfifo))
     {
         if (!kfifo_in(&vsfifo, &data, sizeof(data)))
@@ -197,9 +188,15 @@ static enum hrtimer_restart vser_timer(struct hrtimer *timer)
     }
     if (!kfifo_is_empty(&vsfifo))
     {
+        spin_unlock(&vsdev.rwqh.lock);
         wake_up_interruptible(&vsdev.rwqh);
         kill_fasync(&vsdev.fapp, SIGIO, POLL_IN);
     }
+    else
+    {
+        spin_unlock(&vsdev.rwqh.lock);
+    }
+
     /* 重新设置定时值 */
     hrtimer_forward_now(timer, ktime_set(1, 1000));
     /* HRTIMER_RESTART表示要重新启动定时器 */
@@ -239,7 +236,6 @@ static int __init vser_init(void)
     vsdev.opt.parity = 0;
     /* 初始化等待队列头 */
     init_waitqueue_head(&vsdev.rwqh);
-    init_waitqueue_head(&vsdev.wwqh);
     /* 添加到内核中的cdev_map散列表中 */
     ret = cdev_add(&vsdev.cdev, dev, VSER_DEV_CNT);
     if (ret)
@@ -252,6 +248,8 @@ static int __init vser_init(void)
     vsdev.timer.function = vser_timer;
     /* 启动定时器 */
     hrtimer_start(&vsdev.timer, ktime_set(1, 1000), HRTIMER_MODE_REL);
+    /* 将原子变量赋值为1 */
+    atomic_set(&vsdev.available, 1);
     return 0;
 
 add_err:
