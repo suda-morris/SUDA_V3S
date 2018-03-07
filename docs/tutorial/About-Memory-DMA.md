@@ -496,3 +496,519 @@ MODULE_DESCRIPTION("A simple module");
 MODULE_ALIAS("virtual-serial");
 ```
 
+
+
+### IO内存
+
+> IO内存的物理地址可以通过芯片手册来查询，但是在内核中应该使用虚拟地址，因此对这部分内存的访问必须要经过映射才行。
+
+`struct resource* request_mem_region(start,n,name)`
+
+* 创建一个从start开始的n字节物理内存资源，名字为name，并标记为忙状态，也就是向内核申请一段IO内存空间的使用权。在使用IO内存之前，一般先要用使用该函数进行申请，这样可以阻止其他驱动申请这块IO内存资源。创建的资源可以在`/proc/meminfo`文件中看到
+
+`release_mem_region(start,n)`
+
+* 释放之前申请的IO内存资源
+
+`void __iomem* ioremap(phys_addr_t offset,unsigned long size)`
+
+* 映射从offset开始的size字节IO内存，返回值为对应的虚拟地址 
+
+`void iounmap(void __iomem* addr)`
+
+* 解除之前的IO内存映射
+
+`u8 readb(const volatile void __iomem* addr)`
+
+`u16 readw(const volatile void __iomem* addr)`
+
+`u32 readl(const volatile void __iomem* addr)`
+
+* 分别按1字节、2字节和4字节读取映射之后地址为addr的IO内存，返回值为读取的IO内存内容
+
+`void writeb(u8 b,volatile void __iomem* addr)`
+
+`void writew(u16 b,volatile void __iomem* addr)`
+
+`void writel(u32 b,volatile void __iomem* addr)`
+
+* 分别按1字节、2字节和4字节将b写入映射之后地址为addr的IO内存
+
+`ioread8(addr)`
+
+`ioread16(addr)`
+
+`ioread32(addr)`
+
+`iowrite8(v,addr)`
+
+`iowrite16(v,addr)`
+
+`iowrite32(v,addr)`
+
+`ioread8_rep(p,dst,count)`
+
+`ioread16_rep(p,dst,count)`
+
+`ioread32_rep(p,dst,count)`
+
+`iowrite8_rep(p,src,count)`
+
+`iowrite16_rep(p,src,count)`
+
+`iowrite32_rep(p,src,count)`
+
+* IO内存读写的另外一种形式，加"rep"的变体是连续读写count个单元
+
+#### 简单LED驱动
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/cdev.h>
+
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+#include <linux/slab.h>
+
+#include <linux/io.h>
+#include <linux/ioport.h>
+
+#include "led.h"
+
+#define LED_MAJOR 256
+#define LED_MINOR 0
+#define LED_DEV_CNT 1
+#define LED_DEV_NAME "led"
+
+/* SFR寄存器基地址 */
+#define GPIO_BASE (0x01C20800)
+#define GPG_BASE (GPIO_BASE + 0x24 * 6)
+
+struct led_dev
+{
+    struct cdev cdev;
+    atomic_t available;
+    unsigned int __iomem *pgcfg; /* SFR映射后的虚拟地址 */
+    unsigned int __iomem *pgdata;
+};
+
+static struct led_dev *led;
+
+static int led_open(struct inode *inode, struct file *filp)
+{
+    if (atomic_dec_and_test(&led->available))
+    {
+        return 0;
+    }
+    else
+    {
+        atomic_inc(&led->available);
+        return -EBUSY;
+    }
+}
+
+static int led_release(struct inode *inode, struct file *filp)
+{
+    /* 熄灭LED */
+    writel(readl(led->pgdata) & ~(0x7 << 0), led->pgdata);
+    atomic_inc(&led->available);
+    return 0;
+}
+
+static long led_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+    if (_IOC_TYPE(cmd) != LED_MAGIC)
+    {
+        return -ENOTTY;
+    }
+    switch (cmd)
+    {
+    case LED_ON:
+        switch (arg)
+        {
+        case LED_RED:
+            writel(readl(led->pgdata) | (0x1 << 0), led->pgdata);
+            break;
+        case LED_GREEN:
+            writel(readl(led->pgdata) | (0x1 << 1), led->pgdata);
+            break;
+        case LED_BLUE:
+            writel(readl(led->pgdata) | (0x1 << 2), led->pgdata);
+            break;
+        default:
+            return -ENOTTY;
+        }
+        break;
+    case LED_OFF:
+        switch (arg)
+        {
+        case LED_RED:
+            writel(readl(led->pgdata) & ~(0x1 << 0), led->pgdata);
+            break;
+        case LED_GREEN:
+            writel(readl(led->pgdata) & ~(0x1 << 1), led->pgdata);
+            break;
+        case LED_BLUE:
+            writel(readl(led->pgdata) & ~(0x1 << 2), led->pgdata);
+            break;
+        default:
+            return -ENOTTY;
+        }
+        break;
+    default:
+        return -ENOTTY;
+    }
+    return 0;
+}
+
+static struct file_operations led_ops = {
+    .owner = THIS_MODULE,
+    .open = led_open,
+    .release = led_release,
+    .unlocked_ioctl = led_ioctl,
+};
+
+/* 模块初始化函数 */
+static int __init led_init(void)
+{
+    int ret;
+    dev_t dev;
+
+    dev = MKDEV(LED_MAJOR, LED_MINOR);
+    ret = register_chrdev_region(dev, LED_DEV_CNT, LED_DEV_NAME);
+    if (ret)
+    {
+        goto reg_err;
+    }
+
+    led = kzalloc(sizeof(struct led_dev), GFP_KERNEL);
+    if (!led)
+    {
+        ret = -ENOMEM;
+        goto mem_err;
+    }
+
+    /* 初始化cdev对象，绑定ops */
+    cdev_init(&led->cdev, &led_ops);
+    led->cdev.owner = THIS_MODULE;
+
+    /* 添加到内核中的cdev_map散列表中 */
+    ret = cdev_add(&led->cdev, dev, LED_DEV_CNT);
+    if (ret)
+    {
+        goto add_err;
+    }
+
+    atomic_set(&led->available, 1);
+
+    /* SFR映射操作 */
+    led->pgcfg = ioremap(GPG_BASE, 36);
+    if (led->pgcfg)
+    {
+        ret = -EBUSY;
+        goto map_err;
+    }
+    led->pgdata = led->pgcfg + 4;
+
+    /* 初始化PG0，PG1，PG2为输出模式 */
+    writel((readl(led->pgcfg) & ~(0x777 << 0)) | (0x111 << 0), led->pgcfg);
+    /* 熄灭LED */
+    writel(readl(led->pgdata) & ~(0x7 << 0), led->pgdata);
+    return 0;
+
+map_err:
+    cdev_del(&led->cdev);
+add_err:
+    kfree(led);
+mem_err:
+    unregister_chrdev_region(dev, LED_DEV_CNT);
+reg_err:
+    return ret;
+}
+
+/* 模块清理函数 */
+static void __exit led_exit(void)
+{
+    dev_t dev;
+
+    dev = MKDEV(LED_MAJOR, LED_MINOR);
+    /* 解除IO内存映射 */
+    iounmap(led->pgcfg);
+
+    cdev_del(&led->cdev);
+    kfree(led);
+    unregister_chrdev_region(dev, LED_DEV_CNT);
+}
+
+/* 为模块初始化函数和清理函数取别名 */
+module_init(led_init);
+module_exit(led_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("suda-morris <362953310@qq.com>");
+MODULE_DESCRIPTION("A simple module");
+MODULE_ALIAS("raw-led");
+```
+
+* 应用层测试程序
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+
+#include "led.h"
+
+int main()
+{
+    int fd;
+    int ret;
+    int num = LED_RED;
+
+    fd = open("/dev/led", O_RDWR);
+    if (fd == -1)
+    {
+        goto fail;
+    }
+
+    while (1)
+    {
+        ret = ioctl(fd, LED_ON, num);
+        if (ret == -1)
+        {
+            goto fail;
+        }
+        usleep(500000);
+        ret = ioctl(fd, LED_OFF, num);
+        if (ret == -1)
+        {
+            goto fail;
+        }
+        usleep(500000);
+
+        num = (num + 1) % 3;
+    }
+    exit(EXIT_SUCCESS);
+fail:
+    perror("led test");
+    exit(EXIT_FAILURE);
+}
+```
+
+
+
+### DMA映射
+
+> DMA映射的主要工作是找到一块适用于DMA操作的内存，返回其虚拟地址和总线地址，并关闭高速缓存，它是和体系结构相关的操作。
+
+#### 一致性DMA映射
+
+> 在ARM体系结构中，内核地址空间中的0xFFC00000到0xFFEFFFFF共计3MB的地址空间专门用于此类映射，它可以保证这段范围所映射的物理内存能够用于DMA操作，并且cache是关闭的。这种映射的优点是一旦DMA缓冲区建立，就再也不用担心cache的一致性问题，它通常适合于DMA缓冲区要存在于整个驱动程序的生命周期的情况。但是，这个缓冲区只有3MB，多个驱动都长期使用的话，最后会被分配完，导致其他驱动没有空间可以建立映射。
+
+```c
+/* 建立映射 */
+#define dma_alloc_coherent(d,s,h,f) dma_alloc_attrs(d,s,h,f,NULL)
+static inline void* dma_alloc_attrs(struct device* dev,size_t size,dma_addr_t* dma_handle,gfp_t flag,struct dma_attrs* attrs);
+/* 释放映射 */
+#define dma_free_coherent(d,s,c,h) dma_free_attrs(d,s,c,h,NULL)
+static inline void dma_free_attrs(struct device* dev,size_t size,void* cpu_addr,dma_addr_t dma_handle,struct dma_attrs* attrs);
+```
+
+* dma_alloc_coherent返回用于DMA操作的内存(DMA缓冲区)虚拟地址
+* 参数d是DMA设备
+* 参数s是需要的DMA缓冲区大小，必须是**页大小的整数倍**
+* 参数h是得到的DMA缓冲区的总线地址
+* 参数f是内存分配掩码
+
+#### 流式DMA映射
+
+> 如果用于DMA操作的缓冲区不是驱动分配的，而是由内核的其他代码传递过来的，那么就需要进行流式DMA映射。流式DMA映射不会长期占用一致性映射的空间，并且开销比较小，所以一般推荐使用这种方式。但是流式DMA映射也会存在一个问题，那就是上层所给的缓冲区所对应的物理内存不一定可以用作DMA操作，在ARM体系结构中，只要能保证虚拟内存所对应的物理内存是连续的即可。
+>
+> 在ARM体系结构中，流式映射其实是通过使cache无效和写通操作来实现的，如果是读方向，那么DMA操作完成后，CPU在读内存之前只要操作cache，使这部分内存所对应的cache无效即可，这会导致CPU在cache中查找数据时cache不被命中，从而强制CPU到内存中去获取数据。对于写方向，则是设置为写通的方式，即保证CPU的数据会更新到DMA缓冲区。
+
+```c
+dma_map_single(d,a,s,r)
+dma_unmap_single(d,a,s,r)
+```
+
+* 参数d是DMA设备
+* 参数a是上层传递过来的缓冲区地址
+* 参数s是大小
+* 参数r是DMA传输方向
+  * DMA_MEM_TO_MEM
+  * DMA_MEM_TO_DEV
+  * DMA_DEV_TO_MEM
+  * DMA_DEV_TO_DEV
+
+
+
+#### 分散/聚集映射
+
+> 硬盘设备通常支持分散/聚集IO操作，例如readv和writev系统调用所产生的集群磁盘IO请求。对于写操作就是把虚拟地址分散的各个缓冲区的数据写入到磁盘，对于读操作就是把磁盘的数据读取到分散的各个缓冲区中。如果使用流式DMA映射，那就需要依次映射每一个缓冲区，DMA操作完成后再映射下一个。这会给驱动编程造成一些麻烦，如果能够一次映射多个分散的缓冲区，显然会方便很多，分散/聚集映射就是完成该任务的。
+>
+> 总的来说，分散/聚集映射就是一次性做多个流式DMA映射，为分散/聚集IO提供了较好的支持。
+
+```c
+int dma_map_sg(struct device* dev,struct scatterlist* sg,int nents,enum dma_data_direction dir);
+void dma_unmap_sg(struct device* dev,struct scatterlist* sg,int nents,enum dma_data_direction dir);
+```
+
+* dev是DMA设备，sg是指向struct scatterlist类型数组的首元素的指针、数组中的每一个元素都描述了一个缓冲区，包括缓冲区对应的物理页框信息、缓冲区在物理页框中的偏移、缓冲区的长度和映射后得到的DMA总线地址等。nents是缓冲区的个数。dir是DMA的传输方向。
+* dma_map_sg会遍历sg数组中的每一个元素，然后对每一个缓冲区做流式DMA映射。
+
+
+
+#### DMA池
+
+> 一致性DMA映射适合映射比较大的缓冲区，通常是页的整数倍大小，而较小的DMA缓冲区则用DMA池更适合。DMA 池和slab分配器的工作原理非常相似，就是预先分配一个大的DMA缓冲区，然后再在这个大的缓冲区中分配和释放较小的缓冲区。
+
+`struct dma_pool* dma_pool_create(const char* name,struct device* dev,size_t size,size_t align,size_t boundary)`
+
+* 创建DMA池，name是DMA池的名字，dev是DMA设备，size是DMA池的大小，align是对齐值，boundary是边界值，设为0则由大小和对齐值来自动决定边界。**该函数不能用于中断上下文**
+
+`boid* dma_pool_alloc(struct dma_pool* pool,gfp_t mem_flags,dma_addr_t* handle)`
+
+* 从DMA池pool中分配一块DMA缓冲区，mem_flags为分配掩码，handle是回传的DMA总线地址。函数返回虚拟地址
+
+`void dma_pool_free(struct dma_pool* pool,void* vaddr,dma_addr_t dma)`
+
+* 释放DMA缓冲区到DMA池pool中，vaddr是虚拟地址，dma是DMA总线地址
+
+`void dma_pool_destroy(struct dma_pool* pool)`
+
+* 销毁DMA池pool
+
+
+
+### DMA统一编程接口(未尝试)
+
+> 内核开发了一个统一的DMA子系统——dmaengine，它是一个软件框架，为上层的DMA应用提供了统一的编程接口，屏蔽了不同DMA控制器的细节。使用dmaengine完成DMA数据传输，基本需要一下几个步骤：
+>
+> 1. 分配一个DMA通道
+> 2. 设置一些传输参数
+> 3. 获取一个传输描述符
+> 4. 提交传输
+> 5. 启动所有挂起的传输，传输完成后回调函数被调用
+
+##### 内存到内存的DMA传输实例
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/dmaengine.h>
+#include <linux/dma-mapping.h>
+#include <linux/slab.h>
+
+struct dma_chan *chan; //DMA通道
+unsigned int *txbuf;   //DMA缓冲区虚拟地址
+unsigned int *rxbuf;
+dma_addr_t txaddr; //DMA缓冲区总线地址
+dma_addr_t rxaddr;
+
+static void dma_callback(void *data)
+{
+	int i;
+	unsigned int *p = rxbuf;
+	printk("dma complete\n");
+
+	for (i = 0; i < PAGE_SIZE / sizeof(unsigned int); i++)
+		printk("%d ", *p++);
+	printk("\n");
+}
+
+static bool filter(struct dma_chan *chan, void *filter_param)
+{
+	/* 通过对比通道的名字来确定一个通道 */
+	printk("%s\n", dma_chan_name(chan));
+	return strcmp(dma_chan_name(chan), filter_param) == 0;
+}
+
+static int __init memcpy_init(void)
+{
+	int i;
+	dma_cap_mask_t mask;
+	struct dma_async_tx_descriptor *desc;
+	char name[] = "dma2chan0";
+	unsigned int *p;
+
+	/* 先将掩码清零 */
+	dma_cap_zero(mask);
+	/* 设置掩码为DMA_MEMCPY，表示要获得一个能够完成内存到内存传输的DMA通道 */
+	dma_cap_set(DMA_MEMCPY, mask);
+	/* 获取一个DMA通道 */
+	chan = dma_request_channel(mask, filter, name);
+	if (!chan)
+	{
+		printk("dma_request_channel failure\n");
+		return -ENODEV;
+	}
+
+	/* 建立两个DMA缓冲区的一致性映射，每个缓冲区为一页 */
+	txbuf = dma_alloc_coherent(chan->device->dev, PAGE_SIZE, &txaddr, GFP_KERNEL);
+	if (!txbuf)
+	{
+		printk("dma_alloc_coherent failure\n");
+		dma_release_channel(chan);
+		return -ENOMEM;
+	}
+
+	rxbuf = dma_alloc_coherent(chan->device->dev, PAGE_SIZE, &rxaddr, GFP_KERNEL);
+	if (!rxbuf)
+	{
+		printk("dma_alloc_coherent failure\n");
+		dma_free_coherent(chan->device->dev, PAGE_SIZE, txbuf, txaddr);
+		dma_release_channel(chan);
+		return -ENOMEM;
+	}
+
+	/* 初始化这两片内存，用于验证 */
+	for (i = 0, p = txbuf; i < PAGE_SIZE / sizeof(unsigned int); i++)
+		*p++ = i;
+	for (i = 0, p = txbuf; i < PAGE_SIZE / sizeof(unsigned int); i++)
+		printk("%d ", *p++);
+	printk("\n");
+
+	memset(rxbuf, 0, PAGE_SIZE);
+	for (i = 0, p = rxbuf; i < PAGE_SIZE / sizeof(unsigned int); i++)
+		printk("%d ", *p++);
+	printk("\n");
+
+	/* 创建内存到内存的传输描述符，指定目的地址，源地址，传输大小等 */
+	desc = chan->device->device_prep_dma_memcpy(chan, rxaddr, txaddr, PAGE_SIZE, DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
+	desc->callback = dma_callback;
+	desc->callback_param = NULL;
+	/* 提交DMA传输 */
+	dmaengine_submit(desc);
+	/* 发起DMA传输 */
+	dma_async_issue_pending(chan);
+
+	return 0;
+}
+
+static void __exit memcpy_exit(void)
+{
+	dma_free_coherent(chan->device->dev, PAGE_SIZE, txbuf, txaddr);
+	dma_free_coherent(chan->device->dev, PAGE_SIZE, rxbuf, rxaddr);
+	dma_release_channel(chan);
+}
+
+module_init(memcpy_init);
+module_exit(memcpy_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kevin Jiang <jiangxg@farsight.com.cn>");
+MODULE_DESCRIPTION("simple driver using dmaengine");
+```
+
