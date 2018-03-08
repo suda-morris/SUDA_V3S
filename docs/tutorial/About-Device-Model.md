@@ -457,7 +457,9 @@ RUN：添加一个和设备相关的命令到命令列表中
 IMPORT{type}：导入一组设备属性的变量，依赖于类型type
 ```
 
-* 在Ubuntu中**自动加载驱动**的规则如下，将这条规则添加到/etc/udev/rules.d/40-modprobe.rules文件中：
+* ```在Ubuntu中**自动加载驱动**的规则如下，将这条规则添加到/etc/udev/rules.d/40-modprobe.rules文件中：
+
+  ```
 
 ```bash
 #根据模块的别名信息，用modprobe命令加载对应的内核模块。`
@@ -467,4 +469,579 @@ ENV{MODALIAS}=="?*",RUN+="/sbin/modprobe $env{MODALIAS}"
 
 
 #### 使用平台设备的LED驱动
+
+* 平台设备
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/platform_device.h>
+
+static void fsdev_release(struct device *dev)
+{
+}
+
+static struct resource led2_resources[] = {
+	[0] = DEFINE_RES_MEM(0x11000C40, 4),
+};
+
+static struct resource led3_resources[] = {
+	[0] = DEFINE_RES_MEM(0x11000C20, 4),
+};
+
+static struct resource led4_resources[] = {
+	[0] = DEFINE_RES_MEM(0x114001E0, 4),
+};
+
+static struct resource led5_resources[] = {
+	[0] = DEFINE_RES_MEM(0x114001E0, 4),
+};
+
+unsigned int led2pin = 7;
+unsigned int led3pin = 0;
+unsigned int led4pin = 4;
+unsigned int led5pin = 5;
+
+struct platform_device fsled2 = {
+	.name = "fsled",
+	.id = 2,
+	.num_resources = ARRAY_SIZE(led2_resources),
+	.resource = led2_resources,
+	.dev = {
+		.release = fsdev_release,
+		.platform_data = &led2pin, //用来向驱动传递更多的信息
+	},
+};
+
+struct platform_device fsled3 = {
+	.name = "fsled",
+	.id = 3,
+	.num_resources = ARRAY_SIZE(led3_resources),
+	.resource = led3_resources,
+	.dev = {
+		.release = fsdev_release,
+		.platform_data = &led3pin,
+	},
+};
+
+struct platform_device fsled4 = {
+	.name = "fsled",
+	.id = 4,
+	.num_resources = ARRAY_SIZE(led4_resources),
+	.resource = led4_resources,
+	.dev = {
+		.release = fsdev_release,
+		.platform_data = &led4pin,
+	},
+};
+
+struct platform_device fsled5 = {
+	.name = "fsled",
+	.id = 5,
+	.num_resources = ARRAY_SIZE(led5_resources),
+	.resource = led5_resources,
+	.dev = {
+		.release = fsdev_release,
+		.platform_data = &led5pin,
+	},
+};
+
+static struct platform_device *fsled_devices[] = {
+	&fsled2,
+	&fsled3,
+	&fsled4,
+	&fsled5,
+};
+
+static int __init fsdev_init(void)
+{
+	return platform_add_devices(fsled_devices, ARRAY_SIZE(fsled_devices));
+}
+
+static void __exit fsdev_exit(void)
+{
+	platform_device_unregister(&fsled5);
+	platform_device_unregister(&fsled4);
+	platform_device_unregister(&fsled3);
+	platform_device_unregister(&fsled2);
+}
+
+module_init(fsdev_init);
+module_exit(fsdev_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kevin Jiang <jiangxg@farsight.com.cn>");
+MODULE_DESCRIPTION("register LED devices");
+```
+
+* 平台驱动
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/cdev.h>
+
+#include <linux/slab.h>
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+
+#include <linux/io.h>
+#include <linux/ioport.h>
+#include <linux/platform_device.h>
+
+#include "fsled.h"
+
+#define FSLED_MAJOR 256
+#define FSLED_DEV_NAME "fsled"
+
+struct fsled_dev
+{
+	unsigned int __iomem *con;
+	unsigned int __iomem *dat;
+	unsigned int pin;
+	atomic_t available;
+	struct cdev cdev;
+};
+
+static int fsled_open(struct inode *inode, struct file *filp)
+{
+	struct fsled_dev *fsled = container_of(inode->i_cdev, struct fsled_dev, cdev);
+
+	filp->private_data = fsled;
+	if (atomic_dec_and_test(&fsled->available))
+		return 0;
+	else
+	{
+		atomic_inc(&fsled->available);
+		return -EBUSY;
+	}
+}
+
+static int fsled_release(struct inode *inode, struct file *filp)
+{
+	struct fsled_dev *fsled = filp->private_data;
+
+	writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+
+	atomic_inc(&fsled->available);
+	return 0;
+}
+
+static long fsled_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	struct fsled_dev *fsled = filp->private_data;
+
+	if (_IOC_TYPE(cmd) != FSLED_MAGIC)
+		return -ENOTTY;
+
+	switch (cmd)
+	{
+	case FSLED_ON:
+		writel(readl(fsled->dat) | (0x1 << fsled->pin), fsled->dat);
+		break;
+	case FSLED_OFF:
+		writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+		break;
+	default:
+		return -ENOTTY;
+	}
+
+	return 0;
+}
+
+static struct file_operations fsled_ops = {
+	.owner = THIS_MODULE,
+	.open = fsled_open,
+	.release = fsled_release,
+	.unlocked_ioctl = fsled_ioctl,
+};
+
+static int fsled_probe(struct platform_device *pdev)
+{
+	int ret;
+	dev_t dev;
+	struct fsled_dev *fsled;
+	struct resource *res;
+	unsigned int pin = *(unsigned int *)pdev->dev.platform_data;
+
+	dev = MKDEV(FSLED_MAJOR, pdev->id);
+	ret = register_chrdev_region(dev, 1, FSLED_DEV_NAME);
+	if (ret)
+		goto reg_err;
+
+	fsled = kzalloc(sizeof(struct fsled_dev), GFP_KERNEL);
+	if (!fsled)
+	{
+		ret = -ENOMEM;
+		goto mem_err;
+	}
+
+	cdev_init(&fsled->cdev, &fsled_ops);
+	fsled->cdev.owner = THIS_MODULE;
+	ret = cdev_add(&fsled->cdev, dev, 1);
+	if (ret)
+		goto add_err;
+
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0); //获取IO内存资源信息
+	if (!res)
+	{
+		ret = -ENOENT;
+		goto res_err;
+	}
+
+	fsled->con = ioremap(res->start, resource_size(res));
+	if (!fsled->con)
+	{
+		ret = -EBUSY;
+		goto map_err;
+	}
+	fsled->dat = fsled->con + 1;
+
+	fsled->pin = pin;
+	atomic_set(&fsled->available, 1);
+	writel((readl(fsled->con) & ~(0xF << 4 * fsled->pin)) | (0x1 << 4 * fsled->pin), fsled->con);
+	writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+	platform_set_drvdata(pdev, fsled); //将动态分配得到的fsled保存到平台设备中
+
+	return 0;
+
+map_err:
+res_err:
+	cdev_del(&fsled->cdev);
+add_err:
+	kfree(fsled);
+mem_err:
+	unregister_chrdev_region(dev, 1);
+reg_err:
+	return ret;
+}
+
+static int fsled_remove(struct platform_device *pdev)
+{
+	dev_t dev;
+	struct fsled_dev *fsled = platform_get_drvdata(pdev);
+
+	dev = MKDEV(FSLED_MAJOR, pdev->id);
+
+	iounmap(fsled->con);
+	cdev_del(&fsled->cdev);
+	kfree(fsled);
+	unregister_chrdev_region(dev, 1);
+
+	return 0;
+}
+
+struct platform_driver fsled_drv = {
+	.driver = {
+		.name = "fsled", //名字要和平台设备匹配
+		.owner = THIS_MODULE,
+	},
+	.probe = fsled_probe,
+	.remove = fsled_remove,
+};
+
+module_platform_driver(fsled_drv);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kevin Jiang <jiangxg@farsight.com.cn>");
+MODULE_DESCRIPTION("A simple character device driver for LEDs on FS4412 board");
+```
+
+* 应用层测试代码
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#include "fsled.h"
+
+int main(int argc, char *argv[])
+{
+	int fd[4];
+	int ret;
+	int num = 0;
+
+	fd[0] = open("/dev/led2", O_RDWR);
+	if (fd[0] == -1)
+		goto fail;
+	fd[1] = open("/dev/led3", O_RDWR);
+	if (fd[1] == -1)
+		goto fail;
+	fd[2] = open("/dev/led4", O_RDWR);
+	if (fd[2] == -1)
+		goto fail;
+	fd[3] = open("/dev/led5", O_RDWR);
+	if (fd[3] == -1)
+		goto fail;
+
+	while (1)
+	{
+		ret = ioctl(fd[num], FSLED_ON);
+		if (ret == -1)
+			goto fail;
+		usleep(500000);
+		ret = ioctl(fd[num], FSLED_OFF);
+		if (ret == -1)
+			goto fail;
+		usleep(500000);
+
+		num = (num + 1) % 4;
+	}
+fail:
+	perror("led test");
+	exit(EXIT_FAILURE);
+}
+```
+
+
+
+### 自动创建设备节点
+
+> 内核中设备的添加、删除或修改都会向应用层发送热插拔事件，应用程序可以捕获到这些事件来自动完成某些操作，如自动加载驱动、自动创建设备节点等。这里以mdev为例来说明自动创建设备节点的两种方法。
+
+* mdev -s
+
+> 通常在根文件系统挂载完成后，运行mdev -s命令，它将递归扫描**/sys/block**目录和**/sys/class**目录下的文件，根据文件的内容来自动创建设备文件。
+
+* 实时捕获热插拔事件
+
+> 当内核发生了热插拔事件后，mdev会自动被调用，这体现在根文件系统的初始化脚本文件中的：
+>
+> `echo /sbin/mdev > /proc/sys/kernel/hotplug`
+>
+> 内核有一种在发生热插拔事件后调用应用程序的方式，那就是执行/proc/sys/kernel/hotplug文件中的程序，这种方式比较简单，所以常在嵌入式系统之中使用。发生热插拔事件时，调用mdev程序会将热插拔信息放在环境变量和参数当中，mdev程序利用这些信息就可以自动创建设备节点。
+
+#### 在代码中为udev自动创建设备节点提供必要信息
+
+> 自动设备节点的创建要依赖热插拔事件和sysfs文件系统，mdev扫描/sys/class目录暗示我们要创建类，并且在类下面应该有具体的设备。
+
+```c
+struct class* class_create(owner,name);//创建类，owner是所属的模块对象指针，name是类的名字
+void class_destroy(struct class* cls);//销毁cls类
+struct device *device_create(struct class* class,struct device *parent,dev_t devt,void* drvdata,const char* fmt,...);//在类class下创建设备，parent是父设备，没有则为NULL，devt是设备号，drvdata是驱动数据，没有则为NULL，fmt是格式化字符串
+void device_destroy(struct class* cls,dev_t devt);//销毁cls类下面主次设备号为devt的设备。
+```
+
+* 驱动范例
+
+```c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+#include <linux/fs.h>
+#include <linux/cdev.h>
+
+#include <linux/slab.h>
+#include <linux/ioctl.h>
+#include <linux/uaccess.h>
+
+#include <linux/io.h>
+#include <linux/ioport.h>
+#include <linux/platform_device.h>
+
+#include "fsled.h"
+
+#define FSLED_MAJOR 256
+#define FSLED_DEV_NAME "fsled"
+
+struct fsled_dev
+{
+	unsigned int __iomem *con;
+	unsigned int __iomem *dat;
+	unsigned int pin;
+	atomic_t available;
+	struct cdev cdev;
+	struct device *dev;
+};
+
+struct class *fsled_cls;
+
+static int fsled_open(struct inode *inode, struct file *filp)
+{
+	struct fsled_dev *fsled = container_of(inode->i_cdev, struct fsled_dev, cdev);
+
+	filp->private_data = fsled;
+	if (atomic_dec_and_test(&fsled->available))
+		return 0;
+	else
+	{
+		atomic_inc(&fsled->available);
+		return -EBUSY;
+	}
+}
+
+static int fsled_release(struct inode *inode, struct file *filp)
+{
+	struct fsled_dev *fsled = filp->private_data;
+
+	writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+
+	atomic_inc(&fsled->available);
+	return 0;
+}
+
+static long fsled_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	struct fsled_dev *fsled = filp->private_data;
+
+	if (_IOC_TYPE(cmd) != FSLED_MAGIC)
+		return -ENOTTY;
+
+	switch (cmd)
+	{
+	case FSLED_ON:
+		writel(readl(fsled->dat) | (0x1 << fsled->pin), fsled->dat);
+		break;
+	case FSLED_OFF:
+		writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+		break;
+	default:
+		return -ENOTTY;
+	}
+
+	return 0;
+}
+
+static struct file_operations fsled_ops = {
+	.owner = THIS_MODULE,
+	.open = fsled_open,
+	.release = fsled_release,
+	.unlocked_ioctl = fsled_ioctl,
+};
+
+static int fsled_probe(struct platform_device *pdev)
+{
+	int ret;
+	dev_t dev;
+	struct fsled_dev *fsled;
+	struct resource *res;
+	unsigned int pin = *(unsigned int *)pdev->dev.platform_data;
+
+	dev = MKDEV(FSLED_MAJOR, pdev->id);
+	ret = register_chrdev_region(dev, 1, FSLED_DEV_NAME);
+	if (ret)
+		goto reg_err;
+
+	fsled = kzalloc(sizeof(struct fsled_dev), GFP_KERNEL);
+	if (!fsled)
+	{
+		ret = -ENOMEM;
+		goto mem_err;
+	}
+
+	cdev_init(&fsled->cdev, &fsled_ops);
+	fsled->cdev.owner = THIS_MODULE;
+	ret = cdev_add(&fsled->cdev, dev, 1);
+	if (ret)
+		goto add_err;
+
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+	if (!res)
+	{
+		ret = -ENOENT;
+		goto res_err;
+	}
+
+	fsled->con = ioremap(res->start, resource_size(res));
+	if (!fsled->con)
+	{
+		ret = -EBUSY;
+		goto map_err;
+	}
+	fsled->dat = fsled->con + 1;
+
+	fsled->pin = pin;
+	atomic_set(&fsled->available, 1);
+	writel((readl(fsled->con) & ~(0xF << 4 * fsled->pin)) | (0x1 << 4 * fsled->pin), fsled->con);
+	writel(readl(fsled->dat) & ~(0x1 << fsled->pin), fsled->dat);
+	platform_set_drvdata(pdev, fsled);
+
+	/* 在fsled类下面创建设备led%d，在创建过程中，内核会发送热插拔事件给udev，udev利用这些信息可以创建设备节点 */
+	fsled->dev = device_create(fsled_cls, NULL, dev, NULL, "led%d", pdev->id);
+	if (IS_ERR(fsled->dev))
+	{
+		ret = PTR_ERR(fsled->dev);
+		goto dev_err;
+	}
+
+	return 0;
+
+dev_err:
+	iounmap(fsled->con);
+map_err:
+res_err:
+	cdev_del(&fsled->cdev);
+add_err:
+	kfree(fsled);
+mem_err:
+	unregister_chrdev_region(dev, 1);
+reg_err:
+	return ret;
+}
+
+static int fsled_remove(struct platform_device *pdev)
+{
+	dev_t dev;
+	struct fsled_dev *fsled = platform_get_drvdata(pdev);
+
+	dev = MKDEV(FSLED_MAJOR, pdev->id);
+
+	device_destroy(fsled_cls, dev);
+	iounmap(fsled->con);
+	cdev_del(&fsled->cdev);
+	kfree(fsled);
+	unregister_chrdev_region(dev, 1);
+
+	return 0;
+}
+
+struct platform_driver fsled_drv = {
+	.driver = {
+		.name = "fsled",
+		.owner = THIS_MODULE,
+	},
+	.probe = fsled_probe,
+	.remove = fsled_remove,
+};
+
+static int __init fsled_init(void)
+{
+	int ret;
+
+	/* 创建一个名叫fsled的类 */
+	fsled_cls = class_create(THIS_MODULE, "fsled");
+	if (IS_ERR(fsled_cls))
+		return PTR_ERR(fsled_cls);
+
+	ret = platform_driver_register(&fsled_drv);
+	if (ret)
+		class_destroy(fsled_cls);
+
+	return ret;
+}
+
+static void __exit fsled_exit(void)
+{
+	platform_driver_unregister(&fsled_drv);
+	class_destroy(fsled_cls);
+}
+
+module_init(fsled_init);
+module_exit(fsled_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Kevin Jiang <jiangxg@farsight.com.cn>");
+MODULE_DESCRIPTION("A simple character device driver for LEDs on FS4412 board");
+```
 
