@@ -1,0 +1,5 @@
+The release notes for all versions live in the file NEWS. They contain a
+changelog overview.
+
+The complete changelog is the git commit history, plus an old ChangeLog
+file from pre-git days saved at doc/ChangeLog.old

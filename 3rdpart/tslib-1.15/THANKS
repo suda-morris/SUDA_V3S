@@ -1,0 +1,66 @@
+tslib THANKS file
+
+tslib has originally been written by Russel King. This is simply a list of
+all authors found by git, using following command. Please help me keep the
+.mailmap file correct and this list up to date.
+
+	git log --format='%aN <%aE>' | sort -u
+
+Åke Forslund <ake.forslund@gmail.com>
+Baruch Siach <baruch@tkos.co.il>
+Christopher Larson <kergoth@gmail.com>
+Dirk Gerdes <dirk.gerdes@googlemail.com>
+Doug Brown <macg3@mac.com>
+Douglas Lowder <douglowder@mac.com>
+Florian Boor <florian@kernelconcepts.de>
+Forest Bond <forest.bond@rapidrollout.com>
+Frederik 'playya' Sdun <Frederik.Sdun@googlemail.com>
+Jean-Baptiste Théou <jean-baptiste.theou@vodalys.com>
+Josh Watts <jwatts@d3engineering.com>
+Marko Lindqvist <cazfi74@gmail.com>
+Martin Jansa <Martin.Jansa@gmail.com>
+Martin Kepplinger <martink@posteo.de>
+Michael Heimpold <michael.heimpold@s2000.tu-chemnitz.de>
+Michael Hennerich <michael.hennerich@analog.com>
+Mike Bergmann <mike@mdb977.de>
+Mike Frysinger <vapier@gentoo.org>
+Nicolas Pitre <nico@fluxnic.net>
+Oleksandr Tymoshenko <gonzo@bluezbox.com>
+Oskari Rauta <oskari.rauta@gmail.com>
+Paulius Zaleckas <paulius.zaleckas@gmail.com>
+Peter Fink <pfink@christ-es.de>
+Peter Vicman <peter.vicman@gmail.com>
+Piotr Figlarek <piotr.figlarek@gmail.com>
+Rob Greger <robert.greger@otis.com>
+Russell King <rmk@arm.linux.org.uk>
+Sergei Poselenov <sposelenov@emcraft.com>
+Simon Busch <morphis@gravedo.de>
+Teresa Gamez <T.Gamez@phytec.de>
+Thomas Zimmermann <zimmermann@vdm-design.de>
+Wolfram Sang <w.sang@pengutronix.de>
+
+Not everything had been done the clean git way, so there are more people
+who helped writing tslib. At least we know of the following:
+
+Melchior Franz <melchior.franz@ginzinger.com>
+Kári Davíðsson
+Nelson Castillo
+Neil Whelchel <neil@goautomation.biz>
+
+There are also a number of people reporting bugs, test and help improving
+tslib not just by writing code. This list is not complete:
+
+Manfred Schlaegl <manfred.schlaegl@ginzinger.com>
+Philipp Eichinger <philipp.eichinger@ginzinger.com>
+Clay D. Montgomery
+David Woodhouse <dwmw2@infradead.org>
+Alex Vazquez <avazquez.dev@gmail.com>
+Roosen Henri <henri.roosen@ginzinger.com>
+Andreas Hartmetz <ahartmetz@gmail.com>
+Michael Zimmermann <sigmaepsilon92@gmail.com>
+Clayton Craft <clayton@craftyguy.net>
+Kevin Liu <kevin@potatofrom.space>
+Rolf Eike Beer <eb@emlix.com>
+Ravi Chandarana <ravichandarana@rocketmail.com>
+
+	Thanks for your contribution to tslib!

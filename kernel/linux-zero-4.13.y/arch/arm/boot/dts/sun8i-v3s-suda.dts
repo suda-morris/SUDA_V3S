@@ -62,18 +62,18 @@
 		compatible = "gpio-leds";
 
 		blue_led {
-			label = "licheepi:blue:usr";
+			label = "suda:blue:usr";
 			gpios = <&pio 6 2 GPIO_ACTIVE_LOW>; /* PG2 */
 		};
 
 		green_led {
-			label = "licheepi:green:usr";
+			label = "suda:green:usr";
 			gpios = <&pio 6 1 GPIO_ACTIVE_LOW>; /* PG1 */
 			default-state = "on";
 		};
 
 		red_led {
-			label = "licheepi:red:usr";
+			label = "suda:red:usr";
 			gpios = <&pio 6 0 GPIO_ACTIVE_LOW>; /* PG0 */
 		};
 	};
@@ -105,8 +105,24 @@
 	status = "okay";
 };
 
+&pio {
+	gt911_int_pin:gt911_int_pin@0 {
+		pins = "PG4";
+		function = "gpio_in";
+	};
+};
+
 &i2c0 {
 	status = "okay";
+	gt911:gt911@5d	{
+		compatible = "goodix,gt911";
+		reg	= <0x5d>;
+		interrupt-parent = <&pio>;
+		interrupts = <6 4 IRQ_TYPE_LEVEL_HIGH>;/* PG4 */
+		pinctrl-names = "default";
+		pinctrl-0 = <&gt911_int_pin>;
+		touchscreen-swapped-x-y;
+	};
 };
 
 &ohci0 {

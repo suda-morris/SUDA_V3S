@@ -428,7 +428,7 @@ source=https://mirrors.ustc.edu.cn/debian/
 
 [Utils]
 #General purpose utilities
-packages=locales adduser vim less wget dialog usbutils rsync git sqlite3 libsqlite3-dev dphys-swapfile 
+packages=locales adduser vim less wget dialog usbutils rsync git sqlite3 libsqlite3-dev dphys-swapfile i2c-tools
 source=https://mirrors.ustc.edu.cn/debian/
 
 [Python]
@@ -1461,18 +1461,196 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 
 
+### LED驱动
 
-### I2C OLED的移植与使用
+> LED是基于GPIO的，为此内核有两个对应的驱动程序，分别是GPIO驱动和LED驱动，基于GPIO的LED驱动调用了GPIO驱动导出的函数。关于LED驱动，内核文档Documentation/leds/leds-class.txt有简单的描述，它实现了一个leds类，通过sysfs的接口对LED进行控制，所以它并没有使用字符设备驱动的框架。
+>
+> 驱动的实现代码位于：**drivers/leds/leds-gpio.c**
+
+* menuconfig配置
+
+```bash
+Device Drivers --->
+	[*] LED Support --->
+		<*> LED Class Support
+		<*> LED Support for GPIO connected LEDs
+		[*] LED Trigger support --->
+```
+
+* 设备树中添加节点(参考Documentation/devicetree/bindings/leds/leds-gpio.txt)
+
+```xml
+leds {
+		compatible = "gpio-leds";
+
+		blue_led {
+			label = "suda:blue:usr";
+			gpios = <&pio 6 2 GPIO_ACTIVE_LOW>; /* PG2 */
+		};
+
+		green_led {
+			label = "suda:green:usr";
+			gpios = <&pio 6 1 GPIO_ACTIVE_LOW>; /* PG1 */
+			default-state = "on";
+		};
+
+		red_led {
+			label = "suda:red:usr";
+			gpios = <&pio 6 0 GPIO_ACTIVE_LOW>; /* PG0 */
+		};
+};
+```
+
+> 其中compatible属性为gpio-leds，是因为在leds-gpio.c驱动代码中只有和gpio-leds才能匹配
+>
+> ```c
+> static const struct of_device_id of_gpio_leds_match[] = {
+> 	{ .compatible = "gpio-leds", },
+> 	{},
+> };
+> ```
+>
+> 每个led节点中的label是出现在sys目录下的子目录名字，gpios则指定了该LED所连接的GPIO口，default-state属性的值为off，则表示默认情况下LED灯是熄灭的，on则为默认点亮。
+>
+> 重新编译设备树，并加载，系统启动后，查看/sys/class/leds目录
+
+```bash
+root@suda-v3s:/sys/class/leds# ls
+suda:blue:usr  suda:green:usr  suda:red:usr
+```
+
+> 使用如下命令可以亮灭led灯
+>
+> echo "1" > /sys/class/leds/suda:blue:usr/brightness
+>
+> 使用如下命令可以设置led的触发条件为系统心跳
+>
+> echo "heartbeat" > /sys/class/leds/suda:blue:usr/trigger
 
 
 
-### SDIO WiFi的移植与使用
+### 总线类设备驱动
+
+> 一条总线可以将多个设备连接在一起，提高了系统的可扩展性能。这个互联的系统通常由三部分组成：总线控制器、物理总线(一组信号线)和设备。总线控制器和设备通过总线连接在一起，总线控制器可以发起对总线上设备的访问操作。通常总线控制器有一个驱动程序，用于控制总线控制器来操作总线，从而来访问设备，这一类驱动通常在内核中都已经实现了。还有一类驱动程序，他们通常调用总线控制器的驱动程序来完成对总线上具体设备的访问，这类驱动称为设备驱动。
+
+#### I2C设备驱动
+
+> I2C总线由SCL(串行时钟线)和SDA(串行数据线)两条线组成，其上连接有主机控制器(Master，在Linux驱动中称为Adapter)和从设备(Slave，在Linux驱动中称为Client)。所有的访问操作都是由主机控制器发起的，在同一条总线上可以有多个主机控制器，当多个主机控制器同时对设备发起访问时，由协议的冲突检测和仲裁机制来保证只有一个主机控制器对从设备进行访问。
+
+![I2C驱动层器结构图](imgs/I2C Sub-System.png)
+
+* I2C主机驱动：I2C主机控制器的驱动，一般由SoC芯片厂商负责设计实现，用于控制I2C主机控制器发出时序信号
+* I2C Core：为上层提供统一的API接口和对其他模块进行注册和注销等管理
+* I2C设备驱动：调用I2C Core提供的统一API，根据I2C设备的访问规范，控制I2C主机控制器发出不同的时序信号，对I2C设备进行访问。该驱动称为内核层I2C设备驱动
+* i2c-dev：将I2C主机控制器实现为一个字符设备，应用程序可以直接访问/dev/i2c-N来访问I2C主机控制器，从而对I2C设备发起访问，该应用程序称为应用层I2C设备驱动
+
+> I2C Core为屏蔽不同的I2C主机控制器驱动提供了可能，可以使I2C设备驱动仅仅关心如何操作I2C设备，而不需要了解I2C主机控制器的细节，从而使I2C设备驱动可以独立存在，适用于各种不同的硬件平台。
+
+#### gt911电容触摸驱动
+
+* menuconfig配置
+
+```bash
+Device Drivers --->
+	Input Device Support --->
+		[*] Touchscreens --->
+			<*> Goodix I2C touchscreen
+```
+
+* 设备树描述
+
+```c
+/* sun8i-v3s.dtsi */
+i2c0: i2c@01c2ac00 {/* I2C主控器节点 */
+			compatible = "allwinner,sun6i-a31-i2c";//指定主控器驱动
+			reg = <0x01c2ac00 0x400>;//指定IO内存的范围
+			interrupts = <GIC_SPI 6 IRQ_TYPE_LEVEL_HIGH>;//使用的中断信息
+			clocks = <&ccu CLK_BUS_I2C0>;
+			resets = <&ccu RST_BUS_I2C0>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2c0_pins>;
+			status = "disabled";
+			#address-cells = <1>;
+			#size-cells = <0>;
+};
+pio: pinctrl@01c20800 {
+			compatible = "allwinner,sun8i-v3s-pinctrl";
+			reg = <0x01c20800 0x400>;
+			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&ccu CLK_BUS_PIO>, <&osc24M>, <&osc32k>;
+			clock-names = "apb", "hosc", "losc";
+			gpio-controller;
+			#gpio-cells = <3>;
+			interrupt-controller;
+			#interrupt-cells = <3>;
+};
+/* sun8i-v3s-suda.dts */
+&pio {
+	gt911_int_pin:gt911_int_pin@0 {
+		pins = "PG4";
+		function = "gpio_in";
+	};
+};
+&i2c0 {
+	status = "okay";
+	gt911:gt911@5d	{
+		compatible = "goodix,gt911";
+		reg	= <0x5d>;
+		interrupt-parent = <&pio>;
+		interrupts = <6 4 IRQ_TYPE_LEVEL_HIGH>;/* PG4 */
+		pinctrl-names = "default";
+		pinctrl-0 = <&gt911_int_pin>;
+		touchscreen-swapped-x-y;
+	};
+};
+```
+
+* 查看系统中存在的i2c总线适配器以及i2c设备的设备地址
+
+```bash
+root@suda-v3s:~# i2cdetect -l
+i2c-0   i2c             mv64xxx_i2c adapter                     I2C adapter
+root@suda-v3s:~# i2cdetect -r -y 0
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- 5d -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --   
+```
+
+* 移植tslib
+
+  1. 安装必要的工具`sudo apt-get install libtool automake autogen autoconf libsysfs-dev`
+
+  2. ```c
+     ./autogen.sh
+     ./configure	--host=arm-linux-gnueabihf --prefix=$(pwd)/out CC=/home/morris/SUDA_V3S/toolchains/gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
+     make && make install
+     ```
+
+  3. 搬移到开发板的/opt/tslib目录下后，在/etc/bash.bashrc下配置若干环境变量
+
+     ```bash
+     export TSLIB_CONSOLEDEVICE=none
+     export TSLIB_FBDEVICE=/dev/fb0
+     export TSLIB_TSDEVICE=/dev/input/event1
+     export TSLIB_CONFFILE=/opt/tslib/etc/ts.conf
+     export TSLIB_PLUGINDIR=/opt/tslib/lib/ts
+     export TSLIB_CALIBFILE=/etc/pointercal
+     ```
+
+  4. 使用ldconfig指定全局库的搜索路径(参考本文上面有介绍)
+
+  5. 执行触摸屏校准程序ts_calibrate
+
+* ​
 
 
-
-### USB主机控制器的移植与使用
-
-> 在嵌入式系统中常见的USB主机控制器实现规范有OHCI、UHCI和EHCI，其中OHCI和UHCI是满足USB1.1标准的主机控制器实现规范，而EHCI是满足USB2.0标准的主机控制器实现规范。
 
 
 

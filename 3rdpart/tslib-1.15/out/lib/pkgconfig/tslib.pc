@@ -1,0 +1,10 @@
+prefix=/home/morris/SUDA_V3S/3rdpart/tslib-1.15/out
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: tslib
+Description: Touchscreen Access Library
+Version: 1.15
+Libs: -L${libdir} -lts
+Cflags: -I${includedir}
