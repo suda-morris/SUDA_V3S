@@ -1648,8 +1648,10 @@ root@suda-v3s:~# i2cdetect -r -y 0
 
   5. 执行触摸屏校准程序ts_calibrate
 
-* ​
+* tslib与little vgl结合
 
+
+> 
 
 
 

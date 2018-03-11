@@ -9,7 +9,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_drv_conf.h"
+#include "../../lv_drv_conf.h"
 #if USE_R61581
 
 #include <stdint.h>
@@ -27,9 +27,9 @@
  * GLOBAL PROTOTYPES
  **********************/
 void r61581_init(void);
-void r61581_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t * color_p);
+void r61581_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_p);
 void r61581_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color);
-void r61581_map(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t * color_p);
+void r61581_map(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_p);
 /**********************
  *      MACROS
  **********************/

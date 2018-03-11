@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <time.h>
 #include "lvgl/lvgl.h"
 #include "lv_drivers/display/fbdev.h"
-#include "sqlite3.h"
-#include "ecat-master.h"
+#include "indev_tslib.h"
 
 static lv_obj_t * chart_temp = NULL;
 static lv_chart_series_t * ch1ser1 = NULL;
@@ -28,11 +28,24 @@ static void hal_disp_init(void) {
 	lv_disp_drv_register(&disp_drv);
 }
 
+static void hal_input_init(void) {
+	/* 初始化输入设备和tslib中间件 */
+	indev_init();
+	/* 注册输入设备 */
+	lv_indev_drv_t indev_drv;
+	lv_indev_drv_init(&indev_drv);
+	indev_drv.type = LV_INDEV_TYPE_POINTER;
+	indev_drv.read = indev_ts_read;
+	lv_indev_drv_register(&indev_drv);
+}
+
 int main(void) {
 	/* 初始化LittlevGL库 */
 	lv_init();
 	/* 初始化显示器底层硬件 */
 	hal_disp_init();
+	/* 初始化输入设备底层硬件 */
+	hal_input_init();
 
 	/* 创建一个屏幕 */
 	lv_obj_t *scr = lv_obj_create(NULL, NULL);
@@ -42,10 +55,10 @@ int main(void) {
 	lv_theme_t *th = lv_theme_alien_init(100, NULL);
 	lv_theme_set_current(th);
 
-	/*Create a Tab view object*/
+	/* 创建Tab视图容器 */
 	lv_obj_t *tabview = lv_tabview_create(lv_scr_act(), NULL);
 
-	/*Add 3 tabs (the tabs are page (lv_page) and can be scrolled*/
+	/* 创建三个标签选项卡 */
 	lv_obj_t *tab1 = lv_tabview_add_tab(tabview, SYMBOL_HOME);
 	lv_obj_t *tab2 = lv_tabview_add_tab(tabview, SYMBOL_IMAGE);
 	lv_obj_t *tab3 = lv_tabview_add_tab(tabview, SYMBOL_SETTINGS);
@@ -72,7 +85,9 @@ int main(void) {
 	lv_gauge_set_value(gauge, 0, 10);
 	lv_gauge_set_value(gauge, 1, 20);
 
-	lv_tabview_set_tab_act(tabview, 1, false);
+	lv_obj_t* led = lv_led_create(tab3, NULL);
+	lv_led_on(led);
+//	lv_tabview_set_tab_act(tabview, 0, false);
 
 	srand(time(NULL));
 	signal(SIGALRM, sigalrm_fn);
@@ -81,9 +96,9 @@ int main(void) {
 	while (1) {
 		lv_tick_inc(1);
 		lv_task_handler();
-		sleep(1);
+		usleep(1000);
 	}
-
+	indev_stop();
 	return 0;
 }
 

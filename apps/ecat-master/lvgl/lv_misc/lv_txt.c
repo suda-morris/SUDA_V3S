@@ -61,7 +61,7 @@ void lv_txt_get_size(lv_point_t * size_res, const char * text, const lv_font_t *
     uint32_t line_start = 0;
     uint32_t new_line_start = 0;
     lv_coord_t act_line_length;
-    uint8_t letter_height = lv_font_get_height_scale(font);
+    uint8_t letter_height = lv_font_get_height(font);
 
     /*Calc. the height and longest line*/
     while (text[line_start] != '\0') {
@@ -129,7 +129,7 @@ uint16_t lv_txt_get_next_line(const char * txt, const lv_font_t * font,
             return i;    /*Return with the first letter of the next line*/
 
         } else { /*Check the actual length*/
-            cur_w += lv_font_get_width_scale(font, letter);
+            cur_w += lv_font_get_width(font, letter);
 
             /*If the txt is too long then finish, this is the line end*/
             if(cur_w > max_width) {
@@ -195,14 +195,14 @@ lv_coord_t lv_txt_get_width(const char * txt, uint16_t length,
                     continue;
                 }
             }
-            width += lv_font_get_width_scale(font, letter);
+            width += lv_font_get_width(font, letter);
             width += letter_space;
         }
 
         /*Trim closing spaces. Important when the text is aligned to the middle */
         for(i = length - 1; i > 0; i--) {
             if(txt[i] == ' ') {
-                width -= lv_font_get_width_scale(font, txt[i]);
+                width -= lv_font_get_width(font, txt[i]);
                 width -= letter_space;
             } else {
                 break;
@@ -302,10 +302,10 @@ void lv_txt_cut(char * txt, uint32_t pos, uint32_t len)
  */
 uint8_t lv_txt_utf8_size(uint8_t c)
 {
-    if((c & 0b10000000) == 0) return 1;
-    else if((c & 0b11100000) == 0b11000000) return 2;
-    else if((c & 0b11110000) == 0b11100000) return 3;
-    else if((c & 0b11111000) == 0b11110000) return 4;
+    if((c & 0x80) == 0) return 1;
+    else if((c & 0xE0) == 0xC0) return 2;
+    else if((c & 0xF0) == 0xE0) return 3;
+    else if((c & 0xF8) == 0xF0) return 4;
     return 0;
 }
 
@@ -315,7 +315,7 @@ uint8_t lv_txt_utf8_size(uint8_t c)
  * @param letter_uni an Unicode letter
  * @return UTF-8 coded character in Little Endian to be compatible with C chars (e.g. 'Á', 'Ű')
  */
-uint32_t txt_unicode_to_utf8(uint32_t letter_uni)
+uint32_t lv_txt_unicode_to_utf8(uint32_t letter_uni)
 {
     if(letter_uni < 128) return letter_uni;
     uint8_t bytes[4];
@@ -381,41 +381,41 @@ uint32_t lv_txt_utf8_next(const char * txt, uint32_t * i)
     /*Real UTF-8 decode*/
     else {
         /*2 bytes UTF-8 code*/
-        if((txt[*i] & 0b11100000) == 0b11000000) {
-            result = (uint32_t)(txt[*i] & 0b00011111) << 6;
+        if((txt[*i] & 0xE0) == 0xC0) {
+            result = (uint32_t)(txt[*i] & 0x1F) << 6;
             (*i)++;
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (txt[*i] & 0b00111111);
-            (*i)++;
-        }
-        /*3 bytes UTF-8 code*/
-        else if((txt[*i] & 0b11110000) == 0b11100000) {
-            result = (uint32_t)(txt[*i] & 0b00001111) << 12;
-            (*i)++;
-
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (uint32_t)(txt[*i] & 0b00111111) << 6;
-            (*i)++;
-
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (txt[*i] & 0b00111111);
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += (txt[*i] & 0x3F);
             (*i)++;
         }
         /*3 bytes UTF-8 code*/
-        else if((txt[*i] & 0b11111000) == 0b11110000) {
-            result = (uint32_t)(txt[*i] & 0b00001111) << 18;
+        else if((txt[*i] & 0xF0) == 0xE0) {
+            result = (uint32_t)(txt[*i] & 0x0F) << 12;
             (*i)++;
 
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (uint32_t)(txt[*i] & 0b00111111) << 12;
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += (uint32_t)(txt[*i] & 0x3F) << 6;
             (*i)++;
 
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (uint32_t)(txt[*i] & 0b00111111) << 6;
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += (txt[*i] & 0x3F);
+            (*i)++;
+        }
+        /*4 bytes UTF-8 code*/
+        else if((txt[*i] & 0xF8) == 0xF0) {
+            result = (uint32_t)(txt[*i] & 0x07) << 18;
             (*i)++;
 
-            if((txt[*i] & 0b11000000) != 0b10000000) return 0;  /*Invalid UTF-8 code*/
-            result += (uint32_t)(txt[*i] & 0b00111111) << 6;
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += (uint32_t)(txt[*i] & 0x3F) << 12;
+            (*i)++;
+
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += (uint32_t)(txt[*i] & 0x3F) << 6;
+            (*i)++;
+
+            if((txt[*i] & 0xC0) != 0x80) return 0;  /*Invalid UTF-8 code*/
+            result += txt[*i] & 0x3F;
             (*i)++;
         } else {
             (*i)++; /*Not UTF-8 char. Go the next.*/

@@ -121,7 +121,6 @@
 		interrupts = <6 4 IRQ_TYPE_LEVEL_HIGH>;/* PG4 */
 		pinctrl-names = "default";
 		pinctrl-0 = <&gt911_int_pin>;
-		touchscreen-swapped-x-y;
 	};
 };
 
