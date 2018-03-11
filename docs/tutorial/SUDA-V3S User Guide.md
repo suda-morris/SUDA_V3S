@@ -1461,6 +1461,30 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 
 
+### Linux下CPU总使用率的计算
+
+> 1、  采样两个足够短的时间间隔的Cpu快照，分别记作t1,t2，其中t1、t2的结构均为：(user、nice、system、idle、iowait、irq、softirq、stealstolen、guest)的9元组
+>
+> 2、  计算总的Cpu时间片totalCpuTime
+>
+> a)         把第一次的所有cpu使用情况求和，得到s1;
+>
+> b)         把第二次的所有cpu使用情况求和，得到s2;
+>
+> c)         s2 - s1得到这个时间间隔内的所有时间片，即totalCpuTime = s2 - s1 ;
+>
+> 3、计算空闲时间idle
+>
+> idle对应第四列的数据，用第二次的idle - 第一次的idle即可
+>
+> idle=第二次的idle - 第一次的idle
+>
+> 4、计算cpu使用率
+>
+> pcpu =100* (total-idle)/total
+
+
+
 ### LED驱动
 
 > LED是基于GPIO的，为此内核有两个对应的驱动程序，分别是GPIO驱动和LED驱动，基于GPIO的LED驱动调用了GPIO驱动导出的函数。关于LED驱动，内核文档Documentation/leds/leds-class.txt有简单的描述，它实现了一个leds类，通过sysfs的接口对LED进行控制，所以它并没有使用字符设备驱动的框架。
@@ -1646,12 +1670,183 @@ root@suda-v3s:~# i2cdetect -r -y 0
 
   4. 使用ldconfig指定全局库的搜索路径(参考本文上面有介绍)
 
-  5. 执行触摸屏校准程序ts_calibrate
+  5. 配置etc/ts.conf
+
+     ```bash
+     # Access plugins
+     ################
+
+     # Uncomment if you wish to use the linux input layer event interface
+     module_raw input
+
+     # For other driver modules, see the ts.conf man page
+
+
+     # Filter plugins
+     ################
+
+     # Uncomment if first or last samples are unreliable
+     # module skip nhead=1 ntail=1
+
+     # Uncomment if needed for devices that measure pressure
+     module pthres pmin=1
+
+     # Uncomment if needed
+     # module debounce drop_threshold=40
+
+     # Uncomment if needed to filter spikes
+     module median depth=5
+
+     # Uncomment to enable smoothing of fraction N/D
+     # module iir N=6 D=10
+
+     # Uncomment if needed
+     # module lowpass factor=0.1 threshold=1
+
+     # Uncomment if needed to filter noise samples
+     module dejitter delta=100
+
+     # Uncomment and adjust if you need to invert an axis or both
+     # module invert x0=800 y0=480
+
+     # Uncomment to use ts_calibrate's settings
+     module linear
+     ```
+
+  6. 执行触摸屏校准程序ts_calibrate
 
 * tslib与little vgl结合
 
 
-> 
+```c
+/* 初始化输入设备和tslib中间件 */
+indev_init();
+/* 注册输入设备 */
+lv_indev_drv_t indev_drv;
+lv_indev_drv_init(&indev_drv);
+indev_drv.type = LV_INDEV_TYPE_POINTER;
+indev_drv.read = indev_ts_read;
+lv_indev_drv_register(&indev_drv);
+```
+
+> 主要是需要实现indev_ts_read函数，littlevgl会定时调用这个函数来获取触摸屏输入事件
+
+```c
+/*
+ * indev_tslib.c
+ *
+ *  Created on: Mar 11, 2018
+ *      Author: morris
+ */
+#include <stdbool.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <stdio.h>
+#include "tslib.h"
+#include "indev_tslib.h"
+
+static bool thread_running = true;
+static bool press_down = false;
+static int16_t last_x = 0;
+static int16_t last_y = 0;
+
+/* 互斥锁 */
+static pthread_mutex_t mutex;
+
+void indev_stop(void) {
+	pthread_mutex_lock(&mutex);
+	thread_running = false;
+	pthread_mutex_unlock(&mutex);
+}
+
+/* 线程：用来读取最新的触摸输入 */
+static void *handle_input(void *arg) {
+	struct ts_sample samp;
+	int ret;
+	struct tsdev *ts = (struct tsdev*) arg;
+	pthread_mutex_lock(&mutex);
+	while (thread_running) {
+		pthread_mutex_unlock(&mutex);
+		ret = ts_read_raw(ts, &samp, 1);
+		if (ret < 0) {
+			perror("ts_read_raw");
+			indev_stop();
+			goto read_err;
+		}
+		if (ret != 1) {
+			pthread_mutex_lock(&mutex);
+			continue;
+		}
+		pthread_mutex_lock(&mutex);
+		press_down = samp.pressure ? true : false;
+		if (press_down) {
+			last_x = samp.x;
+			last_y = samp.y;
+		}
+	}
+	pthread_mutex_unlock(&mutex);
+read_err:
+	/* 出错处理*/
+	pthread_mutex_destroy(&mutex);
+	ts_close(ts);
+	pthread_exit(arg);
+}
+
+void indev_init(void) {
+	int ret;
+	pthread_t thread_hdl;
+	pthread_attr_t attr;
+	struct tsdev *ts;
+	/* 打开并配置触摸屏设备 */
+	ts = ts_setup(NULL, 0);
+	if (!ts) {
+		perror("ts_setup");
+		exit(1);
+	}
+	/* 初始化互斥锁 */
+	pthread_mutex_init(&mutex, NULL);
+	/* 设置线程的分离属性 */
+	pthread_attr_init(&attr);
+	ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	if (ret) {
+		perror("pthread_attr_setdetachstate");
+		goto err;
+	}
+	/* 设置线程的绑定属性 */
+	ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+	if (ret) {
+		perror("pthread_attr_setscope");
+		goto err;
+	}
+	/* 创建线程 */
+	ret = pthread_create(&thread_hdl, &attr, handle_input, (void*) ts);
+	if (ret) {
+		perror("pthread_create");
+		goto err;
+	}
+	/* 释放线程属性对象 */
+	pthread_attr_destroy(&attr);
+	return;
+err:
+	/* 出错处理 */
+	pthread_attr_destroy(&attr);
+	pthread_mutex_destroy(&mutex);
+	ts_close(ts);
+	exit(ret);
+}
+
+/* indev_ts_read在主线程中被调用 */
+bool indev_ts_read(lv_indev_data_t *data) {
+	pthread_mutex_lock(&mutex);
+	data->point.x = last_x;
+	data->point.y = last_y;
+	data->state = press_down ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+	pthread_mutex_unlock(&mutex);
+	return false;
+}
+```
+
+> 这里特别注意防止竞态的出现，推荐使用**线程互斥锁**，last_x和last_y为静态全局变量，由单独的监控线程来更新其值。
 
 
 
