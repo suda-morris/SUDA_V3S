@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-void utils_init(void);
+int utils_init(void);
 int utils_cpu_usage(uint8_t* arg);
 void utils_stop(void);
 

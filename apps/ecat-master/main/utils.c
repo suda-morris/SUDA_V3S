@@ -29,19 +29,28 @@ static void* handle_cpu_usage(void* arg) {
 			cpu_iowait = 0, cpu_irq = 0, cpu_softirq = 0, cpu_stealstolen = 0,
 			cpu_guest = 0;
 	uint32_t all0 = 0, all1 = 0, idle0 = 0, idle1 = 0;
-	char cpu[8];
+	int ret;
 	pthread_mutex_lock(&mutex);
 	while (thread_running) {
 		pthread_mutex_unlock(&mutex);
 		fp = fopen("/proc/stat", "r");
-		fscanf(fp, "%s%d%d%d%d%d%d%d%d%d", cpu, &cpu_user, &cpu_nice,
+		if (!fp) {
+			perror("fopen");
+			goto file_err;
+		}
+		ret = fscanf(fp, "%*s%d%d%d%d%d%d%d%d%d", &cpu_user, &cpu_nice,
 				&cpu_system, &cpu_idle, &cpu_iowait, &cpu_irq, &cpu_softirq,
 				&cpu_stealstolen, &cpu_guest);
 		fclose(fp);
+		if (ret < 0) {
+			perror("fscanf");
+			goto file_err;
+		}
 		all1 = cpu_user + cpu_nice + cpu_system + cpu_idle + cpu_iowait
 				+ cpu_irq + cpu_softirq + cpu_stealstolen + cpu_guest;
 		idle1 = cpu_idle;
 		pthread_mutex_lock(&mutex);
+		/* CPU利用率的计算公式 */
 		usage = (uint8_t) ((float) (all1 - all0 - (idle1 - idle0))
 				/ (all1 - all0) * 100);
 		pthread_mutex_unlock(&mutex);
@@ -51,11 +60,15 @@ static void* handle_cpu_usage(void* arg) {
 		pthread_mutex_lock(&mutex);
 	}
 	pthread_mutex_unlock(&mutex);
+file_err:
+	/* 确保线程停止运行 */
+	utils_stop();
+	/* 释放互斥锁内存 */
 	pthread_mutex_destroy(&mutex);
 	pthread_exit(arg);
 }
 
-void utils_init(void) {
+int utils_init(void) {
 	int ret;
 	pthread_t thread_hdl;
 	pthread_attr_t attr;
@@ -83,12 +96,13 @@ void utils_init(void) {
 	}
 	/* 释放线程属性对象 */
 	pthread_attr_destroy(&attr);
-	return;
-	err:
-	/* 出错处理 */
+	return 0;
+err:
+	/* 释放线程属性对象 */
 	pthread_attr_destroy(&attr);
+	/* 释放互斥锁对象 */
 	pthread_mutex_destroy(&mutex);
-	exit(ret);
+	return ret;
 }
 
 int utils_cpu_usage(uint8_t* arg) {

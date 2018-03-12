@@ -77,7 +77,7 @@ static void guage_cpu(lv_obj_t* parent) {
 	lv_obj_align(gauge, NULL, LV_ALIGN_CENTER, 0, 0);
 	/* 设置仪表盘指针的数据 */
 	lv_gauge_set_value(gauge, 0, 50);
-
+	/* 初始化工具线程，计算CPU使用率 */
 	utils_init();
 }
 
@@ -107,16 +107,18 @@ int main(void) {
 	lv_obj_t *tabview = lv_tabview_create(lv_scr_act(), NULL);
 
 	/* 创建三个标签选项卡 */
-	lv_obj_t *tab1 = lv_tabview_add_tab(tabview, SYMBOL_HOME);
-	lv_obj_t *tab2 = lv_tabview_add_tab(tabview, SYMBOL_IMAGE);
+	lv_obj_t *tab1 = lv_tabview_add_tab(tabview, SYMBOL_LOOP);
+	lv_obj_t *tab2 = lv_tabview_add_tab(tabview, SYMBOL_HOME);
 	lv_obj_t *tab3 = lv_tabview_add_tab(tabview, SYMBOL_SETTINGS);
 
-	/* 创建charts */
-	charts_temp(tab1);
 	/* 创建仪表盘 */
-	guage_cpu(tab2);
+	guage_cpu(tab1);
+	/* 创建charts */
+	charts_temp(tab2);
 	/* 创建控制面板 */
 	control_panel(tab3);
+	/* 设置默认显示页 */
+	lv_tabview_set_tab_act(tabview, 1, false);
 
 	/* 注册信号处理函数 */
 	signal(SIGINT, signal_handler);

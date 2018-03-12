@@ -36,7 +36,6 @@ static void *handle_input(void *arg) {
 		ret = ts_read_raw(ts, &samp, 1);
 		if (ret < 0) {
 			perror("ts_read_raw");
-			indev_stop();
 			goto read_err;
 		}
 		if (ret != 1) {
@@ -52,53 +51,58 @@ static void *handle_input(void *arg) {
 	}
 	pthread_mutex_unlock(&mutex);
 read_err:
+	/* 确保线程停止运行 */
+	indev_stop();
 	/* 出错处理*/
 	pthread_mutex_destroy(&mutex);
 	ts_close(ts);
 	pthread_exit(arg);
 }
 
-void indev_init(void) {
+int indev_init(void) {
 	int ret;
 	pthread_t thread_hdl;
 	pthread_attr_t attr;
 	struct tsdev *ts;
+	/* 初始化互斥锁 */
+	pthread_mutex_init(&mutex, NULL);
+	/* 初始化线程的属性 */
+	pthread_attr_init(&attr);
+
 	/* 打开并配置触摸屏设备 */
 	ts = ts_setup(NULL, 0);
 	if (!ts) {
 		perror("ts_setup");
-		exit(1);
+		ret = -1;
+		goto ts_err;
 	}
-	/* 初始化互斥锁 */
-	pthread_mutex_init(&mutex, NULL);
 	/* 设置线程的分离属性 */
-	pthread_attr_init(&attr);
 	ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 	if (ret) {
 		perror("pthread_attr_setdetachstate");
-		goto err;
+		goto pthread_err;
 	}
 	/* 设置线程的绑定属性 */
 	ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 	if (ret) {
 		perror("pthread_attr_setscope");
-		goto err;
+		goto pthread_err;
 	}
 	/* 创建线程 */
 	ret = pthread_create(&thread_hdl, &attr, handle_input, (void*) ts);
 	if (ret) {
 		perror("pthread_create");
-		goto err;
+		goto pthread_err;
 	}
 	/* 释放线程属性对象 */
 	pthread_attr_destroy(&attr);
-	return;
-err:
-	/* 出错处理 */
+	return 0;
+pthread_err:
+	ts_close(ts);
+ts_err:
 	pthread_attr_destroy(&attr);
 	pthread_mutex_destroy(&mutex);
-	ts_close(ts);
-	exit(ret);
+	return ret;
 }
 
 /* indev_ts_read在主线程中被调用 */

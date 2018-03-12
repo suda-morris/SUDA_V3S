@@ -1463,25 +1463,136 @@ sudo dd if=/dev/sdc of=suda-v3s.img
 
 ### Linux下CPU总使用率的计算
 
-> 1、  采样两个足够短的时间间隔的Cpu快照，分别记作t1,t2，其中t1、t2的结构均为：(user、nice、system、idle、iowait、irq、softirq、stealstolen、guest)的9元组
->
-> 2、  计算总的Cpu时间片totalCpuTime
->
-> a)         把第一次的所有cpu使用情况求和，得到s1;
->
-> b)         把第二次的所有cpu使用情况求和，得到s2;
->
-> c)         s2 - s1得到这个时间间隔内的所有时间片，即totalCpuTime = s2 - s1 ;
->
-> 3、计算空闲时间idle
->
-> idle对应第四列的数据，用第二次的idle - 第一次的idle即可
->
-> idle=第二次的idle - 第一次的idle
->
-> 4、计算cpu使用率
->
-> pcpu =100* (total-idle)/total
+> 1. 采样两个足够短的时间间隔(1s)的Cpu快照，分别记作t1和t2，其中t1，t2的结构均为(user,nice,system,idle,iowait,irq,softirq,stealstolen,guest)的元组
+> 2. 计算总的Cpu时间片
+>    1. 把第一次的所有cpu使用情况求和，得到total0
+>    2. 把第二次的所有cpu使用情况求和，得到total1
+>    3. 计算这个时间间隔内的所有时间片，得到total = total1-total0
+> 3. 计算空闲时间idle
+>    1. idle为元祖的第四列的数据，同样计算两次间隔的idle0和idle1
+>    2. idle = idle1-idle0
+> 4. 计算cpu使用率
+>    1. usage =100* (total-idle)/total
+
+* C语言代码实现
+
+```c
+/*
+ * utils.c
+ *
+ *  Created on: Mar 11, 2018
+ *      Author: morris
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <pthread.h>
+#include <unistd.h>
+#include "utils.h"
+
+static bool thread_running = true;
+static uint8_t usage = 0;
+
+/* 互斥锁 */
+static pthread_mutex_t mutex;
+
+void utils_stop(void) {
+	pthread_mutex_lock(&mutex);
+	thread_running = false;
+	pthread_mutex_unlock(&mutex);
+}
+
+static void* handle_cpu_usage(void* arg) {
+	FILE* fp = NULL;
+	uint32_t cpu_user = 0, cpu_nice = 0, cpu_system = 0, cpu_idle = 0,
+			cpu_iowait = 0, cpu_irq = 0, cpu_softirq = 0, cpu_stealstolen = 0,
+			cpu_guest = 0;
+	uint32_t all0 = 0, all1 = 0, idle0 = 0, idle1 = 0;
+	int ret;
+	pthread_mutex_lock(&mutex);
+	while (thread_running) {
+		pthread_mutex_unlock(&mutex);
+		fp = fopen("/proc/stat", "r");
+		if (!fp) {
+			perror("fopen");
+			goto file_err;
+		}
+		ret = fscanf(fp, "%*s%d%d%d%d%d%d%d%d%d", &cpu_user, &cpu_nice,
+				&cpu_system, &cpu_idle, &cpu_iowait, &cpu_irq, &cpu_softirq,
+				&cpu_stealstolen, &cpu_guest);
+		fclose(fp);
+		if (ret < 0) {
+			perror("fscanf");
+			goto file_err;
+		}
+		all1 = cpu_user + cpu_nice + cpu_system + cpu_idle + cpu_iowait
+				+ cpu_irq + cpu_softirq + cpu_stealstolen + cpu_guest;
+		idle1 = cpu_idle;
+		pthread_mutex_lock(&mutex);
+		/* CPU利用率的计算公式 */
+		usage = (uint8_t) ((float) (all1 - all0 - (idle1 - idle0))
+				/ (all1 - all0) * 100);
+		pthread_mutex_unlock(&mutex);
+		all0 = all1;
+		idle0 = idle1;
+		sleep(1);
+		pthread_mutex_lock(&mutex);
+	}
+	pthread_mutex_unlock(&mutex);
+file_err:
+	/* 确保线程停止运行 */
+	utils_stop();
+	/* 释放互斥锁内存 */
+	pthread_mutex_destroy(&mutex);
+	pthread_exit(arg);
+}
+
+int utils_init(void) {
+	int ret;
+	pthread_t thread_hdl;
+	pthread_attr_t attr;
+
+	/* 初始化互斥锁 */
+	pthread_mutex_init(&mutex, NULL);
+	/* 设置线程的分离属性 */
+	pthread_attr_init(&attr);
+	ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+	if (ret) {
+		perror("pthread_attr_setdetachstate");
+		goto err;
+	}
+	/* 设置线程的绑定属性 */
+	ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+	if (ret) {
+		perror("pthread_attr_setscope");
+		goto err;
+	}
+	/* 创建线程 */
+	ret = pthread_create(&thread_hdl, &attr, handle_cpu_usage, NULL);
+	if (ret) {
+		perror("pthread_create");
+		goto err;
+	}
+	/* 释放线程属性对象 */
+	pthread_attr_destroy(&attr);
+	return 0;
+err:
+	/* 释放线程属性对象 */
+	pthread_attr_destroy(&attr);
+	/* 释放互斥锁对象 */
+	pthread_mutex_destroy(&mutex);
+	return ret;
+}
+
+int utils_cpu_usage(uint8_t* arg) {
+	pthread_mutex_lock(&mutex);
+	*arg = usage;
+	pthread_mutex_unlock(&mutex);
+	return 0;
+}
+```
+
+
 
 
 
@@ -1680,40 +1791,41 @@ root@suda-v3s:~# i2cdetect -r -y 0
      module_raw input
 
      # For other driver modules, see the ts.conf man page
+     ```
 
 
      # Filter plugins
      ################
-
+    
      # Uncomment if first or last samples are unreliable
      # module skip nhead=1 ntail=1
-
+    
      # Uncomment if needed for devices that measure pressure
      module pthres pmin=1
-
+    
      # Uncomment if needed
      # module debounce drop_threshold=40
-
+    
      # Uncomment if needed to filter spikes
      module median depth=5
-
+    
      # Uncomment to enable smoothing of fraction N/D
      # module iir N=6 D=10
-
+    
      # Uncomment if needed
      # module lowpass factor=0.1 threshold=1
-
+    
      # Uncomment if needed to filter noise samples
      module dejitter delta=100
-
+    
      # Uncomment and adjust if you need to invert an axis or both
      # module invert x0=800 y0=480
-
+    
      # Uncomment to use ts_calibrate's settings
      module linear
      ```
 
-  6. 执行触摸屏校准程序ts_calibrate
+    6. 执行触摸屏校准程序ts_calibrate
 
 * tslib与little vgl结合
 
@@ -1770,7 +1882,6 @@ static void *handle_input(void *arg) {
 		ret = ts_read_raw(ts, &samp, 1);
 		if (ret < 0) {
 			perror("ts_read_raw");
-			indev_stop();
 			goto read_err;
 		}
 		if (ret != 1) {
@@ -1786,53 +1897,58 @@ static void *handle_input(void *arg) {
 	}
 	pthread_mutex_unlock(&mutex);
 read_err:
+	/* 确保线程停止运行 */
+	indev_stop();
 	/* 出错处理*/
 	pthread_mutex_destroy(&mutex);
 	ts_close(ts);
 	pthread_exit(arg);
 }
 
-void indev_init(void) {
+int indev_init(void) {
 	int ret;
 	pthread_t thread_hdl;
 	pthread_attr_t attr;
 	struct tsdev *ts;
+	/* 初始化互斥锁 */
+	pthread_mutex_init(&mutex, NULL);
+	/* 初始化线程的属性 */
+	pthread_attr_init(&attr);
+
 	/* 打开并配置触摸屏设备 */
 	ts = ts_setup(NULL, 0);
 	if (!ts) {
 		perror("ts_setup");
-		exit(1);
+		ret = -1;
+		goto ts_err;
 	}
-	/* 初始化互斥锁 */
-	pthread_mutex_init(&mutex, NULL);
 	/* 设置线程的分离属性 */
-	pthread_attr_init(&attr);
 	ret = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 	if (ret) {
 		perror("pthread_attr_setdetachstate");
-		goto err;
+		goto pthread_err;
 	}
 	/* 设置线程的绑定属性 */
 	ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 	if (ret) {
 		perror("pthread_attr_setscope");
-		goto err;
+		goto pthread_err;
 	}
 	/* 创建线程 */
 	ret = pthread_create(&thread_hdl, &attr, handle_input, (void*) ts);
 	if (ret) {
 		perror("pthread_create");
-		goto err;
+		goto pthread_err;
 	}
 	/* 释放线程属性对象 */
 	pthread_attr_destroy(&attr);
-	return;
-err:
-	/* 出错处理 */
+	return 0;
+pthread_err:
+	ts_close(ts);
+ts_err:
 	pthread_attr_destroy(&attr);
 	pthread_mutex_destroy(&mutex);
-	ts_close(ts);
-	exit(ret);
+	return ret;
 }
 
 /* indev_ts_read在主线程中被调用 */
