@@ -23,6 +23,8 @@ static lv_obj_t * gauge = NULL;
 static bool thread_running = true;
 /* 互斥锁 */
 static pthread_mutex_t mutex;
+/* 控制变量 */
+static unsigned int control_value = 0;
 
 static void hal_disp_init(void) {
 	/* 初始化Linux Frame Buffer设备 */
@@ -68,10 +70,45 @@ static void guage_cpu(lv_obj_t* parent) {
 	lv_gauge_set_value(gauge, 0, 50);
 }
 
+static lv_res_t on_led_switch_toggled(lv_obj_t * sw) {
+	/* 根据绝对坐标判断具体的开关 */
+	unsigned int led_bit = 0;
+	led_bit += sw->coords.y1 / 50 - 1;
+	if (sw->coords.x1 > 200) {
+		led_bit += 4;
+	}
+	/* 更新控制变量 */
+	pthread_mutex_lock(&mutex);
+	control_value &= ~(1 << led_bit);
+	control_value |= (lv_sw_get_state(sw) << led_bit);
+	pthread_mutex_unlock(&mutex);
+	return LV_RES_OK;
+}
+
 static void control_panel(lv_obj_t* parent) {
-	lv_obj_t* led = lv_led_create(parent, NULL);
-	lv_obj_align(led, NULL, LV_ALIGN_CENTER, 0, 0);
-	lv_led_on(led);
+	char name[10];
+	int i;
+	lv_obj_t* labels[8];
+	lv_obj_t* switches[8];
+	/* 创建8个LED标签，布局 */
+	for (i = 0; i < 8; i++) {
+		labels[i] = lv_label_create(parent, NULL);
+		sprintf(name, "LED%d", i + 1);
+		lv_label_set_text(labels[i], name);
+	}
+	lv_obj_align(labels[0], NULL, LV_ALIGN_IN_TOP_LEFT, 50, 20);
+	for (i = 1; i < 4; i++) {
+		lv_obj_align(labels[i], labels[i - 1], LV_ALIGN_OUT_BOTTOM_MID, 0, 30);
+	}
+	for (i = 4; i < 8; i++) {
+		lv_obj_align(labels[i], labels[i - 4], LV_ALIGN_OUT_RIGHT_MID, 200, 0);
+	}
+	/* 创建8个开关，布局 */
+	for (i = 0; i < 8; i++) {
+		switches[i] = lv_sw_create(parent, NULL);
+		lv_obj_align(switches[i], labels[i], LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+		lv_sw_set_action(switches[i], on_led_switch_toggled);
+	}
 }
 
 static void* gui_tick(void *arg) {
@@ -171,7 +208,8 @@ void gui_user_work(void* arg) {
 	lv_gauge_set_value(gauge, 0, usage);
 	lv_chart_set_next(chart_temp, ch1ser1, user_data->sensor_temp0);
 	lv_chart_set_next(chart_temp, ch1ser2, user_data->sensor_temp1);
-	user_data->blink0++;
+	pthread_mutex_lock(&mutex);
+	user_data->blink0 = control_value;
+	pthread_mutex_unlock(&mutex);
 	user_data->blink1++;
 }
-

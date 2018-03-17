@@ -18,7 +18,7 @@
 /* 用实时时钟作为参考时钟 */
 #define CLOCK_TO_USE 	CLOCK_REALTIME
 
-/* 1s = 10e9ns */
+/* 1s = 10^9ns */
 #define NSEC_PER_SEC 	(1000000000L)
 /* 周期时间换算为纳秒单位 */
 #define PERIOD_NS 		(NSEC_PER_SEC / FREQUENCY)
@@ -40,7 +40,7 @@
 #define Infineon_XMC4800 0x0000034E, 0x00000000 /* vendor ID, product code */
 
 typedef struct ecat_user_struct {
-	/*  控制从站LED的状态值*/
+	/* 控制从站LED的状态值 */
 	unsigned int blink0;
 	unsigned int blink1;
 	/* 从站上传的传感器数据 */

@@ -153,7 +153,9 @@ static void* cyclic_task(void* arg) {
 
 	/* 获取当前时间 */
 	clock_gettime(CLOCK_TO_USE, &wakeupTime);
+	pthread_mutex_lock(&mutex);
 	while (thread_running) {
+		pthread_mutex_unlock(&mutex);
 		/* 更新理论上的唤醒时间 */
 		wakeupTime = timespec_add(wakeupTime, cycletime);
 		/* 高精度睡眠函数 */
@@ -200,8 +202,8 @@ static void* cyclic_task(void* arg) {
 		if (counter) {
 			counter--;
 		} else {
-			/* 下面的任务一秒钟做一次 */
-			counter = FREQUENCY;
+			/* 下面的任务一秒钟做10次 */
+			counter = FREQUENCY / 10;
 			/* 检查master的状态 */
 			check_master_state();
 
@@ -222,8 +224,6 @@ static void* cyclic_task(void* arg) {
 			user_data.sensor_temp0 = EC_READ_U16(domain_pd + off_sensors_in0);
 			user_data.sensor_temp1 = EC_READ_U16(domain_pd + off_sensors_in1);
 			user_work((void*) &user_data);
-			printf("temp from slave0:%d\ttemp from slave1:%d\r\n",
-					user_data.sensor_temp0, user_data.sensor_temp1);
 			/* 输出过程数据 */
 			EC_WRITE_U8(domain_pd + off_leds_out0, user_data.blink0);
 			EC_WRITE_U8(domain_pd + off_leds_out1, user_data.blink1);
@@ -252,7 +252,9 @@ static void* cyclic_task(void* arg) {
 #ifdef MEASURE_TIMING
 		clock_gettime(CLOCK_TO_USE, &endTime);
 #endif
+		pthread_mutex_lock(&mutex);
 	}
+	pthread_mutex_unlock(&mutex);
 	/* 释放互斥锁内存 */
 	pthread_mutex_destroy(&mutex);
 	pthread_exit(arg);
@@ -316,7 +318,7 @@ int ecat_init(void (*work_callback)(void*)) {
 		goto ecat_err;
 	}
 	/* 配置分步式时钟，查阅从站描述文件Device->Dc->AssignActivate */
-	ecrt_slave_config_dc(sc_xmc, 0x300, PERIOD_NS, 4400000, 0, 0);
+	ecrt_slave_config_dc(sc_xmc, 0x300, PERIOD_NS, 0, 0, 0);
 
 	/* 获取指定从站的配置信息 */
 	sc_xmc = ecrt_master_slave_config(master, XMC_Slave1Pos, Infineon_XMC4800);
@@ -347,7 +349,7 @@ int ecat_init(void (*work_callback)(void*)) {
 		goto ecat_err;
 	}
 	/* 配置分步式时钟，查阅从站描述文件Device->Dc->AssignActivate */
-	ecrt_slave_config_dc(sc_xmc, 0x300, PERIOD_NS, 4400000, 0, 0);
+	ecrt_slave_config_dc(sc_xmc, 0x300, PERIOD_NS, 0, 0, 0);
 
 	printf("Activating master...\n");
 	/* 激活主站 */

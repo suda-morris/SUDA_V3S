@@ -29,7 +29,7 @@ int main(void) {
 	gui_init();
 	/* 初始化工具线程，计算CPU使用率 */
 	utils_init();
-	/* 启动ethercat主站，注册回调函数 */
+	/* 初始化ethercat主站，注册回调函数 */
 	ecat_init(gui_user_work);
 
 	while (app_running) {
