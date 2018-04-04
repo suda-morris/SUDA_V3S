@@ -13,8 +13,8 @@
 /* 运行过程中测量分布式时钟的性能 */
 #define MEASURE_TIMING
 
-/* 周期性任务1秒钟运行1000次 */
-#define FREQUENCY 		1000
+/* 周期性任务1秒钟运行100次 */
+#define FREQUENCY 		100
 /* 用实时时钟作为参考时钟 */
 #define CLOCK_TO_USE 	CLOCK_REALTIME
 
@@ -37,7 +37,7 @@
 /**
  * 从站厂商信息与产品信息
  */
-#define Infineon_XMC4800 0x0000034E, 0x00000000 /* vendor ID, product code */
+#define Infineon_XMC4800 0x0000034E, 0x12345678 /* vendor ID, product code */
 
 typedef struct ecat_user_struct {
 	/* 控制从站LED的状态值 */

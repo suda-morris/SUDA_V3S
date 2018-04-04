@@ -55,8 +55,8 @@ static ecat_user user_data = { .blink0 = 0, .blink1 = 0, .sensor_temp0 = 0,
 /* 过程数据对象的配置信息，具体到每一条目，可以通过在主站使用命令查看：ethercat cstruct */
 /* Master 0, Slave 0
  * Vendor ID:       0x0000034e
- * Product code:    0x00000000
- * Revision number: 0x00000000
+ * Product code:    0x12345678
+ * Revision number: 0x00000001
  */
 static ec_pdo_entry_info_t xmc_pdo_entries[] = {
 /* {条目主索引, 条目子索引, 条目大小：单位bit} */
